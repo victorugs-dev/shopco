@@ -9,13 +9,13 @@ function ProductDetails() {
 
     const [total, setTotal] = useState(0); // we may need local storage for this?? 
     const [isAddedToCart, setIsAddedToCart] = useState(false); // we may need local storage for this?? 
-    const [outfitSize,setOutfitSize] = useState('');
+    const [outfitSize,setOutfitSize] = useState('Large');
 
     let params = useParams();
-    console.log('params: ',params);
+    // console.log('params: ',params);
 
     let productDetails = data.find(item => item.slug === params.slug);
-    console.log(productDetails);
+    // console.log(productDetails);
 
     const discountAmount = productDetails.price * (productDetails.percentageDiscount / 100);
     const newPrice = productDetails.price - discountAmount;
@@ -65,10 +65,18 @@ function ProductDetails() {
     };
 
     const handleOutfitSize = (e) => {
-        console.log(e.target.textContent);
-        // outfitSize !== '': 
         setOutfitSize(e.target.textContent);
-        console.log(outfitSize);
+    }
+
+    // particular btn that is clicked will change color
+    // only one size can be selected
+    function OutfitSizeButton({title}){
+        return (
+            <button onClick={handleOutfitSize} 
+                className={`rounded-3xl px-2  py-3 bg-black  cursor-pointer
+                ${(outfitSize === title) ? 'bg-gray-200 text-black' : 'text-white'}`}
+            >{title}</button>
+        );
     }
 
     return (
@@ -125,14 +133,8 @@ function ProductDetails() {
                 <div className='border-b pb-3 space-y-3'>
                     <p>Choose Size</p>
                     <div className='grid grid-cols-4 gap-x-2 '>
-                        {/* <Button children={"Small"} />
-                        <Button children={"Medium"} />
-                        <Button children={"Large"} />
-                        <Button children={"X-Large"} /> */}
-                        <button onClick={handleOutfitSize} className='rounded-3xl px-2  py-3 bg-black text-white'>Small</button>
-                        <button onClick={handleOutfitSize} className='rounded-3xl px-2  py-3 bg-black text-white'>Medium</button>
-                        <button onClick={handleOutfitSize} className='rounded-3xl px-2  py-3 bg-black text-white'>Large</button>
-                        <button onClick={handleOutfitSize} className='rounded-3xl px-2  py-3 bg-black text-white'>X-Large</button>
+                        <OutfitSizeButton title={'Small'} /> <OutfitSizeButton title={'Medium'} />
+                        <OutfitSizeButton title={'Large'} /> <OutfitSizeButton title={'X-Large'} />
                     </div>
                 </div>
                 <div className='flex mb-10'>
@@ -145,6 +147,7 @@ function ProductDetails() {
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z" /></svg>
                         </button>
                     </div>
+
                     {isAddedToCart === true ? (
                     <button className={`rounded-3xl p-2 w-1/2 text-white bg-gray-300`} 
                     children={"Add to Cart"} 

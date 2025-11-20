@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router';
 // import toast, {toaster} from 'react-hot-toast';
 
+
+
 function SignUp() {
   const navigate = useNavigate();
 
@@ -12,7 +14,7 @@ function SignUp() {
 
   const [isSubmitButtonClicked, setIsSubmitButtonClicked] = useState(false);
 
-  const [isFieldEmpty,setIsFieldEmpty] = useState(false);
+  const [areAllFieldsFilled,setAreAllFieldsFilled] = useState(false);
 
   const [error,setError] = useState('');
 
@@ -34,10 +36,20 @@ function SignUp() {
     }))
   }
 
+  const handleClearForm = () => {
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      password: '',
+      confirmPassword: ''
+    });
+  }
+
 
   // const notifySignUpSuccessful = () => toast("You have signed up successfully!");
 
-  // password must contain at least 12-16 characters , 1 uppercase, 1 lowercase, 1 number, 1 special character, no spacing
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitButtonClicked(true);
@@ -62,11 +74,6 @@ function SignUp() {
       //   console.log(hasUpperCase(i))
       // }
 
-      // Array.from(password).forEach(i => {
-      //   console.log(i)
-      // })
-
-
       const passwordChecker = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&])\S{12,16}$/.test(password);
       if (!passwordChecker) throw new Error('Password must contain 12-16 characters');
 
@@ -80,12 +87,11 @@ function SignUp() {
       // notifySignUpSuccessful();
       console.log('registration successful');
       setTimeout(() => navigate("/"), 1000);
-
-    }else{
-      alert("You have already signed up.");
-      console.log("You have already signed up.");
-      return <p>"You have already signed up."</p>;
     }
+
+    alert("You have already signed up.");
+    console.log("You have already signed up.");
+    return <p>"You have already signed up."</p>;
   }
 
   // ...TASKS...
@@ -94,44 +100,62 @@ function SignUp() {
   /* i will have to make sure that all the input have the appopriate type to them bcos users can easily 
   change this from the dev tool*/
   // shouldn't the input of type='reset' clear the whole form? or should i use a normal button with type='reset' 
+
+
+  // we only want the field that is left empty to ne red when submit button is clicked
+  // we want to navigate them to where in the form the had issues. auto scroll to the issue
+  function Label({ title, children }) {
+    return (
+      <>
+        <label
+          className={`p-4 border-2
+          ${(!areAllFieldsFilled && isSubmitButtonClicked) && 'border-red-400'}`}
+        >
+          <div className='flex justify-between'>
+            <div>{title}</div>
+            {/* <div></div> */}
+            {children}
+          </div>
+          
+          
+        </label>
+  
+        {(isSubmitButtonClicked && areAllFieldsFilled) && <p className='text-red-200'>All fields are required!</p>}
+      </>
+    )
+  }
+// }
+
   return (
     <div className='w-full grid place-items-center'>
       <form onSubmit={handleSubmit} className='p-4 rounded-md flex flex-col gap-10'>
-        <label htmlFor=""
-          className='border-2 p-4'
-        >
-          Enter your first name:
+     
+        {/* {(isSubmitButtonClicked && areAllFieldsFilled) && <p className='text-red-200'>All fields are required!</p> } */}
+        {/* <span>All fields are required!</span> */}
+
+        <Label title={'Enter your first name'}>
           <input
-            className='outline-2 indent-1.5 rounded-md' 
-            type="text" 
+            className='outline-2 indent-1.5 rounded-md'
+            type="text"
             name='firstName'
             value={formData.firstName}
             placeholder='James'
-            onChange={handleChange}
+            onChange={handleChange} 
           />
-        </label>
-        {(isSubmitButtonClicked && isFieldEmpty ) && <p className='text-red-200'>All fields are required!</p> }
-        {/* <span>All fields are required!</span> */}
+        </Label>
 
-        <label htmlFor=""
-          className='border-2 p-4'
-        >
-        Enter your last name
+        <Label title={'Enter your last name'}>
           <input
-            className='outline-2 indent-1.5 rounded-md' 
-            type="text" 
+            className='outline-2 indent-1.5 rounded-md'
+            type="text"
             name='lastName'
             value={formData.lastName}
             placeholder='Harden'
             onChange={handleChange}
-            />
-        </label>
-        {(isSubmitButtonClicked && isFieldEmpty ) && <p className='text-red-200'>All fields are required!</p> }
+          />
+        </Label>
 
-        <label htmlFor=""
-          className='border-2 p-4'
-        >
-        Enter your email:
+        <Label title={'Enter your email:'}>
           <input
             className='outline-2 indent-1.5 rounded-md' 
             type="email" 
@@ -140,13 +164,9 @@ function SignUp() {
             placeholder='email@example.com'
             onChange={handleChange}
           />
-        </label>
-        {(isSubmitButtonClicked && isFieldEmpty ) && <p className='text-red-200'>All fields are required!</p> }
+        </Label>
 
-        <label htmlFor=""
-          className='border-2 p-4'
-        >
-        Enter your phone number:
+        <Label title={'Enter your phone number:'}>
           <input
             className='outline-2 indent-1.5 rounded-md' 
             type="tel" 
@@ -155,24 +175,19 @@ function SignUp() {
             placeholder='+234 123 456 7890'
             onChange={handleChange}
           />
-        </label>
-        {(isSubmitButtonClicked && isFieldEmpty ) && <p className='text-red-200'>All fields are required!</p> }
+        </Label>
 
-        <label htmlFor=""
-          className='border-2 p-4'
-        >
-        Enter your password:
+        <Label title={'Enter your password:'}>
           <input
-            className='outline-2 indent-1.5 rounded-md' 
-            type="password" 
+            className='outline-2 indent-1.5 rounded-md'
+            type="password"
             name='password'
             value={formData.password}
             // password must contain at least 12-16 characters , 1 uppercase, 1 lowercase, 1 number, 1 special character, no spacing
             placeholder='Password123!'
             onChange={handleChange}
           />
-        </label>
-        {(isSubmitButtonClicked && isFieldEmpty ) && <p className='text-red-200'>All fields are required!</p> }
+        </Label>
         {/* {isPasswordLengthValid === false && }  */}
         {/* if(isPasswordLength === false){
           return <p>password must contain at least 12-16 characters , 1 uppercase, 1 lowercase, 1 number, 1 special character, no spacing</p>
@@ -182,41 +197,34 @@ function SignUp() {
           <p className='text-red-200'>password must contain at least 12-16 characters , 1 uppercase, 1 lowercase, 1 number, 1 special character, no spacing</p>
         )}
 
-      <label htmlFor=""
-        className='border-2 p-4'
-      >
-        Confirm Password
-        <input
-          className='outline-2 indent-1.5 rounded-md' 
-          type="password" 
-          name='confirmPassword'
-          value={formData.confirmPassword}  
-          placeholder='Confirm password'
-          onChange={handleChange}
+        <Label title={'Confirm Password'}>
+          <input
+            className='outline-2 indent-1.5 rounded-md'
+            type="password"
+            name='confirmPassword'
+            value={formData.confirmPassword}
+            placeholder='Password123!'
+            onChange={handleChange}
           />
-      </label>
-        {(isSubmitButtonClicked && isFieldEmpty ) && <p className='text-red-200'>All fields are required!</p> }
-      {/* if submit button is clicked and passwords don't match before informing the user */}
+        </Label>
         {(isSubmitButtonClicked && (formData.confirmPassword !== formData.password)) && (
           <p className='text-red-200'>Passwords do not match!</p>
         )}
 
         <div className='flex justify-between w-full'>
-          <input
-            className='bg-green-300 hover:bg-green-400 cursor-pointer px-4 py-2 rounded-3xl'
+          <button
             type="submit"
-            value='Submit Form'
-          />
-          <input
+            className='bg-green-300 hover:bg-green-400 cursor-pointer px-4 py-2 rounded-3xl'
+          >Submit Form</button>
+          <button
+            type="button"
             className='bg-red-300 hover:bg-red-400 cursor-pointer px-4 py-2 rounded-3xl'
-            type="reset"
-            value='Clear Form'
-          />
+            onClick={handleClearForm}
+          >Clear Form</button>
         </div>
       </form>
     </div>
-    
-  )
+);
 }
 
-export default SignUp
+export default SignUp;
