@@ -1,54 +1,123 @@
 import React from 'react'
 import { useParams } from "react-router";
 import { data } from '../../data';
-import { useState, useReducer } from 'react';
+import { useState, useEffect, useReducer } from 'react';
+import { useTheme } from '../context/ThemeContext';
 // import Button from '../components/ui/Button'
 
 
 function ProductDetails() {
-
-    const [total, setTotal] = useState(0); // we may need local storage for this?? 
-    const [isAddedToCart, setIsAddedToCart] = useState(false); // we may need local storage for this?? 
-    const [outfitSize,setOutfitSize] = useState('Large');
-
+    const [theme,setTheme] = useTheme();
     let params = useParams();
-    // console.log('params: ',params);
-
     let productDetails = data.find(item => item.slug === params.slug);
-    // console.log(productDetails);
+    const { colors, sizes } = productDetails;
+
+    const [total, setTotal] = useState(1); // we may need local storage for this?? 
+    const [isAddedToCart, setIsAddedToCart] = useState(false); // we may need local storage for this?? 
+    const [outfitSize,setOutfitSize] = useState('large');
+    const [outfitColor,setOutfitColor] = useState('');
+
+    // NO CHANGES CAN BE MADE AFTER ADDING TO CART
+    // REMOVE THE ADDED ITEM OR ADD A NEW ITEM TO CART
 
     const discountAmount = productDetails.price * (productDetails.percentageDiscount / 100);
     const newPrice = productDetails.price - discountAmount;
-    // console.log(productDetails.price)
-    // console.log(productDetails.percentageDiscount)
-    // console.log('discountAmount: ',discountAmount)
-    // console.log('newPrice:', newPrice)
 
-    // we may have to use the useContext for the cart button so that every product can corresponding to it rather than having individual state for the cart total ???
+    useEffect(() => {
+        colors.length && setOutfitColor(colors[Math.floor(Math.random() * colors.length)]);
+    },[]);
+    console.log(outfitColor);
 
-    function handleColorPicked(){
-        console.log("user wants to change the color of cloth selected")
+    const handleColorPick = (color,event) => {
+        if(!isAddedToCart){
+            setOutfitColor(color.toLowerCase());
+            console.log(color);
+            console.log("user wants to change the color of outfit selected")
+        }
+    }
+    
+    function OutfitColorButtons(){
+        return (
+            <div className='flex gap-x-2'>{colors?.map((color) => (
+                // <span key={color}>
+                    <button key={color} onClick={(e) => handleColorPick(color,e)}
+                        className='flex gap-x-1 cursor-pointer'
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16"><path fill={color} stroke={color === outfitColor && 'black'} strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg>
+                    </button>
+                // </span>
+            ))}
+            </div>
+        )
     }
 
+    // function OutfitColorButtons(){
+    //     // return (
+    //         <>{colors.map((color) => {
+    //             return (
+    //                 <div key={color}
+    //                     className={`flex gap-x-1 bg-${color}-100`}>
+    //                     <button onClick={handleColorPick}>{color}</button>
+
+    //                 </div>
+    //             )
+    //         }</>
+    //     // );
+                
+    //     // );
+
+    // }
+
+    // <button onClick={handleColorPick} className='bg-green-400 text-green-400 rounded-full'>circle</button>
+    //                     <button onClick={handleColorPick} className='bg-blue-400 text-blue-400 rounded-full'>circle</button>
+    //                     <button onClick={handleColorPick} className='bg-yellow-400 text-yellow-400 rounded-full'>circle</button>
+
+    // the issue here is that we want a color by default but some colors may not be available for others
+    // we have to make a random selection... I think
+    // const [outfitColor,setOutfitColor] = useState(`
+    //   ${colors[Math.floor(Math.random() * colors + 1)]}
+    // `) ;
+    
+
+    
+ 
+    // we may have to use the useContext for the cart button so that every product can corresponding to it rather than having individual state for the cart total ???
+
+ 
     // button must not be used more than once
+    // function handleAddToCart(){
+    //     console.log("Added to cart");
+        
+    //     if(isAddedToCart === false){
+    //         setTotal((prev) => (
+    //             prev + 1
+    //         ));
+    //         console.log('total: ',total)
+    //         setIsAddedToCart(true);
+    //         return
+           
+    //     }
+    //     return <p>This item has been added already</p>
+    // }
+
+    // quantity must be greater than 0 before it can be added to cart
     function handleAddToCart(){
         console.log("Added to cart");
-        
-        if(isAddedToCart === false){
-            setTotal((prev) => (
-                prev + 1
-            ));
+        if (total > 0){
+            // setTotal((prev) => (
+            //     prev + 1
+            // ));
             console.log('total: ',total)
             setIsAddedToCart(true);
+            return
            
-        }else{
-            return <p>This item has been added already</p>
         }
+        return <p>This item has been added already</p>
     }
     
     // user must add to cart before increasing quantity
     const handleIncreaseTotal = () => {
-        if(isAddedToCart){
+        if(!isAddedToCart){
             setTotal((prev) => (
                 prev + 1
             ));
@@ -57,25 +126,50 @@ function ProductDetails() {
 
 
     const handleDecreaseTotal = () => {
-        if(total > 0){
+        if(total > 1 && !isAddedToCart){
             setTotal((prev) => (
                 prev - 1
             ));
         }
     };
+    // const handleDecreaseTotal = () => setTotal((prev) => (total > 1 && prev - 1));
 
-    const handleOutfitSize = (e) => {
-        setOutfitSize(e.target.textContent);
-    }
+    
+
+    // const handleDecreaseTotal = () => (total < 0) && (setTotal(prev) => (prev -1));
+    // const handleDecreaseTotal = () => setTotal(((total < 0),prev) => (prev -1));
+
+
+    const handleOutfitSize = (event, size) => {
+        !isAddedToCart ? setOutfitSize(event.target.textContent) : console.log('cannot select size after adding to cart!');
+
+        !isAddedToCart && console.log(event.target.textContent);
+    };
 
     // particular btn that is clicked will change color
     // only one size can be selected
-    function OutfitSizeButton({title}){
+    function OutfitSizeButton(){
         return (
-            <button onClick={handleOutfitSize} 
-                className={`rounded-3xl px-2  py-3 bg-black  cursor-pointer
-                ${(outfitSize === title) ? 'bg-gray-200 text-black' : 'text-white'}`}
-            >{title}</button>
+            // <button onClick={handleOutfitSize} 
+            //     className={`rounded-3xl px-2  py-3 bg-black cursor-pointer
+            //     ${(outfitSize === title && !isAddedToCart) ? 'bg-gray-200 text-black' : 'text-white'}`}
+            // >{title}</button>
+            // <button onClick={handleOutfitSize} 
+            //     className={`rounded-3xl px-2  py-3 bg-black cursor-pointer
+            //     ${(outfitSize === title && !isAddedToCart) ? 'bg-gray-200 text-black' : 'text-white'}`}
+            // >{title}</button>
+            <>{sizes?.map((size) => (
+                // <span key={size}>
+                    <button 
+                        key={size}
+                        onClick={(e) => handleOutfitSize(e,size)}
+                //     className={`rounded-3xl px-2  py-3 bg-black cursor-pointer 
+                // ${(outfitSize === size && !isAddedToCart) ? 'bg-gray-200 text-black' : 'text-white'}`}
+                    className={`rounded-3xl px-2  py-3 bg-black cursor-pointer
+                        ${outfitSize === size ? 'bg-gray-400 text-black' : 'text-white'}`}
+                    >{size}</button>
+                // </span>
+            ))}</>
         );
     }
 
@@ -123,18 +217,18 @@ function ProductDetails() {
 
                 <div className='border-b pb-3 space-y-3'>
                     <p className='text-2xl '>Select Colors</p>
-                    <div className='flex gap-x-1'>
-                        <button onClick={handleColorPicked} className='bg-green-400 text-green-400 rounded-full'>circle</button>
-                        <button onClick={handleColorPicked} className='bg-blue-400 text-blue-400 rounded-full'>circle</button>
-                        <button onClick={handleColorPicked} className='bg-yellow-400 text-yellow-400 rounded-full'>circle</button>
-                    </div>
+                    {/* <div className='flex gap-x-1'>
+                        <button onClick={handleColorPick} className='bg-green-400 text-green-400 rounded-full'>circle</button>
+                        <button onClick={handleColorPick} className='bg-blue-400 text-blue-400 rounded-full'>circle</button>
+                        <button onClick={handleColorPick} className='bg-yellow-400 text-yellow-400 rounded-full'>circle</button>
+                    </div> */}
+                    <OutfitColorButtons />
                 </div>
 
                 <div className='border-b pb-3 space-y-3'>
                     <p>Choose Size</p>
                     <div className='grid grid-cols-4 gap-x-2 '>
-                        <OutfitSizeButton title={'Small'} /> <OutfitSizeButton title={'Medium'} />
-                        <OutfitSizeButton title={'Large'} /> <OutfitSizeButton title={'X-Large'} />
+                        <OutfitSizeButton />
                     </div>
                 </div>
                 <div className='flex mb-10'>
@@ -149,17 +243,16 @@ function ProductDetails() {
                     </div>
 
                     {isAddedToCart === true ? (
-                    <button className={`rounded-3xl p-2 w-1/2 text-white bg-gray-300`} 
-                    children={"Add to Cart"} 
+                    <button className={`rounded-3xl p-2 w-1/2 text-white bg-gray-300`}
+                    children={"Added"}
                     disabled
                     />
                     ):(
-                    <button className={`rounded-3xl p-2 w-1/2 bg-black text-white`} 
-                        onClick={handleAddToCart } 
-                        children={"Add to Cart"} 
+                    <button className={`rounded-3xl p-2 w-1/2 bg-black text-white`}
+                        onClick={handleAddToCart }
+                        children={"Add to Cart"}
                     />
                     )}
-
                     {/* {isAddedToCart === true &&   <p>this item has been added already</p>} */}
                 </div>
           </div>
