@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from "react-router";
 import { data } from '../../data';
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTheme } from '../context/ThemeContext';
 // import Button from '../components/ui/Button'
 
@@ -28,49 +28,27 @@ function ProductDetails() {
     },[]);
     console.log(outfitColor);
 
-    const handleColorPick = (color,event) => {
+    const handleColorPick = useCallback((color,event) => {
         if(!isAddedToCart){
             setOutfitColor(color.toLowerCase());
             console.log(color);
             console.log("user wants to change the color of outfit selected")
         }
-    }
-    
+    }, [isAddedToCart]);
+
     function OutfitColorButtons(){
         return (
             <div className='flex gap-x-2'>{colors?.map((color) => (
-                // <span key={color}>
                     <button key={color} onClick={(e) => handleColorPick(color,e)}
-                        className='flex gap-x-1 cursor-pointer'
+                        className='flex justify-between cursor-pointer'
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16"><path fill={color} stroke={color === outfitColor && 'black'} strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg>
                     </button>
-                // </span>
             ))}
             </div>
         )
     }
 
-    // function OutfitColorButtons(){
-    //     // return (
-    //         <>{colors.map((color) => {
-    //             return (
-    //                 <div key={color}
-    //                     className={`flex gap-x-1 bg-${color}-100`}>
-    //                     <button onClick={handleColorPick}>{color}</button>
-
-    //                 </div>
-    //             )
-    //         }</>
-    //     // );
-                
-    //     // );
-
-    // }
-
-    // <button onClick={handleColorPick} className='bg-green-400 text-green-400 rounded-full'>circle</button>
-    //                     <button onClick={handleColorPick} className='bg-blue-400 text-blue-400 rounded-full'>circle</button>
-    //                     <button onClick={handleColorPick} className='bg-yellow-400 text-yellow-400 rounded-full'>circle</button>
 
     // the issue here is that we want a color by default but some colors may not be available for others
     // we have to make a random selection... I think
@@ -85,20 +63,6 @@ function ProductDetails() {
 
  
     // button must not be used more than once
-    // function handleAddToCart(){
-    //     console.log("Added to cart");
-        
-    //     if(isAddedToCart === false){
-    //         setTotal((prev) => (
-    //             prev + 1
-    //         ));
-    //         console.log('total: ',total)
-    //         setIsAddedToCart(true);
-    //         return
-           
-    //     }
-    //     return <p>This item has been added already</p>
-    // }
 
     // quantity must be greater than 0 before it can be added to cart
     function handleAddToCart(){
@@ -138,37 +102,19 @@ function ProductDetails() {
 
     // const handleDecreaseTotal = () => (total < 0) && (setTotal(prev) => (prev -1));
     // const handleDecreaseTotal = () => setTotal(((total < 0),prev) => (prev -1));
-
-
-    const handleOutfitSize = (event, size) => {
-        !isAddedToCart ? setOutfitSize(event.target.textContent) : console.log('cannot select size after adding to cart!');
-
-        !isAddedToCart && console.log(event.target.textContent);
-    };
+    const handleOutfitSize = (event, size) => !isAddedToCart ? setOutfitSize(event.target.textContent) : console.log('cannot select size after adding to cart!');
 
     // particular btn that is clicked will change color
     // only one size can be selected
     function OutfitSizeButton(){
         return (
-            // <button onClick={handleOutfitSize} 
-            //     className={`rounded-3xl px-2  py-3 bg-black cursor-pointer
-            //     ${(outfitSize === title && !isAddedToCart) ? 'bg-gray-200 text-black' : 'text-white'}`}
-            // >{title}</button>
-            // <button onClick={handleOutfitSize} 
-            //     className={`rounded-3xl px-2  py-3 bg-black cursor-pointer
-            //     ${(outfitSize === title && !isAddedToCart) ? 'bg-gray-200 text-black' : 'text-white'}`}
-            // >{title}</button>
             <>{sizes?.map((size) => (
-                // <span key={size}>
                     <button 
                         key={size}
                         onClick={(e) => handleOutfitSize(e,size)}
-                //     className={`rounded-3xl px-2  py-3 bg-black cursor-pointer 
-                // ${(outfitSize === size && !isAddedToCart) ? 'bg-gray-200 text-black' : 'text-white'}`}
-                    className={`rounded-3xl px-2  py-3 bg-black cursor-pointer
+                    className={`rounded-3xl px-1  py-3 bg-black cursor-pointer
                         ${outfitSize === size ? 'bg-gray-400 text-black' : 'text-white'}`}
                     >{size}</button>
-                // </span>
             ))}</>
         );
     }
