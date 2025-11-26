@@ -176,6 +176,9 @@ cases to use useCallback:
 
 Example: incrementing/decrementing quantity in a CartItem component.
 
+
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
