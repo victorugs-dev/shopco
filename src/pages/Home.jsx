@@ -1,13 +1,35 @@
 import React from 'react'
+import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import Button from '../components/ui/Button'
 // import { UNSAFE_RSCDefaultRootErrorBoundary } from 'react-router';
 import Reviews from '../components/landingpage/Reviews';
 import Arrivals from '../components/landingpage/Arrivals';
+import FilterIcon from '../components/ui/FilterIcon'
+import SearchBar from '../components/ui/SearchBar';
+
 function Home() {
+  //  this is the search 
+
+  const handleSubmit = () => {
+
+  };
 
   return (
    <div className='w-full'>
+      <SearchBar 
+        className='w-full'
+        // text={'Find outfits that match your taste'} 
+        text={'Find your perfect outfit'} 
+
+      />
       <Arrivals />
+      <div className='flex justify-center w-full mt-2 mb-10'>
+        <Link 
+          to='product-listing'
+          className='bg-black text-white py-4 px-8 rounded-full cursor-pointer'
+        >View All</Link>
+      </div>
       <div>
         <img className='object-contain' src='/designs/Frame 60.png' />
       </div>

@@ -1,7 +1,8 @@
 export const data = [
   {
     id: 0,
-    title: "T-shirt with Tape Details",
+    // title: "T-shirt with Tape Details",
+    title: "shirt",
     slug: "t-shirt-with-tape-details",
     price: 120,
     percentageDiscount: null,
@@ -16,6 +17,7 @@ export const data = [
   {
     id: 1,
     title: "Skinny Fit Jeans",
+    // title: "shirt",
     slug: "skinny-fit-jeans",
     price: 240,
     percentageDiscount: 20,

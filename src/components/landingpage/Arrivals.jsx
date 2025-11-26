@@ -2,19 +2,14 @@ import React from 'react'
 import Card from '../ui/Card'
 import { data } from '../../../data'
 import { useCallback } from 'react'
-import { useNavigate } from 'react-router'
+// import { useNavigate } from 'react-router'
 
 
 
 function Arrivals() {
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  function viewAllNewArrivals(){
-    console.log('view all new arrivals')
-    // setTimeout(() => navigate("/AllNewArrivals"), 1000)
-
-  }
   
   return (
     <div className='w-full'>
@@ -31,9 +26,7 @@ function Arrivals() {
           />
         ))}
       </div>
-      <div className='flex justify-center w-full mt-2 mb-10'>
-        <button onClick={viewAllNewArrivals} className='border rounded-full px-10 py-4'>View All</button>
-      </div>
+      
       <hr />
     </div>
   )
