@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React,{ useState } from "react";
+import { useSearch } from "../../context/SearchContext";
 import { data } from "../../../data";
 
 export default function SearchBar({text, onSearch}){
@@ -9,19 +10,43 @@ export default function SearchBar({text, onSearch}){
 
     const [input,setInput] = useState('');
 
-    const handleOnkeydown = (e) => {
-        if(e.key === 'Enter'){
-            onSearch(input);
-        }
-    }
+    const { setSearchQuery, setSearchResults, setIsSearching } = useSearch();
+
+    const handleSearch = (e) =>{
+        const value = e.target.value;
+        setInput(value);
+        setSearchQuery(value);
+
+        if(value.trim() === ''){
+            setSearchResults([]);
+            setIsSearching(false);
+            return;
+        };
+
+        const filtered = data.filter((d) => 
+        d.title.toLowerCase().includes(value.toLowerCase()));
+
+        console.log(filtered)
+    
+        setSearchResults(filtered);
+        setIsSearching(true);
+    };
+
+
+    // const handleOnkeydown = (e) => {
+    //     if(e.key === 'Enter'){
+    //         onSearch(input);
+    //     }
+    // }
 
     return (
         <div className='flex items-center indent-2 bg-gray-200 p-2 rounded-full w-fit'>
             <input
                 placeholder={text}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleOnkeydown}
+                // onChange={(e) => setInput(e.target.value)}
+                onChange={handleSearch}
+                // onKeyDown={handleOnkeydown}
 
             />
             {/* <button onClick={handleOnkeydown}>

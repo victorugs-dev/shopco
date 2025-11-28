@@ -12,7 +12,7 @@ function Card({title, percentageDiscount, images, price, slug, rating}) {
   
   return (
     <>
-      <Link to={`${slug}`} className='bg-green-400'>
+      <Link to={`${slug}`}>
         <div className='w-fit'>
           <img className='w-24 h-24 md:w-full md:h-full' src={images} alt={title} />
           <div className='md:text-2xl'>{title}</div>

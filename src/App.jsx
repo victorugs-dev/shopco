@@ -5,6 +5,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import router from './router';
 import {ThemeProvider} from './context/ThemeContext';
+import {SearchProvider} from './context/SearchContext';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,7 +13,9 @@ function App() {
   return (
     // <div>
     <ThemeProvider>
-     <RouterProvider router={router} />
+      <SearchProvider>
+        <RouterProvider router={router} />
+      </SearchProvider>
     </ThemeProvider>
     // </div>
   );
