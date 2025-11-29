@@ -1,8 +1,14 @@
 import { useState } from "react";
+// <<<<<<< HEAD
 import { useSearch } from "../../context/SearchContext";
 import { data } from "../../../data";
 
 export default function SearchBar({ text }){
+// =======
+// import { data } from "../../../data";
+
+// export default function SearchBar({text, onSearch}){
+// >>>>>>> origin/main
 
 
     // const [userSearch,setUserSearch] = useState('')
@@ -10,6 +16,7 @@ export default function SearchBar({ text }){
 
     const [input,setInput] = useState('');
 
+// <<<<<<< HEAD
     const { setSearchQuery, setSearchResults, setIsSearching } = useSearch();
 
     // const handleSearch = (e) =>{
@@ -104,6 +111,27 @@ export default function SearchBar({ text }){
             </button>
         </div>
        </form>
+// =======
+//     const handleOnkeydown = (e) => {
+//         if(e.key === 'Enter'){
+//             onSearch(input);
+//         }
+//     }
+
+//     return (
+//         <div className='flex items-center indent-2 bg-gray-200 p-2 rounded-full w-fit'>
+//             <input
+//                 placeholder={text}
+//                 value={input}
+//                 onChange={(e) => setInput(e.target.value)}
+//                 onKeyDown={handleOnkeydown}
+
+//             />
+//             {/* <button onClick={handleOnkeydown}>
+//                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="#000" stroke-width="1"><circle cx="11" cy="11" r="5.5"/><path stroke-linecap="round" stroke-linejoin="round" d="m15 15l4 4"/></g></svg>
+//             </button> */}
+//         </div>
+// >>>>>>> origin/main
     );
 
 

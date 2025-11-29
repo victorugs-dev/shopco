@@ -12,6 +12,7 @@ function Home() {
 
   return (
    <div className='w-full'>
+     
       <Arrivals />
       <div className='flex justify-center w-full mt-2 mb-10'>
         <Link 

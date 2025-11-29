@@ -6,7 +6,7 @@ function SearchOverlay() {
 
   return (
     // <div>SearchOverlay</div>
-    <div className='flex  w-fit bg-green-200'>
+    <div className='flex justify-between bg-green-200 px-4 py-2'>
         <div>Suggestions</div>
         <div>Products</div>
         

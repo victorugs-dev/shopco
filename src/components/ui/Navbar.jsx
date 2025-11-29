@@ -4,7 +4,10 @@ import { NavLink,Link } from 'react-router';
 import Input from './Input'
 import { useTheme } from '../../context/ThemeContext';
 import { data } from '../../../data';
+// <<<<<<< HEAD
 import SearchBar from './SearchBar';
+// =======
+// >>>>>>> origin/main
 
 function Navbar() {
   const [userSearch, setUserSearch] = useState('');
@@ -36,6 +39,7 @@ function Navbar() {
 
   const handleDropdown = () => setIsDropdownActive(!isDropdownActive);
 
+// <<<<<<< HEAD
   // const findSearchMatch = () => {
   //   return data.map((d, i) => (
   //     d.title.toLowerCase().includes(userSearch) ? (
@@ -43,6 +47,15 @@ function Navbar() {
   //     ) : null
   //   )).filter(f => f !== null);
   // };
+// =======
+//   const findSearchMatch = () => {
+//     return data.map((d, i) => (
+//       d.title.toLowerCase().includes(userSearch) ? (
+//         { item: d, index: i }
+//       ) : null
+//     )).filter(f => f !== null);
+//   };
+// >>>>>>> origin/main
 
 //   const my =  data.map((d,i) => (
 //     d.title.includes('shirt') ? (
@@ -54,6 +67,7 @@ function Navbar() {
   // console.log(matchSearch)
 
 
+// <<<<<<< HEAD
   // const handleSearchBarChange = (e) => {
   //   if(e.target.value.trim()){
   //     setUserSearch(e.target.value.toLowerCase().trim());
@@ -62,6 +76,16 @@ function Navbar() {
   //     console.log(findSearchMatch())
   //   }
   // };
+// =======
+//   const handleSearchBarChange = (e) => {
+//     if(e.target.value.trim()){
+//       setUserSearch(e.target.value.toLowerCase().trim());
+//       console.log(e.target.value);
+//       // findSearchMatch();
+//       console.log(findSearchMatch())
+//     }
+//   };
+// >>>>>>> origin/main
   
 
   // const handleUserSearch = useCallback((e,userSearch) => {
@@ -107,6 +131,15 @@ function Navbar() {
     // const matchSearch = data.findIndex(d => d.title === userSearch)
     
   }
+  // const handleOnkeydown = (e) => {
+  //   e.preventDefault();
+  //   console.log('the onkeydown')
+  //   if(e.key === 'Enter'){
+  //     // console.log(e.key)
+  //     console.log('submitted')
+  //   }
+
+  // }
 
 
   return (
@@ -164,17 +197,24 @@ function Navbar() {
                   // placeholder='Find outfits that match your taste'                  
                   placeholder='Find your perfect outfit'
                   onChange={handleSearchBarChange}
+<<<<<<< HEAD
 
+=======
+                  
+>>>>>>> origin/main
                 /> 
                 <button type='submit'>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="#000" stroke-width="1"><circle cx="11" cy="11" r="5.5"/><path stroke-linecap="round" stroke-linejoin="round" d="m15 15l4 4"/></g></svg>
                 </button>
               </form>
             </div>             */}
+
             <SearchBar 
               text={'Search for products...'}
             
             />
+
+
             <div className='flex'>
               <Link to='cart-page'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2"/></svg>

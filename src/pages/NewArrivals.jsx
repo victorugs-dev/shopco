@@ -1,4 +1,5 @@
 import React from 'react'
+// <<<<<<< HEAD
 import { useState } from 'react'
 
 function NewArrivals() {
@@ -56,6 +57,13 @@ function NewArrivals() {
       ))}</>
     </div>
   );
+// =======
+
+// function NewArrivals() {
+//   return (
+//     <div>NewArrivals</div>
+//   )
+// >>>>>>> origin/main
 }
 
 export default NewArrivals
