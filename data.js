@@ -53,6 +53,107 @@ export const data = [
   },
 ];
 
+// structuring it for the fuse.js
+[
+  {
+    "id": 0,
+    
+    "title": "shirt",
+    "slug": "t-shirt-with-tape-details",
+    "price": 120,
+    "percentageDiscount": null,
+    "description": "This is a T-shirt with Tape Details",
+    "colors": [
+      "green",
+      "red",
+      "blue"
+    ],
+    "sizes": [
+      "small",
+      "medium",
+      "large",
+      "x-large"
+    ],
+    "images": [
+      "/images/t-shirts/t-shirt-with-tape-details/t-shirt-with-tape-details.png"
+    ],
+    "rating": 4.5
+  },
+  {
+    "id": 1,
+    "title": "Skinny Fit Jeans",
+    
+    "slug": "skinny-fit-jeans",
+    "price": 240,
+    "percentageDiscount": 20,
+    "description": "This is a Skinny Fit Jeans",
+    "colors": [
+      "green",
+      "red",
+      "blue"
+    ],
+    "sizes": [
+      "small",
+      "medium",
+      "large",
+      "x-large"
+    ],
+    "images": [
+      "/images/jeans/skinny-fit-jeans.png"
+    ],
+    "rating": 3.5
+  },
+  {
+    "id": 2,
+    "title": "Checkered Shirt",
+    "slug": "checkered-shirt",
+    "price": 180,
+    "percentageDiscount": null,
+    "description": "This is a Checkered Shirt",
+    "colors": [
+      "green",
+      "red",
+      "blue"
+    ],
+    "sizes": [
+      "small",
+      "medium",
+      "large",
+      "x-large"
+    ],
+    "images": [
+      "/images/shirts/checkered-shirt.png"
+    ],
+    "rating": 4.5
+  },
+  {
+    "id": 3,
+    "title": "Sleeve Stripped T-shirt",
+    "slug": "sleeve-stripped-t-shirt",
+    "price": 130,
+    "percentageDiscount": 30,
+    "description": "This is a Sleeve Stripped T-shirt",
+    "colors": [
+      "green",
+      "red",
+      "blue"
+    ],
+    "sizes": [
+      "small",
+      "medium",
+      "large",
+      "x-large"
+    ],
+    "images": [
+      "/images/t-shirts/sleeve-stripped-t-shirt.png"
+    ],
+    "rating": 3.5
+  }
+]
+
+
+
+
 
 export const reviewsData = [
   {

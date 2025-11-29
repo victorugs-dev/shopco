@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSearch } from "../../context/SearchContext";
 import { data } from "../../../data";
 
-export default function SearchBar({text, onSearch}){
+export default function SearchBar({ text }){
 
 
     // const [userSearch,setUserSearch] = useState('')
@@ -36,6 +36,12 @@ export default function SearchBar({text, onSearch}){
         console.log(value)
         setInput(value);
         setSearchQuery(value);
+        
+        if(value.trim() === ''){
+            setIsSearching(false);
+            return
+        }
+        setIsSearching(true);
 
         // const filteredProducts = data.filter((d) => 
         // d.title.toLowerCase().includes(input.toLowerCase()));
