@@ -1,34 +1,10 @@
-// import {createContext, useContext, useState} from 'react';
+import { createContext, useContext, useState } from 'react';
 
-// const ThemeContext = createContext();
-
-// export function ThemeProvider({ children }) {
-//     const [theme, setTheme] = useState('light');
-
-//     const toggleTheme = () => setTheme(t => (t=== "light" ? "dark" : "light") );
-
-//     return (
-//         <ThemeContext.Provider value={{theme, toggleTheme}}>
-//             <div className={theme === 'light' ? 'bg-white text-black' : 'bg-gray-900 text-white'}>
-//             {children}
-//             </div>
-//         </ThemeContext.Provider>
-//     )
-// }
-
-import {createContext, useContext, useState} from 'react';
-
-// console.log(createContext().Provider)
 const ThemeContext = createContext();
 
-// What is themeContext
-
-// console.log('ThemeContext: ', ThemeContext)
-// console.log('ThemeContext.Provider: ', ThemeContext.Provider)
 export function ThemeProvider({ children }) {
     const [theme, setTheme] = useState('light');
 
-    // 'theme' here is the initial value of the state which is 'light'
     const toggleTheme = () => setTheme(theme => (theme === "light" ? "dark" : "light"));
 
     return (
@@ -40,10 +16,6 @@ export function ThemeProvider({ children }) {
     )
 }
 
-// export function useTheme() {
-    // return useContext(ThemeContext);
-
-// }
 export function useTheme() {
     const context = useContext(ThemeContext);
     if (!context) {

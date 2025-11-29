@@ -9,21 +9,9 @@ import FilterIcon from '../components/ui/FilterIcon'
 import SearchBar from '../components/ui/SearchBar';
 
 function Home() {
-  //  this is the search 
-
-  // const handleSubmit = (input) => {
-  //   console.log(input)
-  // };
-  
 
   return (
    <div className='w-full'>
-      {/* <SearchBar 
-        className='w-full'
-        // text={'Find outfits that match your taste'} 
-        text={'Find your perfect outfit'} 
-        onSearch={handleSubmit}
-      /> */}
       <Arrivals />
       <div className='flex justify-center w-full mt-2 mb-10'>
         <Link 

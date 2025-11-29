@@ -5,7 +5,7 @@ const SearchContext = createContext();
 export function SearchProvider({ children }){
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [isSearching, setIsSearching] = useState(false); //controls overlay visibility
+    const [isSearching, setIsSearching] = useState(false);
 
     return (
         <SearchContext.Provider 

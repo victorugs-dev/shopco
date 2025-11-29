@@ -10,7 +10,6 @@ function Navbar() {
   const [userSearch, setUserSearch] = useState('');
   const [theme, toggleTheme] = useTheme();
   const [isDropdownActive,setIsDropdownActive] = useState(false);
-//  console.log(toggleTheme);
  
   const list = [
     {
@@ -37,13 +36,13 @@ function Navbar() {
 
   const handleDropdown = () => setIsDropdownActive(!isDropdownActive);
 
-  const findSearchMatch = () => {
-    return data.map((d, i) => (
-      d.title.toLowerCase().includes(userSearch) ? (
-        { item: d, index: i }
-      ) : null
-    )).filter(f => f !== null);
-  };
+  // const findSearchMatch = () => {
+  //   return data.map((d, i) => (
+  //     d.title.toLowerCase().includes(userSearch) ? (
+  //       { item: d, index: i }
+  //     ) : null
+  //   )).filter(f => f !== null);
+  // };
 
 //   const my =  data.map((d,i) => (
 //     d.title.includes('shirt') ? (
@@ -55,14 +54,14 @@ function Navbar() {
   // console.log(matchSearch)
 
 
-  const handleSearchBarChange = (e) => {
-    if(e.target.value.trim()){
-      setUserSearch(e.target.value.toLowerCase().trim());
-      console.log(e.target.value);
-      // findSearchMatch();
-      console.log(findSearchMatch())
-    }
-  };
+  // const handleSearchBarChange = (e) => {
+  //   if(e.target.value.trim()){
+  //     setUserSearch(e.target.value.toLowerCase().trim());
+  //     console.log(e.target.value);
+  //     // findSearchMatch();
+  //     console.log(findSearchMatch())
+  //   }
+  // };
   
 
   // const handleUserSearch = useCallback((e,userSearch) => {
@@ -108,15 +107,7 @@ function Navbar() {
     // const matchSearch = data.findIndex(d => d.title === userSearch)
     
   }
-  // const handleOnkeydown = (e) => {
-  //   e.preventDefault();
-  //   console.log('the onkeydown')
-  //   if(e.key === 'Enter'){
-  //     // console.log(e.key)
-  //     console.log('submitted')
-  //   }
 
-  // }
 
   return (
     <nav className='w-full'>
@@ -173,7 +164,7 @@ function Navbar() {
                   // placeholder='Find outfits that match your taste'                  
                   placeholder='Find your perfect outfit'
                   onChange={handleSearchBarChange}
-                    
+
                 /> 
                 <button type='submit'>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="#000" stroke-width="1"><circle cx="11" cy="11" r="5.5"/><path stroke-linecap="round" stroke-linejoin="round" d="m15 15l4 4"/></g></svg>

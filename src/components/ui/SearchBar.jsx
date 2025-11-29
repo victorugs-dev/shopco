@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import { useState } from "react";
 import { useSearch } from "../../context/SearchContext";
 import { data } from "../../../data";
 
@@ -12,23 +12,66 @@ export default function SearchBar({text, onSearch}){
 
     const { setSearchQuery, setSearchResults, setIsSearching } = useSearch();
 
-    const handleSearch = (e) =>{
+    // const handleSearch = (e) =>{
+    //     const value = e.target.value;
+    //     setInput(value);
+    //     setSearchQuery(value);
+
+    //     if(value.trim() === ''){
+    //         setSearchResults([]);
+    //         setIsSearching(false);
+    //         return;
+    //     };
+
+    //     const filteredProducts = data.filter((d) => 
+    //     d.title.toLowerCase().includes(value.toLowerCase()));
+
+    //     console.log(filteredProducts)
+    
+    //     setSearchResults(filteredProducts);
+    //     setIsSearching(true);
+    // }
+    const handleChange = (e) => {
         const value = e.target.value;
+        console.log(value)
         setInput(value);
         setSearchQuery(value);
 
-        if(value.trim() === ''){
+        // const filteredProducts = data.filter((d) => 
+        // d.title.toLowerCase().includes(input.toLowerCase()));
+
+        // console.log(filteredProducts)
+    
+        // setSearchResults(filteredProducts);
+        // setIsSearching(true);
+    }
+
+    const handleSearch = (e) =>{
+        e.preventDefault();
+        console.log(e)
+        console.log(e.target)
+        // console.log(e.target[0])
+        // const value = e.target.value;
+        // setInput(value);
+        // setSearchQuery(value);
+
+        // if(value.trim() === ''){
+        //     setSearchResults([]);
+        //     setIsSearching(false);
+        //     return;
+        // };
+        if(input.trim() === ''){
             setSearchResults([]);
             setIsSearching(false);
             return;
         };
 
-        const filtered = data.filter((d) => 
-        d.title.toLowerCase().includes(value.toLowerCase()));
+        const filteredProducts = data.filter((d) => 
+        d.title.toLowerCase().includes(input.toLowerCase()));
 
-        console.log(filtered)
+        console.log(filteredProducts)
     
-        setSearchResults(filtered);
+        setSearchResults(filteredProducts);
         setIsSearching(true);
     };
 
@@ -40,19 +83,21 @@ export default function SearchBar({text, onSearch}){
     // }
 
     return (
-        <div className='flex items-center indent-2 bg-gray-200 p-2 rounded-full w-fit'>
+       <form onSubmit={handleSearch}>
+         <div className='flex items-center indent-2 bg-gray-200 p-2 rounded-full w-fit'>
             <input
                 placeholder={text}
-                value={input}
+                // value={input}        
                 // onChange={(e) => setInput(e.target.value)}
-                onChange={handleSearch}
-                // onKeyDown={handleOnkeydown}
+                // onChange={handleSearch}
+                onChange={handleChange}
 
             />
-            {/* <button onClick={handleOnkeydown}>
+            <button type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="#000" stroke-width="1"><circle cx="11" cy="11" r="5.5"/><path stroke-linecap="round" stroke-linejoin="round" d="m15 15l4 4"/></g></svg>
-            </button> */}
+            </button>
         </div>
+       </form>
     );
 
 
