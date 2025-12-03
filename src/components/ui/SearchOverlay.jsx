@@ -51,8 +51,9 @@ function SearchOverlay() {
       onClick={handleOverlayClick}
     >
       <div className='bg-white rounded-lg shadow-2xl w-full max-w-4xl mx-4 h-fit max-h-[80vh] overflow-hidden'>
+      {/* <div className=''> */}
         
-        {/* Search Query Display */}
+        {/* search query display */}
         <div className='p-4 border-Jb bg-gray-50'>
           <div className='flex items-center justify-between'>
             <p className='text-sm text-gray-600'>
@@ -77,7 +78,7 @@ function SearchOverlay() {
               Suggestions
             </h3>
             
-            {/* Query Suggestions */}
+            {/* query suggestions */}
             {querySuggestions.length > 0 ? (
               <div className='space-y-2'>
                 {querySuggestions.map((suggestion, index) => (
@@ -143,7 +144,7 @@ function SearchOverlay() {
                     onClick={() => handleProductClick(product)}
                     className='flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors group'
                   >
-                    {/* Product Image */}
+                    {/* Product image */}
                     <div className='w-16 h-16 bg-gray-200 rounded overflow-hidden flex-shrink-0'>
                       <img 
                         src={product.images[0]} 
@@ -152,7 +153,7 @@ function SearchOverlay() {
                       />
                     </div>
 
-                    {/* Product Info */}
+                    {/* product info */}
                     <div className='flex-1'>
                       <h4 className='font-medium text-gray-800 group-hover:text-blue-600 transition-colors'>
                         {product.title}
@@ -172,7 +173,7 @@ function SearchOverlay() {
                       </div>
                     </div>
 
-                    {/* Arrow Icon */}
+                    {/* arrow icon */}
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" className="text-gray-400 group-hover:text-blue-600 transition-colors">
                       <path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6z"/>
                     </svg>
