@@ -151,7 +151,9 @@ function Navbar() {
       </div>
       <div className='flex relative justify-between items-center'>
         <div className='md:flex space-y-3 md:space-y-0 p-4 md:justify-between  w-full'>
-          <h3 className='text-2xl md:text-3xl font-bold'>SHOP.CO</h3>
+          <h3 className='text-2xl md:text-3xl font-bold'>
+            <Link to={"/"}>SHOP.CO</Link> 
+          </h3>
           <div className='flex md:gap-x-4'>
             {list.map(l => (
             <div key={l.title} className=''>

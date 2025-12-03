@@ -1,12 +1,12 @@
 export const data = [
   {
     id: 0,
-    // title: "T-shirt with Tape Details",
-    title: "shirt",
+    title: "T-shirt with Tape Details",
+    // title: "shirt",
     slug: "t-shirt-with-tape-details",
     price: 120,
     percentageDiscount: null,
-    description: "This is a T-shirt with Tape Details",
+    description: "This is a T-shirtk with Tape Details",
     colors: ["green", "red", "blue"],
     sizes: ["small", "medium", "large", "x-large"],
     images: [
