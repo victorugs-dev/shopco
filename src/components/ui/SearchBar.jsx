@@ -353,8 +353,88 @@ export default function SearchBar({ text }) {
     // only when the effect has side effects that need undoing
     // side effects like: setInterval/ setTimeout, addEventListener, subscriptions(websocket, firebase), 
     // manual DOM manipulation, fetching data with cancellation
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+
+    // const handleScroll = () => {
+// 
+      // console.log('scrolling - close search overlay');
+    // }
+
+    // document.addEventListener('scroll', handleScroll);
+
+    // return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+
+      // You are creating a new, anonymous function inline.
+      // When you write this in the cleanup:
+      // document.removeEventListener('scroll', () => {
+        // console.log('scrolling - close search overlay');
+        // console.log('removed search overlay');
+      // });
+    // You are creating a brand new, entirely different anonymous function instance. removeEventListener requires a reference to the exact same function object that was originally registered.
+    // The Solution
+    // To fix this, you must store the anonymous function in a variable (or convert it to a named function) so that both addEventListener and removeEventListener can reference the same function object.
+    // Here is the corrected code structure:
+
+      // document.removeEventListener('scroll', handleScroll);
+
+      // why is it logging 'scrolling - close search overlay' to the console on mount
+      // The ** 'scrolling - close search overlay' ** message is likely logging to the console on mount because you might have a logical error where the function is being called immediately during the render phase, rather than being passed as a function reference to addEventListener.
+
+    // This specific code snippet itself doesn't inherently run on mount unless one of the following conditions is met:
+    // It's inside a React useEffect without a dependency array: The code inside a useEffect hook runs after every render, including the initial mount.
+    // The page scrolled slightly on load: The browser might fire a scroll event immediately upon loading the page, especially if you link to an anchor(#target) or if scroll restoration settings are active.
+    // You are accidentally invoking the function: You may have parentheses() where you intended to pass a reference to the arrow function (e.g., someFunction(handleScrollCallback()) elsewhere in your code). 
+
+    }
   }, [clearSearch, setIsSearching]);
+
+// ... inside your functional component ...
+
+const hasMounted = useRef(false);
+console.log(hasMounted)
+
+const handleScrollClosure = () => {
+  if (!hasMounted.current) {
+    // ignore the first time the event fires on mount
+    return;
+  }
+  setIsSearching(false);
+  console.log('scrolling - close search overlay');
+};
+
+// empty array ensures this runs only on mount or unmount
+
+// y the useEffect for this can't just place it like that?
+// You cannot place event listeners like document.addEventListener() directly in the top level of a React functional component because it causes major bugs and violates fundamental React principles. 
+// Here’s why placing it "like that" (in the main body of the component function) is problematic and why useEffect is necessary:
+// 1. Side Effects Belong in useEffect 
+// The core principle of React functional components is that they should be pure functions. A pure function's only job is to take props/state as input and return JSX (UI elements) as output, without changing anything outside its scope. 
+// Side Effects: Attaching an event listener to the global document object, fetching data, or manually manipulating the DOM are all "side effects" (operations that interact with the external system outside of React).
+// useEffect is the specific React Hook designed to safely handle these side effects after the component has rendered. 
+// 2. Prevents Memory Leaks and Infinite Loops 
+// Components in React re-render frequently (e.g., whenever state changes). 
+// Without useEffect: If you put document.addEventListener(...) in the main component body, a new listener would be added to the document every single time the component re-renders.
+// The Problem: This quickly leads to hundreds or thousands of duplicate listeners running simultaneously, overwhelming the browser and causing severe memory leaks.
+// With useEffect: The hook manages this lifecycle correctly. By including a cleanup function (return () => ...removeEventListener(...)) within the effect, React ensures the old listener is removed before a new one is potentially added (or when the component unmounts), preventing these issues. 
+// 3. Ensures Correct Timing 
+// React controls when your component is mounted (added to the DOM). 
+// Code in the main function body runs during the "render phase." At this time, the DOM elements you might want to interact with (document, window, or specific element refs) might not be fully available yet.
+// useEffect guarantees that your code runs after the DOM has been fully updated and the component is "painted" to the screen (the "commit phase"). This ensures the browser APIs are ready to be used. 
+// In summary: useEffect provides the necessary structure and lifecycle management (mount, update, unmount) to safely synchronize your React component with non-React systems like the browser's event model. 
+useEffect(() => {
+  document.addEventListener('scroll', handleScrollClosure);
+
+  // mark the component as mounted after the initial render cycle is complete
+  hasMounted.current = true;
+
+  // setup the cleanup function using the correct reference
+  return () => {
+    document.removeEventListener('scroll', handleScrollClosure);
+  };
+}, []); 
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -366,6 +446,8 @@ export default function SearchBar({ text }) {
           // value={input}
           onChange={handleChange}
           className="bg-transparent outline-none"
+          onBlur={() => console.log('blur')}
+
         />
         <button type="submit">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

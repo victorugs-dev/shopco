@@ -45,11 +45,16 @@ function SearchOverlay() {
 
   if (!isSearching) return null;
 
+ 
   return (
     <div 
-      className='fixed  inset-0 bg-opacity-50 z-50 flex justify-center pt-20'
+
+      // When applied to a positioned element, inset-0 effectively makes the element stretch to fill the entire space of its containing block, with no margin or padding between the element's edges and the containing block's edges.
+      // className='fixed  inset-0 bg-opacity-50 z-50 flex justify-center pt-20'
+      // className='bg-green-100 inset-0 bg-opacity-50 z-50 flex justify-center pt-20'
+      className='fixed bg-green- inset-0 z-50 flex justify-center '
       onClick={handleOverlayClick}
-    >
+    > 
       <div className='bg-white rounded-lg shadow-2xl w-full max-w-4xl mx-4 h-fit max-h-[80vh] overflow-hidden'>
       {/* <div className=''> */}
         
