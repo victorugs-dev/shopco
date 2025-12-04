@@ -10,7 +10,7 @@ function MainLayout() {
   // const { setQuery, searchResults, isSearching } = useSearch();
   const { isSearching } = useSearch();
 
-
+      
   return (
     <div className="flex w-full flex-col min-h-screen">
       <Navbar />
