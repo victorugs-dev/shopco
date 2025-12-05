@@ -6,6 +6,7 @@ import './App.css'
 import router from './router';
 import {ThemeProvider} from './context/ThemeContext';
 import {SearchProvider} from './context/SearchContext';
+import { CategoryProvider } from './context/CategoryContext';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,7 +15,9 @@ function App() {
     // <div>
     <ThemeProvider>
       <SearchProvider>
-        <RouterProvider router={router} />
+        <CategoryProvider>
+          <RouterProvider router={router} />
+        </CategoryProvider>
       </SearchProvider>
     </ThemeProvider>
     // </div>

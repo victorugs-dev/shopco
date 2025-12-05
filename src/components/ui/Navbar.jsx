@@ -37,108 +37,14 @@ function Navbar() {
 
   const handleDropdown = () => setIsDropdownActive(!isDropdownActive);
 
-// <<<<<<< HEAD
-  // const findSearchMatch = () => {
-  //   return data.map((d, i) => (
-  //     d.title.toLowerCase().includes(userSearch) ? (
-  //       { item: d, index: i }
-  //     ) : null
-  //   )).filter(f => f !== null);
-  // };
-// =======
-//   const findSearchMatch = () => {
-//     return data.map((d, i) => (
-//       d.title.toLowerCase().includes(userSearch) ? (
-//         { item: d, index: i }
-//       ) : null
-//     )).filter(f => f !== null);
-//   };
-// >>>>>>> origin/main
-
-//   const my =  data.map((d,i) => (
-//     d.title.includes('shirt') ? (
-//       {item: d, index: i}
-//     ) : null
-//   )).filter(f => f !== null)
-// console.log(my)
-
-  // console.log(matchSearch)
-
-
-// <<<<<<< HEAD
-  // const handleSearchBarChange = (e) => {
-  //   if(e.target.value.trim()){
-  //     setUserSearch(e.target.value.toLowerCase().trim());
-  //     console.log(e.target.value);
-  //     // findSearchMatch();
-  //     console.log(findSearchMatch())
-  //   }
-  // };
-// =======
-//   const handleSearchBarChange = (e) => {
-//     if(e.target.value.trim()){
-//       setUserSearch(e.target.value.toLowerCase().trim());
-//       console.log(e.target.value);
-//       // findSearchMatch();
-//       console.log(findSearchMatch())
-//     }
-//   };
-// >>>>>>> origin/main
-  
-
-  // const handleUserSearch = useCallback((e,userSearch) => {
-  //   e.preventDefault();
-  //   if(e.key === 'Enter'){
-  //     console.log(e.key)
-  //   }
-
-  // },[userSearch])
-
-
-  // const myFilter = data.filter(d => {
-
-  // });
-  // const myFilter = data.
-  // for(const datum of data){
-  //   console.log(datum[0])
-  // }
-
-  // const text = 'T-shirt with Tape Details';
-  // console.log(text.search(/shirt/g))
-  // 2
-
-  // const matchSearch = data.filter(d => {
-  //   userSearch === d.title
-  // })
-
-  // console.log(matchSearch)
-  
-
   /* we want to search dataset for a match to the userSearch
   title || colors || */
   // display Suggestions side-by-side with the first 5 closest match 
   const handleUserSearch = (e) => {
     e.preventDefault();
     console.log('searching...')
-    // findSearchMatch()
-    
-    // const matchSearch = data.filter(d => {
-    //   userSearch === 
-    // })
-
-    // const matchSearch = data.findIndex(d => d.title === userSearch)
     
   }
-  // const handleOnkeydown = (e) => {
-  //   e.preventDefault();
-  //   console.log('the onkeydown')
-  //   if(e.key === 'Enter'){
-  //     // console.log(e.key)
-  //     console.log('submitted')
-  //   }
-
-  // }
-
 
   return (
     <nav className='w-full'>
@@ -185,19 +91,26 @@ function Navbar() {
           ))}
           </div>
           <div className='flex gap-x-5'>
-            <button onClick={toggleTheme} className={['rounded-full px-4 py-2 ', 
-              theme === 'light' ? 'bg-black text-white' : 'bg-white text-black'].join('')}>
-              {theme === 'light' ? 'dark' : 'light'} 
-            </button>
+            <>
+              {theme === 'light' ? (
+                <button onClick={toggleTheme} className='cursor-pointer'>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M12 21q-3.775 0-6.387-2.613T3 12q0-3.45 2.25-5.988T11 3.05q.325-.05.575.088t.4.362t.163.525t-.188.575q-.425.65-.638 1.375T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q.775 0 1.538-.225t1.362-.625q.275-.175.563-.162t.512.137q.25.125.388.375t.087.6q-.35 3.45-2.937 5.725T12 21" /></svg>
+                </button>
+              ) : (
+
+                <button onClick={toggleTheme} className='cursor-pointer'>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M12 21q-3.775 0-6.387-2.613T3 12q0-3.45 2.25-5.988T11 3.05q.325-.05.575.088t.4.362t.163.525t-.188.575q-.425.65-.638 1.375T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q.775 0 1.538-.225t1.362-.625q.275-.175.563-.162t.512.137q.25.125.388.375t.087.6q-.35 3.45-2.937 5.725T12 21" /></svg>
+                </button>
+              )}
+            </>
+
 
               <SearchBar 
                 text={'Search for products...'}
               
               />
-              <CategoryIcon />
-              
 
-              
+              <CategoryIcon />
             <div className='flex'>
               <Link to='cart-page'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2"/></svg>

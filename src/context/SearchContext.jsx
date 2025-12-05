@@ -11,6 +11,7 @@ export function SearchProvider({ children }) {
   const [isSearching, setIsSearching] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
 
+
   // generate query suggestions based on product titles
   const generateSuggestions = (query) => {
     if(!query.trim()) return [];
@@ -75,7 +76,12 @@ export function SearchProvider({ children }) {
       setQuerySuggestions([]);
       setSearchResults([]);
     }
-  }, [searchQuery]);
+  // }, [searchQuery]);
+  }, []);
+
+  useEffect(() => {
+    console.log("mounted")
+  },[])
   
   // called in the child components 
   // save search to recent searches when user selects something and Keep last 5 searches
@@ -106,6 +112,7 @@ export function SearchProvider({ children }) {
     recentSearches,
     addToRecentSearches,
     clearSearch,
+    
   };
 
   return (

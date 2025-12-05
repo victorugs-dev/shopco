@@ -7,12 +7,15 @@ import Reviews from '../components/landingpage/Reviews';
 import Arrivals from '../components/landingpage/Arrivals';
 import FilterIcon from '../components/ui/FilterIcon'
 import SearchBar from '../components/ui/SearchBar';
+import CategoryIcon from '../components/ui/CategoryIcon';
+
 
 function Home() {
 
   return (
    <div className='w-full'>
      
+     <CategoryIcon />
       <Arrivals />
       <div className='flex justify-center w-full mt-2 mb-10'>
         <Link 

@@ -1,7 +1,10 @@
-import React from 'react'
 import { data } from  '../../data.js'
 import SearchBar from '../components/ui/SearchBar.jsx'
 import { useState } from 'react';
+// import CategoryIcon from '../components/ui/CategoryIcon.jsx';
+import { useCategory } from '../context/CategoryContext.jsx';
+
+
 // search bar
 // filter icon
 // sort dropdown: by New Arrivals, color, size, date released
@@ -9,6 +12,8 @@ import { useState } from 'react';
 // categories filter
 // 
 // 
+
+import CategoryIcon from '../components/ui/CategoryIcon.jsx';
 
 function ProductListing() {
 
