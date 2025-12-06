@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { data } from '../../data';
 import { useState, useEffect, useCallback } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import CartButton from '../components/ui/CartButton';
 // import Button from '../components/ui/Button'
 
 
@@ -11,6 +12,12 @@ function ProductDetails() {
     let params = useParams();
     let productDetails = data.find(item => item.slug === params.slug);
     const { colors, sizes } = productDetails;
+    
+    // const { sizes } = productDetails;
+    // const [ sizes ] = productDetails;
+    // const [ colors ] = productDetails;
+    // const [{sizes, colors}, ...remainingProductDetails] = productDetails;
+    // const [{sizes, colors}, ...remainingProductDetails] = productDetails;
 
     const [total, setTotal] = useState(1); // we may need local storage for this?? 
     const [isAddedToCart, setIsAddedToCart] = useState(false); // we may need local storage for this?? 
@@ -188,17 +195,22 @@ function ProductDetails() {
                         </button>
                     </div>
 
-                    {isAddedToCart === true ? (
-                    <button className={`rounded-3xl p-2 w-1/2 text-white bg-gray-300`}
-                    children={"Added"}
-                    disabled
-                    />
+                    {/* {isAddedToCart === true ? (
+                        <CartButton disabled className={`rounded-3xl p-2 w-1/2 text-white bg-gray-300`}/>
+
                     ):(
-                    <button className={`rounded-3xl p-2 w-1/2 bg-black text-white`}
-                        onClick={handleAddToCart }
-                        children={"Add to Cart"}
+                    
+                    <CartButton 
+                        onClick={handleAddToCart}
+                        className={`rounded-3xl p-2 w-1/2 bg-black text-white`}/> 
+                    )} */}
+
+                    {/* rename total to productTotal      */}
+                    <CartButton 
+                        productDetails={productDetails}
+                        total={total}
                     />
-                    )}
+
                     {/* {isAddedToCart === true &&   <p>this item has been added already</p>} */}
                 </div>
           </div>

@@ -7,6 +7,7 @@ import router from './router';
 import {ThemeProvider} from './context/ThemeContext';
 import {SearchProvider} from './context/SearchContext';
 import { CategoryProvider } from './context/CategoryContext';
+import { CartProvider } from './context/CartContext';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,11 +15,13 @@ function App() {
   return (
     // <div>
     <ThemeProvider>
-      <SearchProvider>
-        <CategoryProvider>
-          <RouterProvider router={router} />
-        </CategoryProvider>
-      </SearchProvider>
+      <CartProvider>
+        <SearchProvider>
+          <CategoryProvider>
+            <RouterProvider router={router} />
+          </CategoryProvider>
+        </SearchProvider>
+      </CartProvider>
     </ThemeProvider>
     // </div>
   );

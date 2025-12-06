@@ -15,7 +15,7 @@ import Sport from "../pages/Sport";
 import Shoes from "../pages/Shoes";
 import AboutUs from "../pages/AboutUs";
 import UserProfile from "../pages/UserProfile";
-import Cart from "../pages/Cart";
+import CartPage from "../pages/CartPage";
 
 const router = createBrowserRouter([
     // {
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
             // { path: "categories", element: <Categories/> },
             // { path: 'cart-page', element: <Cart/>}
             { path: "user-profile", element: <UserProfile/>},
-            { path: 'your-cart', element: <Cart/>}
+            { path: 'your-cart', element: <CartPage/>}
 
 
         ]

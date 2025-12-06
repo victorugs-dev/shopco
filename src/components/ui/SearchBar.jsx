@@ -52,7 +52,6 @@ export default function SearchBar({ text }) {
   
   useEffect(() => {
     const handleKeyDown = (e) => {
-      console.log(e)
       // Ctrl+K or Cmd+K to focus search
       // this catches both, whether it was the ctrl key or cmd key that was pressed
       // e.ctrlKey considers the lowerCase or upperCase of k is pressed depending on CapsLock or Shift

@@ -1,13 +1,12 @@
-import React from 'react'
 import { useState,useCallback } from 'react';
 import { NavLink,Link } from 'react-router';
-import Input from './Input';
 import { useTheme } from '../../context/ThemeContext';
-import { data } from '../../../data';
 import SearchBar from './SearchBar';
-import CategoryIcon from './CategoryIcon';
+import { useCart } from '../../context/CartContext';
 
 function Navbar() {
+
+  const { cartTotal} = useCart();
   const [userSearch, setUserSearch] = useState('');
   const [theme, toggleTheme] = useTheme();
   // const [isDropdownActive,setIsDropdownActive] = useState(false);
@@ -129,7 +128,7 @@ function Navbar() {
         <div className='flex justify-between item-center bg-black text-white text-xl p-4'>
           <p className='md:text-3xl'>Sign up and get 20% off to your first order.
             <Link to={'sign-up'} className='underline cursor-pointer' >Sign Up Now</Link></p>
-          {/* up arrow icon */}
+          {/* cancel icon */}
           <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="#fff" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg>
         </div>
         {/* <div className='flex relative justify-between items-center w-full'> */}
@@ -172,7 +171,6 @@ function Navbar() {
             </div> */}
 
             {/*hide harm-burger menu on desktop view  */}
-
             <div className='hidden md:flex md:gap-2'>
                 {navLinks?.map((link) => (
                   <div key={link.title}>
@@ -192,14 +190,9 @@ function Navbar() {
             <div className='md:hidden'>
               {isNavlinkActive === false ? (
                 <button onClick={handleIsNavlinkActive}>dropdown</button>
-
               ) : (
-                // <div className='flex items-start justify-between  bg-yellow-200'>
-                // <div className='flex w-full  bg-yellow-200'>
-                <div className='flex w-1/2  justify-between bg-yellow-200 p-4 absolute left-0 z-index:1000'>
-                  {/* <div className='bg-red-200 absolute p-2 z-index:50'> */}
+                <div className='flex w-1/2  justify-between bg-gray-50 p-4  absolute left-0 z-index:1000'>
                   <div className=''>
-                    {/* NavLink */}
                     {navLinks?.map((link) => (
                       <div key={link.title}>
                         <NavLink
@@ -208,6 +201,7 @@ function Navbar() {
                             isActive ? "text-black underline" : "text-gray-400"
                           }
                         >{link.title}
+
                         </NavLink>
                       </div>
                     ))
@@ -216,7 +210,6 @@ function Navbar() {
 
                   <button
                     onClick={handleIsNavlinkActive}
-                    // className='bg-green-200 absolute right-0' 
                     className='bg-green-200 h-fit'
                   > disable</button>
                 </div>
@@ -232,9 +225,10 @@ function Navbar() {
               <SearchBar text={'Search for products...'} />
 
               <div className='flex'>
-                <Link to='cart-page'>
+                {/* <Link to='cart-page'> */}
+                <Link to='your-cart'>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2" /></svg>
-
+                  <span>{cartTotal}</span>
                 </Link>
                 <Link to='user-profile'>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20zm2-2h12v-.8q0-.275-.137-.5t-.363-.35q-1.35-.675-2.725-1.012T12 15t-2.775.338T6.5 16.35q-.225.125-.363.35T6 17.2zm6-8q.825 0 1.413-.587T14 8t-.587-1.412T12 6t-1.412.588T10 8t.588 1.413T12 10m0 8" /></svg>
@@ -247,10 +241,7 @@ function Navbar() {
         </div>
 
         <div>
-          <NavLink>
-
-          </NavLink>
-        </div>
+      </div>
       </div>
     </nav>
   )

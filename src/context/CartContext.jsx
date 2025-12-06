@@ -11,7 +11,7 @@
 // // }
 
 
-import { createContext, useState, useCallback } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react'
 
 // this is a container that will hold some shared data: cart items, addToCart function
 // right now the container is empty
@@ -19,8 +19,17 @@ export const CartContext = createContext(null);
 
 export function CartProvider({ children }){
 
-    const [cart, setCart] = useState([]);
+    const [isAddedToCart, setIsAddedToCart] = useState(false);
+    const [cartTotal, setCartTotal] = useState(0);
+    // const [cart, setCart] = useState([]);
+    // const [cartArr, setCartArr] = useState([]);
+    const [cart, setCart] = useState(() => {
+        const saved = localStorage.getItem("cart");
+        return saved ? JSON.parse(saved) : [];
+    });
 
+    
+    
     // useState keeps track of cart items 
     // setCart updates the cart when you add an item 
     // addToCart adds a product to cart
@@ -31,9 +40,29 @@ export function CartProvider({ children }){
     // value = {{ cart, addToCart }} ... now every child can read the cart and add call addToCart
     
 
-    const addToCart = useCallback((product) => {
-        setCart((prevCart) => [...prevCart,product]);
-    },[])
+    // const addToCart = useCallback((newProduct) => {
+    //     // setCartTotal((prevCa?rtTotal) => prevCartTotal + newProduct.amount)
+    //     setCart((prevCart) => [...prevCart, newProduct]);
+    // }, [cartTotal])
+    
+    const addToCart = (newProduct) => {
+        // setCartTotal((prevCa?rtTotal) => prevCartTotal + newProduct.amount)
+        setCart((prevCart) => [...prevCart, newProduct]);
+    }
+        
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }, [cart]);
+        
+    const value = {
+        isAddedToCart,
+        setIsAddedToCart,
+        cart,
+        setCart,
+        cartTotal,
+        setCartTotal,
+        addToCart
+    }
 
     return (
         // we wrap it so that any component inside the app can access the cart
@@ -52,8 +81,14 @@ export function CartProvider({ children }){
         // }}
         //... array can be allowed as value for the Context  but its bad practice to use
         // it will become messy, hard to read the contents of the array or add to it  
-        <CartContext.Provider value={{cart, addToCart}}>
+        
+        // <CartContext.Provider value={{cart, addToCart}}>
+        <CartContext.Provider value={value}>
             {children}
         </CartContext.Provider>
     );
+}
+
+export function useCart(){
+    return useContext(CartContext);
 }

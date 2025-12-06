@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router'
 import { useContext } from 'react';
 import { CartContext } from '../../context/CartContext';
+import CartButton from './CartButton';
 
 function Card({title, percentageDiscount, images, price, slug, rating}) {
   
@@ -18,14 +19,14 @@ function Card({title, percentageDiscount, images, price, slug, rating}) {
           <div className='md:text-2xl'>{title}</div>
           <div className='md:text-2xl'>{rating}</div>
           <div>{percentageDiscount}</div>
-          
 
+          <CartButton />
         </div>
       </Link>
       {/* <button
         className='span'
       // onClick={() => addToCart()}
-
+        
       >Add To cart</button> */}
     </>
   )
