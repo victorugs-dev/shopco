@@ -15,11 +15,10 @@ function Home() {
   return (
    <div className='w-full'>
      
-     <CategoryIcon />
       <Arrivals />
       <div className='flex justify-center w-full mt-2 mb-10'>
         <Link 
-          to='product-listing'
+          to='shop-all'
           className='bg-black text-white py-4 px-8 rounded-full cursor-pointer'
         >View All</Link>
       </div>

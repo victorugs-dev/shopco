@@ -16,7 +16,7 @@ function MainLayout() {
       <Navbar />
       {isSearching && <SearchOverlay />}      
       {/* <main className='w-full'> */}
-        <Outlet />
+      <Outlet />
       {/* </main> */}
     </div>
   )

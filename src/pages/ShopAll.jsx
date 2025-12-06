@@ -1,7 +1,7 @@
 import { data } from  '../../data.js'
 import SearchBar from '../components/ui/SearchBar.jsx'
 import { useState } from 'react';
-// import CategoryIcon from '../components/ui/CategoryIcon.jsx';
+import CategoryIcon from '../components/ui/CategoryIcon.jsx';
 import { useCategory } from '../context/CategoryContext.jsx';
 
 
@@ -13,9 +13,7 @@ import { useCategory } from '../context/CategoryContext.jsx';
 // 
 // 
 
-import CategoryIcon from '../components/ui/CategoryIcon.jsx';
-
-function ProductListing() {
+function ShopAll() {
 
   const [searchValue,setSearchValue] = useState('');
   const [displayedProducts,setDisplayedProducts] = useState(data);
@@ -32,15 +30,29 @@ function ProductListing() {
     }
   };
 
+  const handleCategoryChange = (e) => {
+
+  };
+
   
   return (
     <div>
-      <h1 className='m-4'>All Available products</h1>
+      <h1 className='m-4 text-3xl'>Products</h1>
       <div className='m-4'>
-        <SearchBar
-         text={'Find your perfect outfit'} 
-          onSearch={handleSearch}
-        />
+        
+        <div className='flex justify-between'>
+          {/* <label htmlFor="">Filter: */}
+          <div>
+            <label htmlFor="availability">Filter:</label>
+            <select name="Availability" id="availability">
+              <option value={'none'} disabled selected> Availability </option>
+            </select>
+            {/* </label> */}
+
+          </div>
+          {/* <div></div> */}
+        </div>
+        
       </div>
       <div className='grid grid-cols-4 space-x-2 m-4'
       >{displayedProducts.map((d,i) => (
@@ -57,4 +69,4 @@ function ProductListing() {
   )
 }
 
-export default ProductListing
+export default ShopAll
