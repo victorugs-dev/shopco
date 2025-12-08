@@ -93,6 +93,7 @@ export function CartProvider({ children }){
     }
 
     const clearCart = () => {
+        if(!cart.length) return console.log("cart is already empty");
         setCart([]);
         setCartTotal(0);
     };
@@ -102,13 +103,23 @@ export function CartProvider({ children }){
         setCart((prevCart) => {
 
             // const filtered = prevCart.filter((c) =>
-            const filtered = cart.filter((c) =>
+            // const filtered = cart.filter((c) =>
+            const filtered = prevCart.filter((c) =>
                 product.productDetails.slug !== c.productDetails.slug
             )
             console.log("filter: ", filtered);
             return filtered;
         })
+
+        // also upadtate cartTotal
+        setCartTotal((prevCartTotal) => {
+            const newCartTotal = prevCartTotal - product.productTotal;
+
+            return newCartTotal;
+        })
     };
+
+    // setCartTotal((prevCartTotal) => prevCartTotal + productTotal);
         
     useEffect(() => {
         // console.log(Array.isArray(cart));
