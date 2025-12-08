@@ -3,9 +3,32 @@ import { useCart } from '../context/CartContext'
 
 function CartPage() {
 
-  const { cart } = useCart();
-  console.log(cart)
+  const { cart, clearCart, removeFromCart } = useCart();
+  // const  { cart } = useCart();
+  console.log("cart: ",cart)
+  // console.log("cart: ",cart[0])
+  
+  cart.forEach(c => {
 
+    // console.log(c.outfitColor)
+    console.log(c.productDetails)
+  })
+
+  
+  // console.log(cart.productDetails)
+  // console.log(cart.length)
+  
+  
+  // Array.from(cart).forEach((cart)=>
+  //   console.log(cart)
+  // )
+  
+  // const cartArr = Array.from(cart);
+  // console.log(cartArr.length)
+  
+  
+  
+  
   function EmptyCart(){
 
     return(
@@ -16,6 +39,9 @@ function CartPage() {
     );
   }
 
+  const clear = () => clearCart();
+
+  const remove = (removedProduct) => removeFromCart(removedProduct);
 
   //  id: 0,
   //   title: "T-shirt with Tape Details",
@@ -33,21 +59,32 @@ function CartPage() {
 
   return (
     <div>
-      <h1 className='text-3xl'>CartPage</h1>
+      <div className='flex gap-2'>
+        <h1 className='text-3xl'>CartPage</h1>
+
+        <button 
+          onClick={clearCart}
+          className='bg-red-300 p-2 cursor-pointer'
+        >Clear Cart</button>
+      </div>
 
       <>
         <div className='grid grid-cols-3'>
-          {cart?.map((product) => (
-            <div key={product.slug} className='w-fit'>
-              <img className='w-24 h-24 md:w-full md:h-full' src={product.images[0]} alt={product.title} />
-              <div className='md:text-2xl'>{product.title}</div>
-            </div>
-          ))}
+          {/* {cartArr?.map((product) => ( */}
+          {cart?.map(({ productDetails, productTotal }) => (
+              <div key={productDetails.slug} className='w-fit'> 
+               <img className='w-24 h-24 md:w-full md:h-full' src={productDetails.images[0]} alt={productDetails.title} />
+                <div className='md:text-2xl'>{productDetails.title}</div> 
+                <button onClick={(e) => remove(item)}>Remove From Cart</button>
+              </div> 
+          ))}  
+          
         </div>
 
-        {!cart.length && <EmptyCart />}
-        {/* {cart && <EmptyCart />} */}
+        {/* {!cart.length && <EmptyCart />} */}
+        {/* {!cart.length && <EmptyCart />} */}
       </>
+
     </div>
   )
 }

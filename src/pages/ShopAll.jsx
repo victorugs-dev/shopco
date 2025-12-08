@@ -56,6 +56,14 @@ function ShopAll() {
     console.log(currFilter.title);
   };
 
+  function AvailabilityBar(){
+    return (
+      <div>AvailabilityBar
+
+      </div>
+    );
+  }
+
 
   
   return (
@@ -70,12 +78,6 @@ function ShopAll() {
             <div key={filter.id} className='flex'>
               <div>{filter.title}</div>
 
-              {/* {(isFilterDropdownActive === false) && filter.title === setActiveDropdown ? ( */}
-              {/* {(isFilterDropdownActive === false) ? ( */}
-              {/* {(isFilterDropdownActive === false) ? ( */}
-              {/* {(!isAvailabilityActive && !isPriceActive && !isSizeActive && isColourActive) ? ( */}
-              {/* {(isFilterDropdownActive === false || activeDropdown === filter.title)  && ( */}
-              {/* {(isFilterDropdownActive === false)  && ( */}
               {(isFilterDropdownActive === false || activeDropdown !== filter.title)  && (
 
                 <button
@@ -93,6 +95,11 @@ function ShopAll() {
                  >{/* up arrow icon */}
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="m12.354 5.646l5 5a.5.5 0 0 1-.708.708L12.5 7.207V18a.5.5 0 0 1-1 0V7.207l-4.146 4.147a.5.5 0 0 1-.708-.708l5-5a.5.5 0 0 1 .708 0" /></svg>
                 </button>
+              )}
+
+              {/* {if(currFilter.title === "a" )} */}
+              {currFilter.title === "Availability" && (
+                <AvailabilityBar />
               )}
 
             </div>

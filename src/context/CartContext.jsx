@@ -20,12 +20,29 @@ export const CartContext = createContext(null);
 export function CartProvider({ children }){
 
     const [isAddedToCart, setIsAddedToCart] = useState(false);
-    const [cartTotal, setCartTotal] = useState(0);
+
+    const [cartTotal, setCartTotal] = useState(() => {
+        const saved = localStorage.getItem("cartTotal");
+        return saved  ? JSON.parse(saved) : 0; 
+    });
+
     // const [cart, setCart] = useState([]);
     // const [cartArr, setCartArr] = useState([]);
     const [cart, setCart] = useState(() => {
-        const saved = localStorage.getItem("cart");
-        return saved ? JSON.parse(saved) : [];
+        // Lol what if i wrote this instead ????
+        // const saved = localStorage.getItem("cart");
+        try{
+            const saved = localStorage.getItem("cart");
+            console.log("saved:", saved)
+            const parsed = saved ? JSON.parse(saved) : [];
+            console.log("parsed: ", parsed)
+            return Array.isArray(parsed) ? parsed : [];
+            
+        }catch(error){
+            return [];
+        }
+        // const saved = localStorage.getItem("cartTotal");
+        // return saved ? JSON.parse(saved) : [];
     });
 
     
@@ -40,29 +57,85 @@ export function CartProvider({ children }){
     // value = {{ cart, addToCart }} ... now every child can read the cart and add call addToCart
     
 
-    // const addToCart = useCallback((newProduct) => {
-    //     // setCartTotal((prevCa?rtTotal) => prevCartTotal + newProduct.amount)
-    //     setCart((prevCart) => [...prevCart, newProduct]);
+    // const addToCart = useCallback((newProductDetails) => {
+    //     // setCartTotal((prevCa?rtTotal) => prevCartTotal + newProductDetails.amount)
+    //     setCart((prevCart) => [...prevCart, newProductDetails]);
     // }, [cartTotal])
     
-    const addToCart = (newProduct) => {
-        // setCartTotal((prevCa?rtTotal) => prevCartTotal + newProduct.amount)
-        setCart((prevCart) => [...prevCart, newProduct]);
+    // addToCart(productDetails, productTotal, isCurrProductAddedToCart, outfitSize, outfitColor, currProduct)
+    const addToCart = (newProductDetails, newProductTotal, newProductAddedToCart, newProductOutfitSize, newProductOutfitColor, newCurrProduct) => {
+        // setCartTotal((prevCa?rtTotal) => prevCartTotal + newProductDetails.amount)
+        
+        // setCart((prevCart) => [...prevCart, newProductDetails]);
+        const cartItem = {
+            productDetails: newProductDetails,
+            productTotal: newProductTotal,
+            productAddedToCart: newProductAddedToCart,
+            productOutfitSize: newProductOutfitSize,
+            productOutfitColor: newProductOutfitColor,
+            currProduct: newCurrProduct
+        };
+        
+        setCart((prevCart) => {
+            // if(!Array.isArray(prevCart)) return [newProductDetails];
+
+            if(!Array.isArray(prevCart)) return [cartItem];
+            // if(!Array.isArray(prevCart)) return [newProductDetails...,  newProductTotal, newProductAddedToCart, newProductOutfitSize, newProductOutfitColor, newCurrProduct];
+
+            // return [...prevCart, newProductDetails];
+            // return [...prevCart, {newProductDetails,  newProductTotal, newProductAddedToCart, newProductOutfitSize, newProductOutfitColor, newCurrProduct}];
+            return [...prevCart, cartItem];
+        });
+        console.log("cart", cart)
+
+
+        // setCart((prevCart) => [...prevCart, [newProductDetails]]);
     }
+
+    const clearCart = () => {
+        setCart([]);
+        setCartTotal(0);
+    };
+
+    const removeFromCart = () => {
+
+    };
         
     useEffect(() => {
-        localStorage.setItem("cart", JSON.stringify(cart));
-    }, [cart]);
+        // console.log(Array.isArray(cart));
+        // if(!Array.isArray(cart)){
+        //     // throw new Error("cart is not an array")
+        //     return
+        // }
+        // try{
+        //     localStorage.setItem("cart", JSON.stringify(cart));
+
+        //     if(!Array.isArray(cart)){
+        //         throw new Error("cart is not an array")
+        //         return
+        //     }
+        // }catch(error){
+        //     console.error("the error:", error)
+        // }
+
+        console.log(Array.isArray(cart))
+        // if(!Array.isArray(cart)){
+        if(Array.isArray(cart)){
+            localStorage.setItem("cart", JSON.stringify(cart));
+    //     localStorage.setItem("cartTotal", JSON.stringify(cartTotal));
+
+        }else  console.log("cart is not an array");
         
-    const value = {
-        isAddedToCart,
-        setIsAddedToCart,
-        cart,
-        setCart,
-        cartTotal,
-        setCartTotal,
-        addToCart
-    }
+
+    }, [cart]);
+    // }, [cart,cartTotal]);
+
+    useEffect(() => {
+        localStorage.setItem("cartTotal", JSON.stringify(cartTotal));
+    },[cartTotal]);
+        
+    const value = 
+    { isAddedToCart, setIsAddedToCart, cart, setCart, cartTotal, setCartTotal, addToCart, clearCart, removeFromCart };
 
     return (
         // we wrap it so that any component inside the app can access the cart

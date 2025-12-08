@@ -177,7 +177,7 @@ export default function SearchBar({ text }) {
 // ... inside your functional component ...
 
 const hasMounted = useRef(false);
-console.log(hasMounted)
+// console.log(hasMounted)
 
 const handleScrollClosure = () => {
   if (!hasMounted.current) {
@@ -185,7 +185,7 @@ const handleScrollClosure = () => {
     return;
   }
   setIsSearching(false);
-  console.log('scrolling - close search overlay');
+  // console.log('scrolling - close search overlay');
 };
 
 // empty array ensures this runs only on mount or unmount
