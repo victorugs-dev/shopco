@@ -97,8 +97,17 @@ export function CartProvider({ children }){
         setCartTotal(0);
     };
 
-    const removeFromCart = () => {
+    const removeFromCart = (product) => {
+        console.log(product)
+        setCart((prevCart) => {
 
+            // const filtered = prevCart.filter((c) =>
+            const filtered = cart.filter((c) =>
+                product.productDetails.slug !== c.productDetails.slug
+            )
+            console.log("filter: ", filtered);
+            return filtered;
+        })
     };
         
     useEffect(() => {
