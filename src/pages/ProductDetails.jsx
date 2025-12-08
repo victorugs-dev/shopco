@@ -15,6 +15,8 @@ function ProductDetails() {
     let params = useParams();
     let productDetails = data.find(item => item.slug === params.slug);
     const { colors, sizes } = productDetails;
+    const STORAGE_KEY = `product_is_in_cart${productDetails.slug}`;
+
 
     const {isAddedToCart, setIsAddedToCart, cart, setCart, cartTotal, setCartTotal,addToCart} = useCart();
     
@@ -28,12 +30,20 @@ function ProductDetails() {
     // const [{sizes, colors}, ...remainingProductDetails] = productDetails;
 
     const [productTotal, setProductTotal] = useState(1); // we may need local storage for this?? 
-    const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(false); // we may need local storage for this?? 
+    // const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(false); // we may need local storage for this?? 
+    const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(() => {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : false;
+    });
     const [outfitSize,setOutfitSize] = useState('large');
     const [outfitColor,setOutfitColor] = useState('');
     // const [currProduct, setCurrProduct] = useState([]);
     const [currProduct, setCurrProduct] = useState(null);
     // const [isCurrProductAddedToCart, setIsProductCurrAddedToCart] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(isCurrProductAddedToCart));
+    },[isCurrProductAddedToCart])
     
 
     
@@ -71,11 +81,8 @@ function ProductDetails() {
 
     // user must add to cart before increasing quantity
     const handleIncreaseTotal = () => {
-        if(!isCurrProductAddedToCart){
-            setProductTotal((prev) => (
-                prev + 1
-            ));
-        }
+        if(isCurrProductAddedToCart) return;
+        setProductTotal((prev) => prev + 1)
     };
 
 
@@ -109,7 +116,10 @@ function ProductDetails() {
         );
     }
 
-    const handleAddToCart = (event) =>{
+
+    const handleAddToCart = (event) => {
+
+
         if (!productTotal > 0) return;
         setIsCurrProductAddedToCart(true);
         console.log(productDetails);
@@ -125,6 +135,8 @@ function ProductDetails() {
 
         // console.log('productTotal: ',productTotal)
         console.log("Added to cart");
+
+        return true;
     };
 
     return (
