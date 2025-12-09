@@ -5,6 +5,7 @@ function CartPage() {
 
   const { cart, clearCart, removeFromCart } = useCart();
   
+  console.log(cart)
   // console.log(cart.productDetails)
   // console.log(cart.length)
   
@@ -69,8 +70,11 @@ function CartPage() {
         <div className='grid grid-cols-3'>
           {cart?.map((c) => (
               <div key={c.productDetails.slug} className='w-fit'> 
-               <img className='w-24 h-24 md:w-full md:h-full' src={c.productDetails.images[0]} alt={c.productDetails.title} />
+               {/* <img className='w-24 h-24 md:w-full md:h-full' src={c.productDetails.images[0]} alt={c.productDetails.title} /> */}
+               <img className='w-24 h-24 md:w-10 md:h-10' src={c.productDetails.images[0]} alt={c.productDetails.title} />
                 <div className='md:text-2xl'>{c.productDetails.title}</div>
+                <div className='md:text-2xl'>{c.productSize}</div>
+                <div className='md:text-2xl'>{c.productColor}</div>
                 <div>{c.productTotal}</div>
                 <button 
                   onClick={(e) => handleRemoveFromCart(c)}

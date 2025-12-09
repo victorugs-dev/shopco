@@ -18,11 +18,18 @@ function ProductDetails() {
     const STORAGE_KEY = `product_is_in_cart${productDetails.slug}`;
 
 
+    // cart.productAddedToCart
+
     const {isAddedToCart, setIsAddedToCart, cart, setCart, cartTotal, setCartTotal,addToCart} = useCart();
     
+    // console.log("cart: ", cart);
+    console.log("cart length: ", cart.length);
+
+    // if(cart.length !== 0){
+  
     console.log("mounted productDetails")
     
-    console.log(productDetails)
+    console.log("productDetails:", productDetails);
     // const { sizes } = productDetails;
     // const [ sizes ] = productDetails;
     // const [ colors ] = productDetails;
@@ -31,19 +38,49 @@ function ProductDetails() {
 
     const [productTotal, setProductTotal] = useState(1); // we may need local storage for this?? 
     // const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(false); // we may need local storage for this?? 
-    const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(() => {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        return saved ? JSON.parse(saved) : false;
-    });
+    // const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(() => {
+        // const saved = localStorage.getItem(STORAGE_KEY);
+        // return saved ? JSON.parse(saved) : false;
+    // });
     const [outfitSize,setOutfitSize] = useState('large');
     const [outfitColor,setOutfitColor] = useState('');
     // const [currProduct, setCurrProduct] = useState([]);
     const [currProduct, setCurrProduct] = useState(null);
-    // const [isCurrProductAddedToCart, setIsProductCurrAddedToCart] = useState(false);
+    // const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(false);
+    // const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(() => {
 
-    useEffect(() => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(isCurrProductAddedToCart));
-    },[isCurrProductAddedToCart])
+    //     if(cart.length > 0){
+    //         for (let i = 0; i < cart.length; i++) {
+    //             // const isSavedInCart = (cart[i].productDetails.slug === productDetails.slug) || false
+    //             // const isSavedInCart = cart[i].productDetails.slug === productDetails.slug;
+
+    //             // return cart[i].productDetails.slug === productDetails.slug;
+    //             if (cart[i].productDetails.slug === productDetails.slug) {
+    //                 return cart[i].productAddedToCart;
+    //             }
+    //         }
+    //     } else console.log("cart is empty")
+    //     // return
+    // });
+
+    // console.log("isCurrProductAddedToCart", isCurrProductAddedToCart)
+
+    let isCurrProductAddedToCart = false;
+    for (let i = 0; i < cart.length; i++) {
+        // if(cart[i].productDetails.slug === productDetails.slug){
+            // isCurrProductAddedToCart = cart[i].productAddedToCart;
+            // console.log("productAddedToCart", cart[i].productAddedToCart)
+        // }
+        // console.log(cart[i])
+        if(cart[i].productDetails.slug === productDetails.slug){
+            isCurrProductAddedToCart = cart[i].productAddedToCart;
+        }
+
+    }
+
+    // useEffect(() => {
+        // localStorage.setItem(STORAGE_KEY, JSON.stringify(isCurrProductAddedToCart));
+    // },[isCurrProductAddedToCart])
     
 
     
@@ -57,6 +94,45 @@ function ProductDetails() {
         colors.length && setOutfitColor(colors[Math.floor(Math.random() * colors.length)]);
     },[]);
     // console.log(outfitColor);
+
+    // if (cart.length) {
+    //     for (let i = 0; i < cart.length; i++) {
+    //         // if(cart[i].productDetails.slug === productDetails.slug){
+    //         //     console.log("they are equal")
+    //         // }else if (!cart.length){
+    //         //     console.log("cart is empty");
+    //         // }else{
+    //         //     console.log("not equal")
+    //         // }
+    //         // if (!cart.length) {
+    //         //     console.log("cart is empty");
+    //         //     // return
+    //         // }
+    //         // console.log(cart)
+    //         if (cart[i].productDetails.slug === productDetails.slug) {
+    //             console.log("they are equal")
+    //             // return
+    //         }
+
+    //         if (cart[i].productDetails.slug !== productDetails.slug) {
+    //             console.log("not equal")
+    //             // return
+    //         }
+
+    //         // if (cart[i].productDetails.slug !== productDetails.slug) {
+    //         //     console.log("not equal")
+    //         // }
+    //         // if (!cart.length) {
+    //         //     console.log("cart is empty");
+    //         //     // return
+    //         // }
+    //         //     console.log("cart is empty");
+
+    //         // const inInCart = cart.  
+    //     }
+
+    // } else console.log("cart is empty")
+
 
     const handleColorPick = useCallback((color,event) => {
         if(!isCurrProductAddedToCart){
@@ -121,10 +197,11 @@ function ProductDetails() {
 
 
         if (!productTotal > 0) return;
-        setIsCurrProductAddedToCart(true);
+        // setIsCurrProductAddedToCart(true);
+        // setIsCurrProductAddedToCart(true);
         console.log(productDetails);
-        console.log("is productDetails an array? ", Array.isArray(productDetails));
-        console.log("typeOf productDetails? ", typeof productDetails);
+        // console.log("is productDetails an array? ", Array.isArray(productDetails));
+        // console.log("typeOf productDetails? ", typeof productDetails);
         // console.log(typeOf productDetails)
         setCurrProduct(productDetails);
         // setCart((prevCart) => [...prevCart, product]);

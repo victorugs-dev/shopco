@@ -1,16 +1,3 @@
-// import React, {createContext, useReducer, useCallback, useMemo} from 'react';
-
-// const cartContext = createContext();
-
-// // const initialState = {
-// //     items: [],
-// // };
-
-// // function cartReducer(state,action){
-
-// // }
-
-
 import { createContext, useContext, useState, useCallback, useEffect } from 'react'
 
 // this is a container that will hold some shared data: cart items, addToCart function
@@ -63,16 +50,17 @@ export function CartProvider({ children }){
     // }, [cartTotal])
     
     // addToCart(productDetails, productTotal, isCurrProductAddedToCart, outfitSize, outfitColor, currProduct)
-    const addToCart = (newProductDetails, newProductTotal, newProductAddedToCart, newProductOutfitSize, newProductOutfitColor, newCurrProduct) => {
+    const addToCart = (newProductDetails, newProductTotal, newProductAddedToCart, newProductSize, newProductColor, newCurrProduct) => {
         // setCartTotal((prevCa?rtTotal) => prevCartTotal + newProductDetails.amount)
         
         // setCart((prevCart) => [...prevCart, newProductDetails]);
         const cartItem = {
             productDetails: newProductDetails,
             productTotal: newProductTotal,
-            productAddedToCart: newProductAddedToCart,
-            productOutfitSize: newProductOutfitSize,
-            productOutfitColor: newProductOutfitColor,
+            // productAddedToCart: newProductAddedToCart,
+            productAddedToCart: true,
+            productSize: newProductSize,
+            productColor: newProductColor,
             currProduct: newCurrProduct
         };
         
@@ -80,10 +68,10 @@ export function CartProvider({ children }){
             // if(!Array.isArray(prevCart)) return [newProductDetails];
 
             if(!Array.isArray(prevCart)) return [cartItem];
-            // if(!Array.isArray(prevCart)) return [newProductDetails...,  newProductTotal, newProductAddedToCart, newProductOutfitSize, newProductOutfitColor, newCurrProduct];
+            // if(!Array.isArray(prevCart)) return [newProductDetails...,  newProductTotal, newProductAddedToCart, newProductSize, newProductColor, newCurrProduct];
 
             // return [...prevCart, newProductDetails];
-            // return [...prevCart, {newProductDetails,  newProductTotal, newProductAddedToCart, newProductOutfitSize, newProductOutfitColor, newCurrProduct}];
+            // return [...prevCart, {newProductDetails,  newProductTotal, newProductAddedToCart, newProductSize, newProductColor, newCurrProduct}];
             return [...prevCart, cartItem];
         });
         console.log("cart", cart)
@@ -138,7 +126,7 @@ export function CartProvider({ children }){
         //     console.error("the error:", error)
         // }
 
-        console.log(Array.isArray(cart))
+        // console.log(Array.isArray(cart))
         // if(!Array.isArray(cart)){
         if(Array.isArray(cart)){
             localStorage.setItem("cart", JSON.stringify(cart));

@@ -86,7 +86,7 @@ function Navbar() {
     },
     {
       title: "Tees",
-      url:"/tess",
+      url:"/tees",
       isDropdown:false
     },
     {
