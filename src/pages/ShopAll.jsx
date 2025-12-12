@@ -27,10 +27,11 @@ function ShopAll() {
   const [activeDropdown, setActiveDropdown] = useState('');
 
   const [isAvailabilityChecked, setIsAvailabilityChecked] = useState(false);
-  const [currCheckedAvailability, setCurrCheckedAvailability] = useState("");
+  // const [currCheckedAvailability, setCurrCheckedAvailability] = useState("");
+  const [currCheckedAvailability, setCurrCheckedAvailability] = useState(null);
 
   const [isInStockChecked, setIsInStockChecked] = useState(false);
-  const [isOutOfStockStockChecked, setIsOutOfStockStockChecked] = useState(false);
+  const [isOutOfStockChecked, setIsOutOfStockChecked] = useState(false);
   // const [currFilterDropdown, setCurrFilterDropdown] = useState("");
 
   // const [isAvailabilityActive, setIsAvailabilityActive] = useState(false);
@@ -94,7 +95,7 @@ function ShopAll() {
   // }
 
   const handleDisplayedProducts = () => {
-
+    
   };
 
 
@@ -142,25 +143,74 @@ function ShopAll() {
     console.log("currCheckedAvailability", currCheckedAvailability);
     console.log("setIsAvailabilityChecked", isAvailabilityChecked)
 
-    if(displayedProducts === productsInStock){
-      // setCurrCheckedAvailability('');
-      // set
-    }
+    // if(!currCheckedAvailability){
+    if(currCheckedAvailability){
+      // if (displayedProducts === productsInStock) {
+        // setCurrCheckedAvailability('');
+        // set
+      // }
 
-    if(currCheckedAvailability === "inStock"){
-      setDisplayedProducts(productsInStock)
-    }
-    if (currCheckedAvailability === "outOfStock") {
-      setDisplayedProducts(productsOutOfStock)
+      if (isInStockChecked && currCheckedAvailability === "inStock") {
+        // console.log("!productsInStock", !productsInStock)
+        setDisplayedProducts(productsInStock)
+        // return
+      }
+      
+      if (currCheckedAvailability === "outOfStock") {
+        setDisplayedProducts(productsOutOfStock)
+      }
     }
     // setDisplayedProducts()
 
-  },[isAvailabilityChecked, currCheckedAvailability]);
+  // },[isAvailabilityChecked, currCheckedAvailability]);
+  }, [isAvailabilityChecked, currCheckedAvailability, isInStockChecked, isOutOfStockChecked]);
 
   const handleAvailabilityOnChange = (event, availabilityId) => {
     setIsAvailabilityChecked(true);
     // setCurrCheckedAvailability(event.target.name)
     setCurrCheckedAvailability(availabilityId);
+
+
+    // if(availabilityId === "inStock"){
+    //   console.log("availabilityId is inStock", availabilityId)
+    //   setIsInStockChecked(!isInStockChecked);
+    // }
+    if(availabilityId === "inStock" && currCheckedAvailability === availabilityId){
+      console.log("availabilityId is inStock", availabilityId)
+      setCurrCheckedAvailability(null);
+      setIsAvailabilityChecked(false)
+      setIsInStockChecked(false);
+      return
+    }
+
+    if(availabilityId === "inStock" && currCheckedAvailability !== availabilityId){
+      console.log("availabilityId is inStock", availabilityId)
+      setCurrCheckedAvailability(availabilityId);
+      setIsAvailabilityChecked(true)
+      setIsInStockChecked(true);
+      return
+    }
+
+    // handle out of stock
+    // if(availabilityId === "outOfStock"){
+    //   console.log("availabilityId", availabilityId);
+    //   setIsOutOfStockChecked(!isOutOfStockChecked);
+    // }
+    if(availabilityId === "outOfStock" && currCheckedAvailability === availabilityId){
+      console.log("availabilityId", availabilityId);
+      setCurrCheckedAvailability(null);
+      setIsAvailabilityChecked(false)
+      setIsOutOfStockChecked(false);
+      return
+    }
+
+    if(availabilityId === "outOfStock" && currCheckedAvailability !== availabilityId){
+      console.log("availabilityId", availabilityId);
+      setCurrCheckedAvailability(availabilityId);
+      setIsAvailabilityChecked(true)
+      setIsOutOfStockChecked(true);
+      return
+    }
 
   };
 
@@ -197,7 +247,11 @@ function ShopAll() {
                   // onChange={(e) => handleSubmitAvailability(e, availability.id)}
                   onChange={(e) => handleAvailabilityOnChange(e, availability.id)}
                   checked={availability.id === currCheckedAvailability}
-                  // checked={o}
+                  // checked={
+                    // if(availability.id === "inStock" && isInStockChecked) return 
+                    
+                  // }
+                  // checked={availability.id === "outOfStock" && isOutOfStockChecked}
                   //  value={availability.id === currCheckedAvailability && 'on'}
                   //  value={availability.id === currCheckedAvailability ? 'on' : 'off'}
                   //  value={availability.id !== currCheckedAvailability ? 'off' : 'on'}
