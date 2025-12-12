@@ -32,6 +32,10 @@ function ShopAll() {
 
   const [isInStockChecked, setIsInStockChecked] = useState(false);
   const [isOutOfStockChecked, setIsOutOfStockChecked] = useState(false);
+
+  const [isAvailabilityClicked, setIsAvailabilityClicked] = useState(false);
+  const [currClickedAvailability, setCurrClickedAvailability] = useState(null);
+
   // const [currFilterDropdown, setCurrFilterDropdown] = useState("");
 
   // const [isAvailabilityActive, setIsAvailabilityActive] = useState(false);
@@ -139,9 +143,12 @@ function ShopAll() {
     // return e.target.name
   }
 
+  // useEffect only handles displaying products based on Availability selected
   useEffect(() => {
     console.log("currCheckedAvailability", currCheckedAvailability);
-    console.log("setIsAvailabilityChecked", isAvailabilityChecked)
+    console.log("isAvailabilityChecked", isAvailabilityChecked)
+    console.log("isInStockChecked", isInStockChecked);
+    console.log("isOutOfStockChecked", isOutOfStockChecked);
 
     // if(!currCheckedAvailability){
     if(currCheckedAvailability){
@@ -151,19 +158,76 @@ function ShopAll() {
       // }
 
       if (isInStockChecked && currCheckedAvailability === "inStock") {
+      // if (isInStockChecked && currCheckedAvailability === "inStock" && currCheckedAvailability !== "outOfStock") {
         // console.log("!productsInStock", !productsInStock)
         setDisplayedProducts(productsInStock)
         // return
+      // }else setDisplayedProducts(data);
       }
-      
+
+      // if (!isInStockChecked) setDisplayedProducts(data)
+      // if (!isInStockChecked) setDisplayedProducts(data)
+
       if (currCheckedAvailability === "outOfStock") {
+      // if (isOutOfStockChecked && currCheckedAvailability === "outOfStock" && currCheckedAvailability !== "inStock") {
         setDisplayedProducts(productsOutOfStock)
+      // }else setDisplayedProducts(data);
       }
-    }
+    }else setDisplayedProducts(data)
     // setDisplayedProducts()
 
   // },[isAvailabilityChecked, currCheckedAvailability]);
-  }, [isAvailabilityChecked, currCheckedAvailability, isInStockChecked, isOutOfStockChecked]);
+  }, [isAvailabilityChecked, currCheckedAvailability, isInStockChecked, isOutOfStockChecked, currClickedAvailability, isAvailabilityClicked]);
+
+
+
+  const handleAvailabilityOnClick = (event, availabilityId) => {
+    console.log("handleAvailabilityOnClick has fired!")
+    setCurrClickedAvailability(availabilityId);
+    // setIsAvailabilityClicked(true);
+    setIsAvailabilityClicked(true);
+
+    // setCurrCheckedAvailability(availabilityId);
+    // setIsAvailabilityChecked(true);
+    // setIsAvailabilityChecked(!isAvailabilityChecked);
+    if (availabilityId === "inStock" && currCheckedAvailability !== availabilityId) {
+      setIsInStockChecked(true);
+      setIsOutOfStockChecked(false);
+      setIsAvailabilityChecked(true);
+      setCurrCheckedAvailability(availabilityId);
+      return
+
+    }
+    
+    
+    if (availabilityId === "inStock" && currCheckedAvailability === availabilityId) {
+      setIsInStockChecked(false);
+      // setIsOutOfStockChecked(true
+      setIsAvailabilityChecked(false);
+      setCurrCheckedAvailability(null);
+      return
+    }
+
+    // handle out of stock
+
+    if (availabilityId === "outOfStock" && currCheckedAvailability !== availabilityId) {
+      setIsOutOfStockChecked(true);
+      setIsInStockChecked(false);
+      setIsAvailabilityChecked(true);
+      setCurrCheckedAvailability(availabilityId);
+      return
+    }
+
+    if (availabilityId === "outOfStock" && currCheckedAvailability === availabilityId) {
+      setIsOutOfStockChecked(false);
+      setIsAvailabilityChecked(false);
+      setCurrCheckedAvailability(availabilityId);
+      setCurrCheckedAvailability(null);
+      return
+    }
+
+  }
+
 
   const handleAvailabilityOnChange = (event, availabilityId) => {
     setIsAvailabilityChecked(true);
@@ -180,7 +244,7 @@ function ShopAll() {
       setCurrCheckedAvailability(null);
       setIsAvailabilityChecked(false)
       setIsInStockChecked(false);
-      return
+      // return
     }
 
     if(availabilityId === "inStock" && currCheckedAvailability !== availabilityId){
@@ -188,7 +252,7 @@ function ShopAll() {
       setCurrCheckedAvailability(availabilityId);
       setIsAvailabilityChecked(true)
       setIsInStockChecked(true);
-      return
+      // return
     }
 
     // handle out of stock
@@ -201,7 +265,7 @@ function ShopAll() {
       setCurrCheckedAvailability(null);
       setIsAvailabilityChecked(false)
       setIsOutOfStockChecked(false);
-      return
+      // return
     }
 
     if(availabilityId === "outOfStock" && currCheckedAvailability !== availabilityId){
@@ -209,10 +273,15 @@ function ShopAll() {
       setCurrCheckedAvailability(availabilityId);
       setIsAvailabilityChecked(true)
       setIsOutOfStockChecked(true);
-      return
+      // return
     }
 
   };
+
+  const handleOnchange = (event, availabilityId) => {
+    console.log("handleOnchange", event, availabilityId);
+  }
+
 
   // useEffect(() => {
   //   setIsAvailabilityChecked(!isAvailabilityChecked);
@@ -239,14 +308,16 @@ function ShopAll() {
             {availabilityOptions.map((availability) => 
               <div key={availability.id}>
                 <input
-                  // type="checkbox"
                   type='checkbox'
+                  // type='radio'
                   // type={availability.id === currCheckedAvailability && "checkbox"}
                   name={availability.id}
                   id={availability.id}
                   // onChange={(e) => handleSubmitAvailability(e, availability.id)}
-                  onChange={(e) => handleAvailabilityOnChange(e, availability.id)}
+                  // onChange={(e) => handleAvailabilityOnChange(e, availability.id)}
+                  onChange={(e) => handleOnchange(e, availability.id)}
                   checked={availability.id === currCheckedAvailability}
+                  onClick={(e) => handleAvailabilityOnClick(e, availability.id)}
                   // checked={
                     // if(availability.id === "inStock" && isInStockChecked) return 
                     
