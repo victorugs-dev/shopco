@@ -43,21 +43,11 @@ export function CartProvider({ children }){
     */
     // value = {{ cart, addToCart }} ... now every child can read the cart and add call addToCart
     
+    const addToCart = (newProductDetails, newProductTotal, newProductSize, newProductColor, newCurrProduct) => {
 
-    // const addToCart = useCallback((newProductDetails) => {
-    //     // setCartTotal((prevCa?rtTotal) => prevCartTotal + newProductDetails.amount)
-    //     setCart((prevCart) => [...prevCart, newProductDetails]);
-    // }, [cartTotal])
-    
-    // addToCart(productDetails, productTotal, isCurrProductAddedToCart, outfitSize, outfitColor, currProduct)
-    const addToCart = (newProductDetails, newProductTotal, newProductAddedToCart, newProductSize, newProductColor, newCurrProduct) => {
-        // setCartTotal((prevCa?rtTotal) => prevCartTotal + newProductDetails.amount)
-        
-        // setCart((prevCart) => [...prevCart, newProductDetails]);
         const cartItem = {
             productDetails: newProductDetails,
             productTotal: newProductTotal,
-            // productAddedToCart: newProductAddedToCart,
             productAddedToCart: true,
             productSize: newProductSize,
             productColor: newProductColor,
@@ -65,20 +55,11 @@ export function CartProvider({ children }){
         };
         
         setCart((prevCart) => {
-            // if(!Array.isArray(prevCart)) return [newProductDetails];
-
             if(!Array.isArray(prevCart)) return [cartItem];
-            // if(!Array.isArray(prevCart)) return [newProductDetails...,  newProductTotal, newProductAddedToCart, newProductSize, newProductColor, newCurrProduct];
-
-            // return [...prevCart, newProductDetails];
-            // return [...prevCart, {newProductDetails,  newProductTotal, newProductAddedToCart, newProductSize, newProductColor, newCurrProduct}];
             return [...prevCart, cartItem];
         });
-        console.log("cart", cart)
-
-
-        // setCart((prevCart) => [...prevCart, [newProductDetails]]);
-    }
+        console.log("cart", cart);
+    };
 
     const clearCart = () => {
         if(!cart.length) return console.log("cart is already empty");
@@ -89,9 +70,6 @@ export function CartProvider({ children }){
     const removeFromCart = (product) => {
         console.log(product)
         setCart((prevCart) => {
-
-            // const filtered = prevCart.filter((c) =>
-            // const filtered = cart.filter((c) =>
             const filtered = prevCart.filter((c) =>
                 product.productDetails.slug !== c.productDetails.slug
             )
@@ -99,7 +77,7 @@ export function CartProvider({ children }){
             return filtered;
         })
 
-        // also upadtate cartTotal
+        // update cartTotal
         setCartTotal((prevCartTotal) => {
             const newCartTotal = prevCartTotal - product.productTotal;
 
@@ -110,30 +88,9 @@ export function CartProvider({ children }){
     // setCartTotal((prevCartTotal) => prevCartTotal + productTotal);
         
     useEffect(() => {
-        // console.log(Array.isArray(cart));
-        // if(!Array.isArray(cart)){
-        //     // throw new Error("cart is not an array")
-        //     return
-        // }
-        // try{
-        //     localStorage.setItem("cart", JSON.stringify(cart));
-
-        //     if(!Array.isArray(cart)){
-        //         throw new Error("cart is not an array")
-        //         return
-        //     }
-        // }catch(error){
-        //     console.error("the error:", error)
-        // }
-
-        // console.log(Array.isArray(cart))
-        // if(!Array.isArray(cart)){
         if(Array.isArray(cart)){
             localStorage.setItem("cart", JSON.stringify(cart));
-    //     localStorage.setItem("cartTotal", JSON.stringify(cartTotal));
-
-        }else  console.log("cart is not an array");
-        
+        }else  console.log("cart is not an array");        
 
     }, [cart]);
     // }, [cart,cartTotal]);

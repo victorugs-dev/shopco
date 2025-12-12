@@ -15,75 +15,19 @@ function ProductDetails() {
     let params = useParams();
     let productDetails = data.find(item => item.slug === params.slug);
     const { colors, sizes } = productDetails;
-    const STORAGE_KEY = `product_is_in_cart${productDetails.slug}`;
-
-
-    // cart.productAddedToCart
-
     const {isAddedToCart, setIsAddedToCart, cart, setCart, cartTotal, setCartTotal,addToCart} = useCart();
-    
-    // console.log("cart: ", cart);
-    console.log("cart length: ", cart.length);
-
-    // if(cart.length !== 0){
-  
-    console.log("mounted productDetails")
-    
-    console.log("productDetails:", productDetails);
-    // const { sizes } = productDetails;
-    // const [ sizes ] = productDetails;
-    // const [ colors ] = productDetails;
-    // const [{sizes, colors}, ...remainingProductDetails] = productDetails;
-    // const [{sizes, colors}, ...remainingProductDetails] = productDetails;
-
-    const [productTotal, setProductTotal] = useState(1); // we may need local storage for this?? 
-    // const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(false); // we may need local storage for this?? 
-    // const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(() => {
-        // const saved = localStorage.getItem(STORAGE_KEY);
-        // return saved ? JSON.parse(saved) : false;
-    // });
+    const [productTotal, setProductTotal] = useState(1); 
     const [outfitSize,setOutfitSize] = useState('large');
     const [outfitColor,setOutfitColor] = useState('');
-    // const [currProduct, setCurrProduct] = useState([]);
     const [currProduct, setCurrProduct] = useState(null);
-    // const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(false);
-    // const [isCurrProductAddedToCart, setIsCurrProductAddedToCart] = useState(() => {
-
-    //     if(cart.length > 0){
-    //         for (let i = 0; i < cart.length; i++) {
-    //             // const isSavedInCart = (cart[i].productDetails.slug === productDetails.slug) || false
-    //             // const isSavedInCart = cart[i].productDetails.slug === productDetails.slug;
-
-    //             // return cart[i].productDetails.slug === productDetails.slug;
-    //             if (cart[i].productDetails.slug === productDetails.slug) {
-    //                 return cart[i].productAddedToCart;
-    //             }
-    //         }
-    //     } else console.log("cart is empty")
-    //     // return
-    // });
-
-    // console.log("isCurrProductAddedToCart", isCurrProductAddedToCart)
 
     let isCurrProductAddedToCart = false;
     for (let i = 0; i < cart.length; i++) {
-        // if(cart[i].productDetails.slug === productDetails.slug){
-            // isCurrProductAddedToCart = cart[i].productAddedToCart;
-            // console.log("productAddedToCart", cart[i].productAddedToCart)
-        // }
-        // console.log(cart[i])
         if(cart[i].productDetails.slug === productDetails.slug){
             isCurrProductAddedToCart = cart[i].productAddedToCart;
         }
-
     }
 
-    // useEffect(() => {
-        // localStorage.setItem(STORAGE_KEY, JSON.stringify(isCurrProductAddedToCart));
-    // },[isCurrProductAddedToCart])
-    
-
-    
     // NO CHANGES CAN BE MADE AFTER ADDING TO CART
     // REMOVE THE ADDED ITEM OR ADD A NEW ITEM TO CART
 
@@ -93,46 +37,6 @@ function ProductDetails() {
     useEffect(() => {
         colors.length && setOutfitColor(colors[Math.floor(Math.random() * colors.length)]);
     },[]);
-    // console.log(outfitColor);
-
-    // if (cart.length) {
-    //     for (let i = 0; i < cart.length; i++) {
-    //         // if(cart[i].productDetails.slug === productDetails.slug){
-    //         //     console.log("they are equal")
-    //         // }else if (!cart.length){
-    //         //     console.log("cart is empty");
-    //         // }else{
-    //         //     console.log("not equal")
-    //         // }
-    //         // if (!cart.length) {
-    //         //     console.log("cart is empty");
-    //         //     // return
-    //         // }
-    //         // console.log(cart)
-    //         if (cart[i].productDetails.slug === productDetails.slug) {
-    //             console.log("they are equal")
-    //             // return
-    //         }
-
-    //         if (cart[i].productDetails.slug !== productDetails.slug) {
-    //             console.log("not equal")
-    //             // return
-    //         }
-
-    //         // if (cart[i].productDetails.slug !== productDetails.slug) {
-    //         //     console.log("not equal")
-    //         // }
-    //         // if (!cart.length) {
-    //         //     console.log("cart is empty");
-    //         //     // return
-    //         // }
-    //         //     console.log("cart is empty");
-
-    //         // const inInCart = cart.  
-    //     }
-
-    // } else console.log("cart is empty")
-
 
     const handleColorPick = useCallback((color,event) => {
         if(!isCurrProductAddedToCart){
@@ -169,15 +73,8 @@ function ProductDetails() {
             ));
         }
     };
-    // const handleDecreaseTotal = () => setProductTotal((prev) => (productTotal > 1 && prev - 1));
-
-    
-
-    // const handleDecreaseTotal = () => (productTotal < 0) && (setProductTotal(prev) => (prev -1));
-    // const handleDecreaseTotal = () => setProductTotal(((productTotal < 0),prev) => (prev -1));
     const handleOutfitSize = (event, size) => !isCurrProductAddedToCart ? setOutfitSize(event.target.textContent) : console.log('cannot select size after adding to cart!');
 
-    // particular btn that is clicked will change color
     // only one size can be selected
     function OutfitSizeButton(){
         return (
@@ -194,26 +91,12 @@ function ProductDetails() {
 
 
     const handleAddToCart = (event) => {
-
-
         if (!productTotal > 0) return;
-        // setIsCurrProductAddedToCart(true);
-        // setIsCurrProductAddedToCart(true);
         console.log(productDetails);
-        // console.log("is productDetails an array? ", Array.isArray(productDetails));
-        // console.log("typeOf productDetails? ", typeof productDetails);
-        // console.log(typeOf productDetails)
         setCurrProduct(productDetails);
-        // setCart((prevCart) => [...prevCart, product]);
-        // setCartTotal((prevCartTotal) => prevCartTotal + selectedData.productTotal);
         setCartTotal((prevCartTotal) => prevCartTotal + productTotal);
-        // addToCart(productDetails)
-        addToCart(productDetails, productTotal, isCurrProductAddedToCart, outfitSize, outfitColor, currProduct)
-
-        // console.log('productTotal: ',productTotal)
+        addToCart(productDetails, productTotal, outfitSize, outfitColor, currProduct)
         console.log("Added to cart");
-
-        return true;
     };
 
     return (
@@ -284,17 +167,6 @@ function ProductDetails() {
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z" /></svg>
                         </button>
                     </div>
-
-                    {/* rename productTotal to productTotal      */}
-                    {/* <CartButton  */}
-                        {/* // productDetails={productDetails} */}
-                        {/* // selectedSize={outfitSize} */}
-                        {/* // selectedColor={outfitColor} */}
-                        {/* // selectedQuantity={productTotal} */}
-                        {/* // selectedData={{ outfitSize, outfitColor, productTotal, isCurrProductAddedToCart }} */}
-                        {/* // selectedData={[ outfitSize, outfitColor, productTotal, isCurrProductAddedToCart ]} */}
-                    {/* /> */}
-
                         {isCurrProductAddedToCart === false ? (
                             <button 
                                 onClick={(e) => handleAddToCart(e)}
@@ -317,32 +189,3 @@ function ProductDetails() {
 
 
 export default ProductDetails
-
-// export function CartButton({ children, newStyling, productDetails, selectedData}){
-    // const {isAddedToCart, setIsAddedToCart, cart, setCart, cartTotal, setCartTotal,addToCart} = useCart();
-    // const [isCurrProductAddedToCart, setIsProductCurrAddedToCart] = useState(false);
-    // const [currProduct, setCurrProduct] = useState(null);
-    // const [productQuantity, setProductQuantity] = useState(1); // we may need local storage for this?? 
-
-    // const defaultStyling = 'rounded-3xl p-2 w-1/2';
-
-    // const handleAddToCart = (event) =>{
-    //     console.log(productDetails);
-    //     setCurrProduct(productDetails);
-    //     // setCart((prevCart) => [...prevCart, product]);
-    //     setCartTotal((prevCartTotal) => prevCartTotal + selectedData.productTotal);
-    //     // setCartTotal((prevCartTotal) => prevCartTotal + selectedData[2]);
-    //     // setIsProductCurrAddedToCart(true);
-    //     addToCart(productDetails)
-    //     // console.log(event)
-    //     // console.log('added to cart!')
-    // };
-
-    // return (
-        // <>CartButton
-            // {/* {isAddedToCart === false ? ( */}
-            // {/* {isCurrProductAddedToCart === false ? ( */}
-            
-        // </>
-    // );
-    // }
