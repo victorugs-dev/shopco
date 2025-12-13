@@ -2,7 +2,6 @@ export const data = [
   {
     id: 0,
     title: "T-shirt with Tape Details",
-    // title: "shirt",
     slug: "t-shirt-with-tape-details",
     category: "shirt",
     price: 120,
@@ -19,7 +18,6 @@ export const data = [
   {
     id: 1,
     title: "Skinny Fit Jeans",
-    // title: "shirt",
     slug: "skinny-fit-jeans",
     category: "jeans",
     price: 240,

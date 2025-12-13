@@ -1,86 +1,30 @@
 import { data } from  '../../data.js'
-import SearchBar from '../components/ui/SearchBar.jsx'
 import { useState, useEffect, useRef } from 'react';
-import CategoryIcon from '../components/ui/CategoryIcon.jsx';
-import { useCategory } from '../context/CategoryContext.jsx';
-
 
 // search bar
 // filter icon
 // sort dropdown: by New Arrivals, color, size, date released
 // filer dropdown: by brand, price
 // categories filter
-// 
-// 
-// console.log("data length", data.length)
-
-// could i have left this for loop and access it from here????
-// for(let i = 0; i < data.length; i++){
-
-// }
 
 function ShopAll() {
-
-  const [searchValue,setSearchValue] = useState('');
   const [displayedProducts,setDisplayedProducts] = useState(data);
   const [isFilterDropdownActive, setIsDropdownActive] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState('');
 
-  const [isAvailabilityChecked, setIsAvailabilityChecked] = useState(false);
-  // const [currCheckedAvailability, setCurrCheckedAvailability] = useState("");
+  // const [isAvailabilityChecked, setIsAvailabilityChecked] = useState(false);
   const [currCheckedAvailability, setCurrCheckedAvailability] = useState(null);
 
-  const [isInStockChecked, setIsInStockChecked] = useState(false);
-  const [isOutOfStockChecked, setIsOutOfStockChecked] = useState(false);
+  // const [isAvailabilityClicked, setIsAvailabilityClicked] = useState(false);
+  // const [currClickedAvailability, setCurrClickedAvailability] = useState(null);
 
-  const [isAvailabilityClicked, setIsAvailabilityClicked] = useState(false);
-  const [currClickedAvailability, setCurrClickedAvailability] = useState(null);
+  // const [isInStockChecked, setIsInStockChecked] = useState(false);
+  // const [isOutOfStockChecked, setIsOutOfStockChecked] = useState(false);
 
-  // const [currFilterDropdown, setCurrFilterDropdown] = useState("");
-
-  // const [isAvailabilityActive, setIsAvailabilityActive] = useState(false);
-  // const [isPriceActive, setIsPriceActive] = useState(false);
-  // const [isSizeActive, setIsSizeActive] = useState(false);
-  // const [isColourActive, setIsColourActive] = useState(false);
-
-  // useEffect(() => {
-
-  //   const handleClickOutside = (e) => {
-  //     console.log(e)
-  //   }
-
-  //   document.addEventListener("click", handleClickOutside);
-
-
-  //   return () => document.removeEventListener("click", handleClickOutside);
-  // },[]);
-
-
-  // const dropdownDivRef = useRef(null);
-  const dropdownDivRef = useRef(null);
-  // console.log("dropdownDivRef: ", dropdownDivRef.current.textContent);
-  // console.log("dropdownDivRef: ", dropdownDivRef);
-  // console.log("dropdownDivRef: ", dropdownDivRef.current?.textContent || false);
+  
 
   const dropdownButtonRef = useRef(null);
   // console.log("dropdownButtonRef", dropdownButtonRef);
-
-
-
-  const handleSearch = (searchValue) => {
-    if(!searchValue){
-      setDisplayedProducts(data);
-    }else{
-      const filteredProducts = data.filter((d) => 
-      d.title.toLowerCase().includes(searchValue.toLowerCase()));
-
-      setDisplayedProducts(filteredProducts);
-    }
-  };
-
-  const handleCategoryChange = (e) => {
-
-  };
 
   const filters = [
     { id: "availability", title: "Availability"},
@@ -89,275 +33,136 @@ function ShopAll() {
     { id: "colour", title: "Colour"},
   ];
 
+  const availabilityOptions = [
+    { id: "inStock", title: "In Stock"},
+    { id: "outOfStock", title: "Out of Stock" }
+  ];
+
+  const sizeOptions = [
+    {id:"xs", title:"XS"},
+    {id:"s", title:"S"},
+    {id:"m", title:"M"},
+    {id:"l", title:"L"},
+    {id:"xl", title:"XL"},
+    {id:"xxl", title:"XXL"},
+    {id:"xxxl", title:"XXXL"},
+  ];
+
   // the dropDown will lose focus if we click something aside from the current dropdown
   // useRef to capture the item that was clicked
   // event listener for click for anything not equal to the  current dropdown
 
-
-  // for(let i = 0; i < data.length; i++){
-    
-  // }
-
-  const handleDisplayedProducts = () => {
-    
-  };
-
-
-  const productsInStock = data.filter((d) => d.inStock === true);
-  const productsOutOfStock = data.filter((d) => d.inStock === false);
-  // const productsOutOfStock = data.length - productsInStock.length;
-  
-  // console.log("productsInStock", productsInStock.length)
-  // console.log("productsInStock", productsOutOfStock.length)
-
-  
-
   const handleFilterDropdown = (event,currFilter) => {
     // console.log(currFilter)
-
-
     // dropdownDivRef.current = 
-
     setIsDropdownActive(!isFilterDropdownActive);
-    
     setActiveDropdown(currFilter.title)
     console.log(currFilter.title);
   };
 
 
   const handleSubmitAvailability = (event, availabilityId) => {
-    
     // setCurrCheckedAvailability(event.target.name)
-
     // setIsAvailabilityChecked(true);
-
     // setDisplayedProducts()
     // setIsAvailabilityChecked(!isAvailabilityChecked);
-
     // console.log("e.target.name", e.target.name)
-
     // console.log("e.target.value", event.target.value)
     // console.log("isAvailabilityChecked", isAvailabilityChecked)
     // console.log("currCheckedAvailability", currCheckedAvailability)
-
     // return e.target.name
   }
 
   // useEffect only handles displaying products based on Availability selected
-  useEffect(() => {
-    console.log("currCheckedAvailability", currCheckedAvailability);
-    console.log("isAvailabilityChecked", isAvailabilityChecked)
-    console.log("isInStockChecked", isInStockChecked);
-    console.log("isOutOfStockChecked", isOutOfStockChecked);
-
-    // if(!currCheckedAvailability){
-    if(currCheckedAvailability){
-      // if (displayedProducts === productsInStock) {
-        // setCurrCheckedAvailability('');
-        // set
-      // }
-
-      if (isInStockChecked && currCheckedAvailability === "inStock") {
-      // if (isInStockChecked && currCheckedAvailability === "inStock" && currCheckedAvailability !== "outOfStock") {
-        // console.log("!productsInStock", !productsInStock)
-        setDisplayedProducts(productsInStock)
-        // return
-      // }else setDisplayedProducts(data);
-      }
-
-      // if (!isInStockChecked) setDisplayedProducts(data)
-      // if (!isInStockChecked) setDisplayedProducts(data)
-
-      if (currCheckedAvailability === "outOfStock") {
-      // if (isOutOfStockChecked && currCheckedAvailability === "outOfStock" && currCheckedAvailability !== "inStock") {
-        setDisplayedProducts(productsOutOfStock)
-      // }else setDisplayedProducts(data);
-      }
-    }else setDisplayedProducts(data)
-    // setDisplayedProducts()
-
-  // },[isAvailabilityChecked, currCheckedAvailability]);
-  }, [isAvailabilityChecked, currCheckedAvailability, isInStockChecked, isOutOfStockChecked, currClickedAvailability, isAvailabilityClicked]);
-
-
-
-  const handleAvailabilityOnClick = (event, availabilityId) => {
-    console.log("handleAvailabilityOnClick has fired!")
-    setCurrClickedAvailability(availabilityId);
-    // setIsAvailabilityClicked(true);
-    setIsAvailabilityClicked(true);
-
-    // setCurrCheckedAvailability(availabilityId);
-    // setIsAvailabilityChecked(true);
-    // setIsAvailabilityChecked(!isAvailabilityChecked);
-    if (availabilityId === "inStock" && currCheckedAvailability !== availabilityId) {
-      setIsInStockChecked(true);
-      setIsOutOfStockChecked(false);
-      setIsAvailabilityChecked(true);
-      setCurrCheckedAvailability(availabilityId);
-      return
-
-    }
-    
-    
-    if (availabilityId === "inStock" && currCheckedAvailability === availabilityId) {
-      setIsInStockChecked(false);
-      // setIsOutOfStockChecked(true
-      setIsAvailabilityChecked(false);
-      setCurrCheckedAvailability(null);
-      return
-    }
-
-    // handle out of stock
-
-    if (availabilityId === "outOfStock" && currCheckedAvailability !== availabilityId) {
-      setIsOutOfStockChecked(true);
-      setIsInStockChecked(false);
-      setIsAvailabilityChecked(true);
-      setCurrCheckedAvailability(availabilityId);
-      return
-    }
-
-    if (availabilityId === "outOfStock" && currCheckedAvailability === availabilityId) {
-      setIsOutOfStockChecked(false);
-      setIsAvailabilityChecked(false);
-      setCurrCheckedAvailability(availabilityId);
-      setCurrCheckedAvailability(null);
-      return
-    }
-
-  }
-
-
-  const handleAvailabilityOnChange = (event, availabilityId) => {
-    setIsAvailabilityChecked(true);
-    // setCurrCheckedAvailability(event.target.name)
-    setCurrCheckedAvailability(availabilityId);
-
-
-    // if(availabilityId === "inStock"){
-    //   console.log("availabilityId is inStock", availabilityId)
-    //   setIsInStockChecked(!isInStockChecked);
-    // }
-    if(availabilityId === "inStock" && currCheckedAvailability === availabilityId){
-      console.log("availabilityId is inStock", availabilityId)
-      setCurrCheckedAvailability(null);
-      setIsAvailabilityChecked(false)
-      setIsInStockChecked(false);
-      // return
-    }
-
-    if(availabilityId === "inStock" && currCheckedAvailability !== availabilityId){
-      console.log("availabilityId is inStock", availabilityId)
-      setCurrCheckedAvailability(availabilityId);
-      setIsAvailabilityChecked(true)
-      setIsInStockChecked(true);
-      // return
-    }
-
-    // handle out of stock
-    // if(availabilityId === "outOfStock"){
-    //   console.log("availabilityId", availabilityId);
-    //   setIsOutOfStockChecked(!isOutOfStockChecked);
-    // }
-    if(availabilityId === "outOfStock" && currCheckedAvailability === availabilityId){
-      console.log("availabilityId", availabilityId);
-      setCurrCheckedAvailability(null);
-      setIsAvailabilityChecked(false)
-      setIsOutOfStockChecked(false);
-      // return
-    }
-
-    if(availabilityId === "outOfStock" && currCheckedAvailability !== availabilityId){
-      console.log("availabilityId", availabilityId);
-      setCurrCheckedAvailability(availabilityId);
-      setIsAvailabilityChecked(true)
-      setIsOutOfStockChecked(true);
-      // return
-    }
-
-  };
-
-  const handleOnchange = (event, availabilityId) => {
-    console.log("handleOnchange", event, availabilityId);
-  }
-
-
   // useEffect(() => {
-  //   setIsAvailabilityChecked(!isAvailabilityChecked);
-  //   setCurrCheckedAvailability(eTargetName);
-
+  //   console.log("currCheckedAvailability", currCheckedAvailability);
   //   console.log("isAvailabilityChecked", isAvailabilityChecked)
-  //   console.log("currCheckedAvailability", currCheckedAvailability)
+  //   console.log("isInStockChecked", isInStockChecked);
+  //   console.log("isOutOfStockChecked", isOutOfStockChecked);
 
-  // // }, [handleSubmitAvailability])
-  // }, [eTargetName])
+  //   if(currCheckedAvailability){
+  //   // if(currCheckedAvailability && currCheckedSizes.length){
+  //     if (isInStockChecked && currCheckedAvailability === "inStock") {
+  //       setDisplayedProducts(productsInStock)
+  //     }
+  //     if (currCheckedAvailability === "outOfStock") {
+  //       setDisplayedProducts(productsOutOfStock)
+  //     }
+  //   }else setDisplayedProducts(data)
+  // }, [isAvailabilityChecked, currCheckedAvailability, isInStockChecked, isOutOfStockChecked, currClickedAvailability, isAvailabilityClicked]);
 
-  const availabilityOptions = [
-    { id: "inStock", title: "In Stock"},
-    { id: "outOfStock", title: "Out of Stock" }
-  ];
+  // const handleAvailabilityOnClick = (event, availabilityId) => {
+  //   console.log("handleAvailabilityOnClick has fired!")
+  //   setCurrClickedAvailability(availabilityId);
+  //   setIsAvailabilityClicked(true);
+
+  //   // handle displaying out of stock
+  //   if (availabilityId === "inStock" && currCheckedAvailability !== availabilityId) {
+  //     setIsInStockChecked(true);
+  //     setIsOutOfStockChecked(false);
+  //     setIsAvailabilityChecked(true);
+  //     setCurrCheckedAvailability(availabilityId);
+  //     return
+  //   }
+    
+  //   if (availabilityId === "inStock" && currCheckedAvailability === availabilityId) {
+  //     setIsInStockChecked(false);
+  //     // setIsOutOfStockChecked(true
+  //     setIsAvailabilityChecked(false);
+  //     setCurrCheckedAvailability(null);
+  //     return
+  //   }
+
+  //   // handle displaying out of stock
+  //   if (availabilityId === "outOfStock" && currCheckedAvailability !== availabilityId) {
+  //     setIsOutOfStockChecked(true);
+  //     setIsInStockChecked(false);
+  //     setIsAvailabilityChecked(true);
+  //     setCurrCheckedAvailability(availabilityId);
+  //     return
+  //   }
+
+  //   if (availabilityId === "outOfStock" && currCheckedAvailability === availabilityId) {
+  //     setIsOutOfStockChecked(false);
+  //     setIsAvailabilityChecked(false);
+  //     setCurrCheckedAvailability(availabilityId);
+  //     setCurrCheckedAvailability(null);
+  //     return
+  //   }
+  // }
+
+  const productsInStock = data.filter(d => d.inStock === true);
+  const productsOutOfStock = data.filter(d => d.inStock === false);
+
+  const handleAvailabilityChange = (event, availabilityId) => {
+    const newAvailability = currCheckedAvailability === availabilityId ? null : availabilityId;
+    setCurrCheckedAvailability(newAvailability);
+
+    if(newAvailability === "inStock"){
+      setDisplayedProducts(productsInStock);
+    }else if(newAvailability === "outOfStock"){
+      setDisplayedProducts(productsOutOfStock);
+    }else setDisplayedProducts(data)
+  }
 
   function AvailabilityBar(){
     return (
-      <div>
-        {/* AvailabilityBar */}
-        <form onSubmit={handleSubmitAvailability}>
-
-          <div>
-            {availabilityOptions.map((availability) => 
-              <div key={availability.id}>
-                <input
-                  type='checkbox'
-                  // type='radio'
-                  // type={availability.id === currCheckedAvailability && "checkbox"}
-                  name={availability.id}
-                  id={availability.id}
-                  // onChange={(e) => handleSubmitAvailability(e, availability.id)}
-                  // onChange={(e) => handleAvailabilityOnChange(e, availability.id)}
-                  onChange={(e) => handleOnchange(e, availability.id)}
-                  checked={availability.id === currCheckedAvailability}
-                  onClick={(e) => handleAvailabilityOnClick(e, availability.id)}
-                  // checked={
-                    // if(availability.id === "inStock" && isInStockChecked) return 
-                    
-                  // }
-                  // checked={availability.id === "outOfStock" && isOutOfStockChecked}
-                  //  value={availability.id === currCheckedAvailability && 'on'}
-                  //  value={availability.id === currCheckedAvailability ? 'on' : 'off'}
-                  //  value={availability.id !== currCheckedAvailability ? 'off' : 'on'}
-                  // disabled={ isAvailabilityChecked && availability.id !== currCheckedAvailability}
-                  // disabled={availability.id !== currCheckedAvailability || isAvailabilityChecked}
-                  // disabled={availability.id === currCheckedAvailability || isAvailabilityChecked}
-                />
-                <label htmlFor={availability.id}>{availability.title} 
-                  ({ availability.id === "inStock" ? productsInStock.length : productsOutOfStock.length})
-                </label>
-              </div>
-            )}
+      <>
+        {availabilityOptions.map((availability) => 
+          <div key={availability.id}>
+            <input
+              type='checkbox'
+              id={availability.id}
+              checked={availability.id === currCheckedAvailability}
+              // onClick={(e) => handleAvailabilityOnClick(e, availability.id)}
+              onChange={(e) => handleAvailabilityChange(e, availability.id)}
+            />
+            <label htmlFor={availability.id}>{availability.title} 
+              ({ availability.id === "inStock" ? productsInStock.length : productsOutOfStock.length})
+            </label>
           </div>
-
-          {/* <input type="checkbox" name="" id=""  value="In Stock"/> */}
-          {/* <div>
-            <input 
-              type="checkbox"
-              name="inStock" 
-              id="inStock"
-              onChange={handleSubmitAvailability}
-              disabled={} />
-            <label htmlFor="inStock">In Stock ({productsInStock.length})</label>
-          </div>
-          <div>
-            <input 
-              type="checkbox"
-              name="outOfStock"
-              id="outOfStock" 
-              onChange={handleSubmitAvailability} />
-            <label htmlFor="inStock">Out of Stock({productsOutOfStock.length})</label>
-          </div> */}
-        </form>
-
-      </div>
+        )}
+      </>
     );
   }
 
@@ -369,9 +174,45 @@ function ShopAll() {
     );
   }
 
+  // useEffect only handles displaying products based on sizes selected
+  // useEffect(() => {
+  //   if(currCheckedSizes){
+  //   // if (currCheckedAvailability && currCheckedSizes.length){
+  //     console.log("currCheckedSizes.length is > 0") ;
+
+  //   }else setDisplayedProducts(data);
+
+  // }, [isSizeChecked, currClickedSize, currCheckedSizes]);
+
+  // const handleSizeOnClick = (event, sizeId) => {
+  //   console.log("handleSizeOnClick event:", event, "handleSizeOnClick sizeId", sizeId);
+
+  //   setIsSizeClicked(true);
+  //   setCurrClickedSize(sizeId);
+
+  //   // if(sizeId === 'xs' && currCheckedSizes)
+  //   if (!currCheckedSizes.length) return console.log("!currCheckedSizes.length")
+  //   for(let i = 0; i < currCheckedSizes.length; i++){
+  //     if(currCheckedSizes[i] === "xs" ) console.log("xs")
+  //   }
+  // };
+
   function SizeBar(){
     return (
-      <div>SizeBar
+      <div>{sizeOptions.map((size) => 
+        <div key={size.id}>
+          <input
+            type='checkbox'
+            name={size.id}
+            id={size.id}
+            // checked={size.id === currCheckedSizes}
+            // onClick={(e) => handleSizeOnClick(e, size.id)}
+          />
+          <label htmlFor={size.id}>{size.title}
+            {/* ({size.id === "inStock" ? productsInStock.length : productsOutOfStock.length}) */}
+          </label>
+        </div>
+      )}
 
       </div>
     );
@@ -402,7 +243,7 @@ function ShopAll() {
                   id={filter.id} 
                   key={filter.id} 
                   className='flex'
-                  ref={dropdownDivRef}
+                  // ref={dropdownDivRef}
                 >
                   <div>
                     <p>{filter.title}</p>
@@ -428,14 +269,6 @@ function ShopAll() {
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="m12.354 5.646l5 5a.5.5 0 0 1-.708.708L12.5 7.207V18a.5.5 0 0 1-1 0V7.207l-4.146 4.147a.5.5 0 0 1-.708-.708l5-5a.5.5 0 0 1 .708 0" /></svg>
                     </button>
                   )}
-
-                  {/* {if(currFilter.title === "a" )} */}
-                  {/* {currFilter.title === "Availability" && ( */}
-                  {/* {currFilterDropdown === "Availability" && ( */}
-                  {/* {activeDropdown === "Availability" && (
-                <AvailabilityBar />
-              )} */}
-
                 </div>
               ))}
               </div>
