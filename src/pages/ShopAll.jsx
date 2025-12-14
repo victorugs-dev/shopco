@@ -172,17 +172,20 @@ function ShopAll() {
         setCurrCheckedSizes((prevCheckedSizes) => {//[...prevCheckedSizes, { 
           
           // return prevCheckedSizes.map((prevCheckedSize) => {
-          prevCheckedSizes?.map((prevCheckedSize) => {
-            // console.log("prevCheckedSize", prevCheckedSize)   
+          // returning the new array
+          return prevCheckedSizes?.map((prevCheckedSize) => {
+            console.log("prevCheckedSize", prevCheckedSize)   
 
-            // if(prevCheckedSize.id === sizeId){
-              // console.log("prevCheckedSize.id === sizeId", prevCheckedSize.id === sizeId);
-              // return {...prevCheckedSize, isChecked: !prevCheckedSize.isChecked} 
+            if(prevCheckedSize.id === sizeId){
+              console.log("prevCheckedSize.id === sizeId", prevCheckedSize.id === sizeId);
+              // return a new object with updated value
+              return {...prevCheckedSize, isChecked: !prevCheckedSize.isChecked} 
             // prevCheckedSize.id === sizeId ? {...prevCheckedSize, isChecked: !prevCheckedSize.isChecked} : prevCheckedSize
-            prevCheckedSize.id === sizeId && {...prevCheckedSize, isChecked: !prevCheckedSize.isChecked}
+            // prevCheckedSize.id === sizeId && {...prevCheckedSize, isChecked: !prevCheckedSize.isChecked}
 
-            // }//else console.log("prevCheckedSize.id !== sizeId", prevCheckedSize.id === sizeId);
-          })
+            }//else console.log("prevCheckedSize.id !== sizeId", prevCheckedSize.id === sizeId);
+            return prevCheckedSize;
+          });
         }
 
         // setCurrCheckedSizes((prevCheckedSizes) => [...prevCheckedSizes, {}]
@@ -209,7 +212,7 @@ function ShopAll() {
             // checked={currCheckedSizes.some( currCheckedSize => (currCheckedSize.id === size.id && currCheckedSize.isChecked))}
             checked={
               currCheckedSizes?.some(currCheckedSize => {
-                // console.log("currCheckedSize.id === size.id && currCheckedSize.isChecked", currCheckedSize.id === size.id && currCheckedSize.isChecked)
+                console.log("currCheckedSize.id === size.id && currCheckedSize.isChecked", currCheckedSize.id === size.id && currCheckedSize.isChecked)
                 return currCheckedSize.id === size.id && currCheckedSize.isChecked
   
               })
