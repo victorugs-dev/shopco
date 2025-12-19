@@ -30,14 +30,6 @@ function ShopAll() {
 
   const [currCheckedAvailability, setCurrCheckedAvailability] = useState(null);
   const [currCheckedSizes, setCurrCheckedSizes] = useState([
-    // { id: "xs", isChecked: false},
-    // { id: "s", isChecked: false}, 
-    // { id: "m", isChecked: false},
-    // { id: "l", isChecked: false},
-    // { id: "xl", isChecked: false},
-    // { id: "xxl", isChecked: false},
-    // { id: "xxxl", isChecked: false}
-
     {id:"x-small", isChecked: false},
     {id:"small", isChecked: false},
     {id:"medium", isChecked: false},
@@ -52,7 +44,7 @@ function ShopAll() {
   // },[data]);
 
   const products = data || []
-
+  
   // const checkedSizeIds = currCheckedSizes
   // .filter(currCheckedSize => currCheckedSize.isChecked)
   // .map(currCheckedSize => currCheckedSize.id);
