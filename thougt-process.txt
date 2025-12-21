@@ -1,0 +1,3 @@
+FAILED AVAILABILITY & SIZE FILTER SYNCHRONISATION
+
+the probem is that when a size is untoggled the effect of the filtered size needs to be reversed to get back the products that were removed

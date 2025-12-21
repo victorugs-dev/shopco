@@ -1,33 +1,22 @@
-// import { data } from  '../../data.js'
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query'
 import { fetchProducts } from '../mock/product.js';
 import Card from '../components/ui/Card.jsx';
 
-// search bar
 // filter icon
 // sort dropdown: by New Arrivals, color, size, date released
 // filer dropdown: by brand, price
-// categories filter
-
 
 function ShopAll() {
-  // what else can i destructure from my useQuery?????????
   const { data, isLoading, error } = useQuery({
     queryKey: ['products'],
     queryFn: fetchProducts,
   })
+  const products = data || []
 
-
-  // const [displayedProducts,setDisplayedProducts] = useState(data);
-  const [displayedProducts,setDisplayedProducts] = useState([]);
-  // const [displayedProducts,setDisplayedProducts] = useState([
-  //   data, currCheckedAvailability, currCheckedSizes
-  // ]);
-
-  const [isFilterDropdownActive, setIsDropdownActive] = useState(false);
+  const [displayedProducts,setDisplayedProducts] = useState(products);
   const [activeDropdown, setActiveDropdown] = useState('');
-
+  const [isFilterDropdownActive, setIsDropdownActive] = useState(false);
   const [currCheckedAvailability, setCurrCheckedAvailability] = useState(null);
   const [currCheckedSizes, setCurrCheckedSizes] = useState([
     {id:"x-small", isChecked: false},
@@ -39,63 +28,66 @@ function ShopAll() {
     {id:"xxx-large", isChecked: false},
   ]);
 
-  // useEffect(() => {
-  //   if(data) setDisplayedProducts(data);
-  // },[data]);
-
-  const products = data || []
-  
-  // const checkedSizeIds = currCheckedSizes
-  // .filter(currCheckedSize => currCheckedSize.isChecked)
-  // .map(currCheckedSize => currCheckedSize.id);
+  // const products = data || []
 
   const checkedSizeIds = useMemo(() => {
     return currCheckedSizes
     .filter(currCheckedSize => currCheckedSize.isChecked)
     .map(currCheckedSize => currCheckedSize.id);
   },[currCheckedSizes])
-  // const checkedSizeIds = () => {
-  //   return currCheckedSizes
-  //   .filter(size => size.isChecked)
-  //   .map(size => size.id);
-
-  // }
-
-  // useEffect(() => {
-  //   if(products) setDisplayedProducts(products);
-  // },[products]);
 
   useEffect(() => {
     if(!products.length) return;
 
-
-    // if(checkedSizeIds === 0){
-    if(!checkedSizeIds.length){
+    //  return to default data if no size is checked
+    // regardless of the status of other filters
+    // i may remove this code
+    // if(!checkedSizeIds.length){
+    //   setDisplayedProducts(products);
+    //   return
+    // }
+    // if(!checkedSizeIds.length && currCheckedSizes.every(currCheckedSize => currCheckedSize.isChecked === false)){
+    // if(currCheckedAvailability === null && currCheckedSizes.every(currCheckedSize => currCheckedSize.isChecked === false)){
+    //  return to default data if no size and Availability is checked
+    //  
+    if(currCheckedAvailability === null && currCheckedSizes.every(currCheckedSize => !currCheckedSize.isChecked)){
+      // console.log(!currCheckedAvailability)
       setDisplayedProducts(products);
       return
     }
 
     console.log("checkedSizeIds", checkedSizeIds)
 
-    const filteredCheckedSizes = products.filter(product => 
-      product.sizes.some(productSize => 
-        checkedSizeIds.includes(productSize)
-      )
-    );
-    
-    setDisplayedProducts(filteredCheckedSizes)
+    const filteredCheckedSizes = products.filter(product => {
+      // console.log("products:", product)
+      // return product.sizes?.some(productSize => {
+      const productSizeSome = product.sizes?.some(productSize => {
+        // console.log("productSize:", productSize)
+        const includesProductSize =  checkedSizeIds.includes(productSize)
+        console.log("includesProductSize", includesProductSize)
+        return includesProductSize
+        // return checkedSizeIds.includes(productSize)
+      } )
 
+      console.log("productSizeSome", productSizeSome)
+      return productSizeSome
+
+    }
+    );
+
+    console.log("filteredCheckedSizes", filteredCheckedSizes)
+    // setDisplayedProducts(filteredCheckedSizes)
+    setDisplayedProducts(prevDisplayedProducts => {
+      const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
+        filteredCheckedSizes.some(filteredCheckedSize => filteredCheckedSize.slug === prevDisplayedProduct.slug)
+      )
+
+      console.log("filtered", filtered)
+      return filtered
+    })
   },[checkedSizeIds, products]);
   // const [newDisplayedProducts, setNewDisplayedProducts] = useState([]);  const products = data || []
 
-
-
-
-  // const dropdownDivRef = useRef(null);
-  const dropdownDivRef = useRef(null);
-  // console.log("dropdownDivRef: ", dropdownDivRef.current.textContent);
-  // console.log("dropdownDivRef: ", dropdownDivRef);
-  // console.log("dropdownDivRef: ", dropdownDivRef.current?.textContent || false);
 
   const dropdownButtonRef = useRef(null);
   // console.log("dropdownButtonRef", dropdownButtonRef);
@@ -113,14 +105,6 @@ function ShopAll() {
   ];
 
   const sizeOptions = [
-    // {id:"xs", title:"XS"},
-    // {id:"s", title:"S"},
-    // {id:"m", title:"M"},
-    // {id:"l", title:"L"},
-    // {id:"xl", title:"XL"},
-    // {id:"xxl", title:"XXL"},
-    // {id:"xxxl", title:"XXXL"},
-
     {id:"x-small", title:"X-Small"},
     {id:"small", title:"Small"},
     {id:"medium", title:"Medium"},
@@ -135,16 +119,12 @@ function ShopAll() {
   // event listener for click for anything not equal to the  current dropdown
 
   const handleFilterDropdown = (event,currFilter) => {
-    // console.log(currFilter)
-    // dropdownDivRef.current = 
     setIsDropdownActive(!isFilterDropdownActive);
     setActiveDropdown(currFilter.title)
     console.log(currFilter.title);
   };
 
 
-  // const productsInStock = data.filter(d => d.inStock === true);
-  // const productsOutOfStock = data.filter(d => d.inStock === false);
   const productsInStock = products.filter(product => product.inStock === true);
   const productsOutOfStock = products.filter(product => product.inStock === false);
 
@@ -153,15 +133,39 @@ function ShopAll() {
     setCurrCheckedAvailability(newAvailability);
 
 
-    // we may need the spread operator to get previous displayed products and add this new one to it
+    //  may need the spread operator to get previous displayed products and add this new one to it???
     if(newAvailability === "inStock"){
-      setDisplayedProducts(productsInStock);
-      console.log("displayedProducts", productsInStock)
-      // setDisplayedProducts(productsInStock || currCheckedSizes);
+      // setDisplayedProducts(productsInStock);
+      // setDisplayedProducts(products)
+
+      // if(currCheckedAvailability !== null && currCheckedAvailability === "inStock")
+
+      setDisplayedProducts(prevDisplayedProducts => {
+
+        const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
+          productsInStock?.some(product => product.slug === prevDisplayedProduct.slug)
+        )
+
+        console.log("filtered", filtered)
+        console.log("prevDisplayedProducts", prevDisplayedProducts)
+        console.log("productsInStock", productsInStock)
+
+        // return productsInStock
+        return filtered
+      });
+      // console.log("productsInStock", productsInStock)
     }else if(newAvailability === "outOfStock"){
-      setDisplayedProducts(productsOutOfStock);
-      console.log("displayedProducts", productsOutOfStock)
-    // }else setDisplayedProducts(data)
+      // setDisplayedProducts(productsOutOfStock);
+      // console.log("displayedProducts", productsOutOfStock)
+      // setDisplayedProducts(products)
+      setDisplayedProducts(prevDisplayedProducts =>  {
+        const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
+          productsOutOfStock?.some(product => product.slug === prevDisplayedProduct.slug)
+        )
+
+        return filtered
+      }
+      )
     }else setDisplayedProducts(products)
   }
 
@@ -174,7 +178,6 @@ function ShopAll() {
               type='checkbox'
               id={availability.id}
               checked={availability.id === currCheckedAvailability}
-              // onClick={(e) => handleAvailabilityOnClick(e, availability.id)}
               onChange={(e) => handleAvailabilityChange(e, availability.id)}
             />
             <label htmlFor={availability.id}>{availability.title} 
@@ -194,127 +197,12 @@ function ShopAll() {
     );
   }
 
-  // useEffect only handles displaying products based on sizes selected
-  // useEffect(() => {
-  //   if(currCheckedSizes){
-  //   // if (currCheckedAvailability && currCheckedSizes.length){
-  //     console.log("currCheckedSizes.length is > 0") ;
-
-  //   }else setDisplayedProducts(data);
-
-  // }, [isSizeChecked, currClickedSize, currCheckedSizes]);
-
-  // const handleSizeOnClick = (event, sizeId) => {
-  //   console.log("handleSizeOnClick event:", event, "handleSizeOnClick sizeId", sizeId);
-
-  //   setIsSizeClicked(true);
-  //   setCurrClickedSize(sizeId);
-
-  //   // if(sizeId === 'xs' && currCheckedSizes)
-  //   if (!currCheckedSizes.length) return console.log("!currCheckedSizes.length")
-  //   for(let i = 0; i < currCheckedSizes.length; i++){
-  //     if(currCheckedSizes[i] === "xs" ) console.log("xs")
-  //   }
-  // };
-
-  // currCheckedSizes.array.forEach(element => {
-    
-  // });
-  // const currCheckedSizes.forEach(currSize => {
-
-
-
-    // console.log("currSize", currSize)
-  // });
-
   const handleSizeChange = (event, sizeId) => {
-
-    // console.log("sizeId",sizeId)
-    // newSize = 
-    // for(let i = 0; i < currCheckedSizes.length; i++){
-      // console.log("currCheckedSizes[i]", currCheckedSizes[i])
-      // if(currCheckedSizes[i].id === sizeId){
-        // setCurrCheckedSizes((prevCheckedSizes) => [...prevCheckedSizes, ])
-        // setCurrCheckedSizes((prevCheckedSizes) => {
-          
-        // })
-        // updating objects within an array. show where this is explained in the react docs
-      
-    // setCurrCheckedSizes((prevCheckedSizes) => {//[...prevCheckedSizes, { 
-      
-    //   // return prevCheckedSizes.map((prevCheckedSize) => {
-    //   // returning the new array
-    //   return prevCheckedSizes?.map((prevCheckedSize) => {
-    //     // console.log("prevCheckedSize", prevCheckedSize)   
-
-    //     if(prevCheckedSize.id === sizeId){
-    //       // console.log("prevCheckedSize.id === sizeId", prevCheckedSize.id === sizeId);
-    //       // return a new object with updated value
-    //       return {...prevCheckedSize, isChecked: !prevCheckedSize.isChecked} 
-    //     // prevCheckedSize.id === sizeId ? {...prevCheckedSize, isChecked: !prevCheckedSize.isChecked} : prevCheckedSize
-    //     // prevCheckedSize.id === sizeId && {...prevCheckedSize, isChecked: !prevCheckedSize.isChecked}
-    //     }//else console.log("prevCheckedSize.id !== sizeId", prevCheckedSize.id === sizeId);
-    //     return prevCheckedSize;
-    //   });
-    // });
-
     setCurrCheckedSizes(prevCheckedSize => prevCheckedSize.map(size => size.id === sizeId
         ? {...size, isChecked: !size.isChecked} : size
     ))
-
-    // to compare each .sizes of prevCheckedSizes with the .id and .isChecked of currCheckedSizes
-    // we filter prevCheckedSizes
-    // show the freeeCodeCamp article i learnt that taught me how................
-    // how to compare to arrays of objects
-    // setDisplayedProducts((prevDisplayedProducts) => { 
-    //   console.log("prevDisplayedProducts",prevDisplayedProducts);
-
-    //   const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
-    //     // prevDisplayedProduct.sizes.some((size) => size === )))
-    //     // currCheckedSizes.some((currCheckedSize) => currCheckedSize.sizes.includes())))
-    //     // prevDisplayedProduct.sizes.includes())
-    //     // currCheckedSizes.some((currCheckedSize) => prevDisplayedProduct.sizes.includes(currCheckedSize.id)));
-    //     // currCheckedSizes.some((currCheckedSize) => prevDisplayedProduct.sizes.some(size => size === currCheckedSize.id)));
-
-    //     // const newArray
-
-    //     // if(currCheckedSizes.some(currCheckedSize => prevDisplayedProduct.sizes.includes(currCheckedSize.id))){
-    //     //   return 
-    //     // };
-    //     currCheckedSizes.some(currCheckedSize => {
-    //       prevDisplayedProduct.sizes.includes(currCheckedSize.id)
-    //       // prevDisplayedProduct.sizes.includes(currCheckedSize.id || " ")
-    //       console.log("prevDisplayedProduct.sizes.includes(currCheckedSize.id)", prevDisplayedProduct.sizes.includes(currCheckedSize.id))
-              
-    //       // return true
-    //     }) ? prevDisplayedProduct : []
-
-    //     // currCheckedAvailability
-    //   );
-
-    //   // currCheckedSizes.some(currCheckedSize => currCheckedSize.id === prevDisplayedProduct.id))
-    //   console.log("filtered", filtered);
-
-    //   // const mapped = prevDisplayedProducts.map((prevDisplayedProduct) => {
-    //   //   mapped
-    //   //     // currCheckedSizes
-    //   //   return 
-    //   // })
-
-    //   return []
-    // })
-
-    // console.log("currCheckedSizes", currCheckedSizes)
-        // setCurrCheckedSizes((prevCheckedSizes) => [...prevCheckedSizes, {}]
-          // !prevCheckedSizes[i].isChecked
-        // }]
-      // }
-    // }
   };
-  // currCheckedSizes.some(currCheckedSize => {
-  //   console.log("currCheckedSizes.some", currCheckedSize)
-  //   return currCheckedSize.isChecked
-  // })
+
   function SizeBar(){
     return (
       <div>{sizeOptions.map((size) => 
@@ -323,40 +211,12 @@ function ShopAll() {
             type='checkbox'
             name={size.id}
             id={size.id}
-            // checked={size.id === currCheckedSizes}
-            // checked={currCheckedSizes.some( currCheckedSize => currCheckedSize.id === size.id)}
-            // checked={currCheckedSizes.some( currCheckedSize => (currCheckedSize.id === size.id && currCheckedSize.isChecked))}
+            onChange={(e) => handleSizeChange(e, size.id)}
             checked={
               currCheckedSizes?.some(currCheckedSize => {
-                // console.log("currCheckedSize.id === size.id && currCheckedSize.isChecked", currCheckedSize.id === size.id && currCheckedSize.isChecked)
                 return currCheckedSize.id === size.id && currCheckedSize.isChecked
-  
               })
-              // const checkedSizes = currCheckedSizes.filter(currCheckedSize => 
-              //   currCheckedSize.isChecked === true  
-              // )
-              // for(let i = 0; i < checkedSizes.length; i++){
-
-              // for(let i = 0; i < currCheckedSizes.length; i++){
-                // if(currCheckedSizes[i].id === size.id && currCheckedSizes[i].isChecked){
-                  // return true
-                // }
-              // }
-              // const isSizeChecked = currCheckedSizes.forEach(currCheckedSize => {
-              // return currCheckedSizes.forEach(currCheckedSize => //{
-              // return currCheckedSizes.some(currCheckedSize => //{
-              //   // if(currCheckedSize.id === size.id && currCheckedSize.isChecked) return true
-              //   currCheckedSize.id === size.id && currCheckedSize.isChecked
-              // // }
-              // )
-
-
             }
-            // onClick={(e) => handleSizeOnClick(e, size.id)}
-            
-            // .filter the ones that are isChecked
-            //  then map through the id of isChecked to see if any matches size.id
-            onChange={(e) => handleSizeChange(e, size.id)}
           />
           <label htmlFor={size.id}>{size.title}
             {/* ({size.id === "inStock" ? productsInStock.length : productsOutOfStock.length}) */}
@@ -394,7 +254,6 @@ function ShopAll() {
                   id={filter.id} 
                   key={filter.id} 
                   className='flex'
-                  // ref={dropdownDivRef}
                 >
                   {/* <div> */}
                     <p>{filter.title}</p>
@@ -460,16 +319,76 @@ function ShopAll() {
         </div>
         
       </div>
-      <div className='grid grid-cols-4 space-x-2 m-4'
+      {/* <div className='grid grid-cols-4 space-x-2 m-4'
       >{displayedProducts.map((d,i) => (
         <div key={d.title}>
           <img className='w-24 h-24 md:w-full md:h-full' src={d.images} alt={d.title} />
-          <div className='md:text-2xl'>{d.title}</div>
-          <div className='md:text-2xl'>{d.rating}</div>
-          <div>{d.percentageDiscount}</div>
+          <p className='md:text-2xl'>{d.title}</p>
+          <p className='md:text-2xl'>{d.rating}</p>
+          <p>{d.percentageDiscount}</p>
+          <div className='flex gap-1'>{d.sizes.map(size => 
+            <p key={size}>{size}</p>
+          )}</div>
 
         </div>
-      ))}</div>
+      ))}</div> */}
+
+    {/* product Card  */}
+      <div className='w-full'>
+        <div className='flex gap-1'>
+          
+        {currCheckedSizes.map(currCheckedSize => 
+          currCheckedSize.isChecked && (
+              <div 
+                key={currCheckedSize.id}
+                className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
+              >
+                <p>Size: {currCheckedSize.id}</p>
+                <button
+                  className=''
+                >
+                    {/* cancel icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
+                </button>
+              </div>
+        ) )}
+
+        {currCheckedAvailability && (
+          <div
+            className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
+          >
+           <p >Availability: {currCheckedAvailability === 'inStock' ? 'In stock' : 'Out of stock'}</p>
+          <button
+              className=''
+            >
+              {/* cancel icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
+            </button>
+          </div>
+        )}
+        </div>
+
+        <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0 gap-0 w-fit'>
+          {displayedProducts.length ? (
+            displayedProducts.map(product => (
+            <Card
+              key={product.id}
+              title={product.title}
+              discount={product.discount}
+              images={product.images[0]}
+              price={product.price}
+              slug={product.slug} 
+              rating={product.rating}
+              sizes={product.sizes}
+              inStock={product.inStock}
+            />
+          ))
+          ) : (
+            <p>Nothing matches that description</p>
+          )}
+        </div>
+        <hr />
+      </div>
 
     </div>
   )

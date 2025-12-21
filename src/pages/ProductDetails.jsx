@@ -82,7 +82,7 @@ function ProductDetails() {
                     <button 
                         key={size}
                         onClick={(e) => handleOutfitSize(e,size)}
-                    className={`rounded-3xl px-1  py-3 bg-black cursor-pointer
+                    className={`rounded-3xl px-1  py-2 bg-black cursor-pointer my-2
                         ${outfitSize === size ? 'bg-gray-400 text-black' : 'text-white'}`}
                     >{size}</button>
             ))}</>

@@ -23,6 +23,8 @@ function Arrivals() {
             price={product.price}
             slug={product.slug} 
             rating={product.rating}
+            // we expect all arrivals to be inStock so maybe no need for this prop
+            inStock={product.inStock}
           />
         ))}
       </div>

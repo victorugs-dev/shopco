@@ -49,7 +49,9 @@ import React from 'react'
 
 function CartButton() {
   return (
-    <div>CartButton</div>
+    <button 
+      className={`rounded-3xl p-2 w-1/2 bg-black text-white`}
+    >CartButton</button>
   )
 }
 
