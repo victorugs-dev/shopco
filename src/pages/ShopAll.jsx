@@ -39,6 +39,11 @@ function ShopAll() {
     {id: "black", isChecked: false},
   ]);
 
+  const [priceRanges, setPriceRanges] = useState([
+    {id: "from", title:"From", value:""},
+    {id: "to", title: "To", value:""}
+  ]);
+
   const displayedProducts = useMemo(() => {
     let filteredProducts = products;
 
@@ -166,44 +171,85 @@ function ShopAll() {
   }
 
   function PriceBar(){
+
+      useEffect(() => {
+         console.log("priceRanges", priceRanges)
+      },[priceRanges])
+      
+      const handlePriceRangesChange = (event,priceRangeId) => {
+
+         // if(priceRangeId.priceRangeId === "form"){
+            // setPriceRanges(prevPriceRanges => {
+            // //  const mapped =  prevPriceRanges.map(priceRange => priceRange.id === priceRangeId)
+            //    // const priceRangeIds =  prevPriceRanges.map(priceRange => priceRange.id);
+            //    // const priceRangeValues = prevPriceRanges.map(priceRange => priceRange.value);
+            //    const mapped=  prevPriceRanges.map(prevPriceRange => 
+            //       prevPriceRange.id === priceRangeId ? {...prevPriceRange, value: event.target.value} : prevPriceRange
+            //    )
+            // // console.log("mapped",mapped)
+            // //  console.log("priceRangeIds", priceRangeIds)
+            // //  console.log("priceRangeValues", priceRangeValues)
+
+            // //  return priceRangeIds
+            // //  return event.target.value
+            // //  return [prevPriceRanges, {value: event.target.value}]
+            // return mapped
+
+            // //  if (from <) && (to >).........
+            // })
+         // }
+         // if(priceRangeId === 'from'){
+         //    setPriceRanges(prevPriceRanges => {
+         //       const mapped = prevPriceRanges.map(prevPriceRange => prevPriceRange === priceRangeId)
+         //      return mapped
+         //    }
+         //    )
+         console.log("event.target.value", event.target.value)
+
+         setPriceRanges(prevPriceRanges =>
+            prevPriceRanges.map(prevPriceRange =>
+               prevPriceRange.id === priceRangeId && {...prevPriceRange, value: event.target.value}// : prevPriceRange 
+            )
+         )
+         // priceRanges.map(priceRange =>)
+
+      }
+         // console.log("priceRangeId", priceRangeId)
+      // }
+
     // i may move tis up to the other useMemo
-    const highestPrice = useMemo(() => {
+      const highestPrice = useMemo(() => {
       // const highest = products.filter(product => 
       //   product.price
       // )
       const productPrices = products.map(product => product.price)
       // console.log(productPrices)
+      // why the Math.max must use the spread operator on arrays
       return Math.max(...productPrices)
 
       // return highest;
 
-    },[products])
-    return (
-     <div>
-        {/* <p>The highest price is $....</p> */}
-        <p>The highest price is ${highestPrice}</p>
-        {/* <form onSubmit={() => console.log("Submitted price")}> */}
-          <div className='price-filter flex justify-between bg-amber-50 w-1/3'>
-            <div>
-            <span>$</span>
-            <input 
-              type="number" 
-              placeholder='From'
-              className='w-fit border outline-1 focus:ring-0 text-base'
-            />
-          </div>
-          <div>
-            <span>$</span>
-            <input 
-              type="number" 
-              placeholder='To'
-              className='w-fit border outline-1 focus:ring-0 text-base'
-            />
-          </div>
-          </div>
+    },[products]);
 
-        {/* </form> */}
-     </div>
+    return (
+     <div className='space-y-2'>
+         <p>The highest price is ${highestPrice}</p>
+         
+         <div className='price-filter flex gap-2  w-fit '> 
+            {priceRanges.map(priceRange =>
+               <div key={priceRange.id} className='flex'>
+                  <span>$</span>
+                  <input 
+                     type="number" 
+                     placeholder={priceRange.title}
+                     className='w-fit border outline-1 focus:ring-0 text-base'
+                     value={priceRange.value}
+                     onChange={(e) => handlePriceRangesChange(e, priceRange.value)}
+                  />
+               </div>
+            )}
+         </div>
+      </div>
     );
   }
 
