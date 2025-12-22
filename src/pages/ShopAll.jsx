@@ -14,7 +14,7 @@ function ShopAll() {
   })
   const products = data || []
 
-  const [displayedProducts,setDisplayedProducts] = useState(products);
+  // const [displayedProducts,setDisplayedProducts] = useState(products);
   const [activeDropdown, setActiveDropdown] = useState('');
   const [isFilterDropdownActive, setIsDropdownActive] = useState(false);
   const [currCheckedAvailability, setCurrCheckedAvailability] = useState(null);
@@ -28,64 +28,104 @@ function ShopAll() {
     {id:"xxx-large", isChecked: false},
   ]);
 
-  // const products = data || []
+  const displayedProducts = useMemo(() => {
+    let filteredProducts = products;
 
-  const checkedSizeIds = useMemo(() => {
-    return currCheckedSizes
+    const checkedSizeIds = currCheckedSizes
     .filter(currCheckedSize => currCheckedSize.isChecked)
     .map(currCheckedSize => currCheckedSize.id);
-  },[currCheckedSizes])
 
-  useEffect(() => {
-    if(!products.length) return;
+    // the order of the if statements don't matter 
 
-    //  return to default data if no size is checked
-    // regardless of the status of other filters
-    // i may remove this code
-    // if(!checkedSizeIds.length){
-    //   setDisplayedProducts(products);
-    //   return
-    // }
-    // if(!checkedSizeIds.length && currCheckedSizes.every(currCheckedSize => currCheckedSize.isChecked === false)){
-    // if(currCheckedAvailability === null && currCheckedSizes.every(currCheckedSize => currCheckedSize.isChecked === false)){
-    //  return to default data if no size and Availability is checked
-    //  
-    if(currCheckedAvailability === null && currCheckedSizes.every(currCheckedSize => !currCheckedSize.isChecked)){
-      // console.log(!currCheckedAvailability)
-      setDisplayedProducts(products);
-      return
+    if(checkedSizeIds.length){
+      filteredProducts = filteredProducts.filter(product => 
+        product.sizes?.some(size => 
+          checkedSizeIds.includes(size)
+        )
+      );
     }
+
+    if(currCheckedAvailability === 'inStock'){
+      filteredProducts = filteredProducts.filter(products => products.inStock)
+    }
+
+    if(currCheckedAvailability === 'outOfStock'){
+      filteredProducts = filteredProducts.filter(products => !products.inStock)
+    }
+
+    // const checkedSizeIds = currCheckedSizes
+    // .filter(currCheckedSize => currCheckedSize.isChecked)
+    // .map(currCheckedSize => currCheckedSize.id);
+
+    // if(checkedSizeIds.length){
+    //   filteredProducts = filteredProducts.filter(product => 
+    //     product.sizes?.some(size => 
+    //       checkedSizeIds.includes(size)
+    //     )
+    //   );
+    // }
 
     console.log("checkedSizeIds", checkedSizeIds)
 
-    const filteredCheckedSizes = products.filter(product => {
-      // console.log("products:", product)
-      // return product.sizes?.some(productSize => {
-      const productSizeSome = product.sizes?.some(productSize => {
-        // console.log("productSize:", productSize)
-        const includesProductSize =  checkedSizeIds.includes(productSize)
-        console.log("includesProductSize", includesProductSize)
-        return includesProductSize
-        // return checkedSizeIds.includes(productSize)
-      } )
+    return filteredProducts;
+  },[products, currCheckedAvailability, currCheckedSizes])
 
-      console.log("productSizeSome", productSizeSome)
-      return productSizeSome
+  // const checkedSizeIds = useMemo(() => {
+  //   return currCheckedSizes
+  //   .filter(currCheckedSize => currCheckedSize.isChecked)
+  //   .map(currCheckedSize => currCheckedSize.id);
+  // },[currCheckedSizes])
 
-    }
-    );
+  // useEffect(() => {
+  //   if(!products.length) return;
 
-    console.log("filteredCheckedSizes", filteredCheckedSizes)
-    // setDisplayedProducts(filteredCheckedSizes)
-    setDisplayedProducts(prevDisplayedProducts => {
-      const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
-        filteredCheckedSizes.some(filteredCheckedSize => filteredCheckedSize.slug === prevDisplayedProduct.slug)
-      )
+  //   //  return to default data if no size is checked
+  //   // regardless of the status of other filters
+  //   // i may remove this code
+  //   // if(!checkedSizeIds.length){
+  //   //   setDisplayedProducts(products);
+  //   //   return
+  //   // }
+  //   // if(!checkedSizeIds.length && currCheckedSizes.every(currCheckedSize => currCheckedSize.isChecked === false)){
+  //   // if(currCheckedAvailability === null && currCheckedSizes.every(currCheckedSize => currCheckedSize.isChecked === false)){
+  //   //  return to default data if no size and Availability is checked
+  //   //  
+  //   if(currCheckedAvailability === null && currCheckedSizes.every(currCheckedSize => !currCheckedSize.isChecked)){
+  //     // console.log(!currCheckedAvailability)
+  //     setDisplayedProducts(products);
+  //     return
+  //   }
 
-      console.log("filtered", filtered)
-      return filtered
-    })
-  },[checkedSizeIds, products]);
+  //   console.log("checkedSizeIds", checkedSizeIds)
+
+  //   const filteredCheckedSizes = products.filter(product => {
+  //     // console.log("products:", product)
+  //     // return product.sizes?.some(productSize => {
+  //     const productSizeSome = product.sizes?.some(productSize => {
+  //       // console.log("productSize:", productSize)
+  //       const includesProductSize =  checkedSizeIds.includes(productSize)
+  //       console.log("includesProductSize", includesProductSize)
+  //       return includesProductSize
+  //       // return checkedSizeIds.includes(productSize)
+  //     } )
+
+  //     console.log("productSizeSome", productSizeSome)
+  //     return productSizeSome
+
+  //   }
+  //   );
+
+  //   console.log("filteredCheckedSizes", filteredCheckedSizes)
+  //   // setDisplayedProducts(filteredCheckedSizes)
+  //   setDisplayedProducts(prevDisplayedProducts => {
+  //     const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
+  //       filteredCheckedSizes.some(filteredCheckedSize => filteredCheckedSize.slug === prevDisplayedProduct.slug)
+  //     )
+
+  //     console.log("filtered", filtered)
+  //     return filtered
+  //   })
+  // },[checkedSizeIds, products]);
   // const [newDisplayedProducts, setNewDisplayedProducts] = useState([]);  const products = data || []
 
 
@@ -128,46 +168,52 @@ function ShopAll() {
   const productsInStock = products.filter(product => product.inStock === true);
   const productsOutOfStock = products.filter(product => product.inStock === false);
 
+  // const handleAvailabilityChange = (event, availabilityId) => {
   const handleAvailabilityChange = (event, availabilityId) => {
-    const newAvailability = currCheckedAvailability === availabilityId ? null : availabilityId;
-    setCurrCheckedAvailability(newAvailability);
+    // const newAvailability = currCheckedAvailability === availabilityId ? null : availabilityId;
+    // setCurrCheckedAvailability(newAvailability);
 
+    setCurrCheckedAvailability(prev => 
+      prev === availabilityId ? null : availabilityId
+    );
+
+  }
 
     //  may need the spread operator to get previous displayed products and add this new one to it???
-    if(newAvailability === "inStock"){
-      // setDisplayedProducts(productsInStock);
-      // setDisplayedProducts(products)
+  //   if(newAvailability === "inStock"){
+  //     // setDisplayedProducts(productsInStock);
+  //     // setDisplayedProducts(products)
 
-      // if(currCheckedAvailability !== null && currCheckedAvailability === "inStock")
+  //     // if(currCheckedAvailability !== null && currCheckedAvailability === "inStock")
 
-      setDisplayedProducts(prevDisplayedProducts => {
+  //     // setDisplayedProducts(prevDisplayedProducts => {
 
-        const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
-          productsInStock?.some(product => product.slug === prevDisplayedProduct.slug)
-        )
+  //     //   const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
+  //     //     productsInStock?.some(product => product.slug === prevDisplayedProduct.slug)
+  //     //   )
 
-        console.log("filtered", filtered)
-        console.log("prevDisplayedProducts", prevDisplayedProducts)
-        console.log("productsInStock", productsInStock)
+  //     //   console.log("filtered", filtered)
+  //     //   console.log("prevDisplayedProducts", prevDisplayedProducts)
+  //     //   console.log("productsInStock", productsInStock)
 
-        // return productsInStock
-        return filtered
-      });
-      // console.log("productsInStock", productsInStock)
-    }else if(newAvailability === "outOfStock"){
-      // setDisplayedProducts(productsOutOfStock);
-      // console.log("displayedProducts", productsOutOfStock)
-      // setDisplayedProducts(products)
-      setDisplayedProducts(prevDisplayedProducts =>  {
-        const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
-          productsOutOfStock?.some(product => product.slug === prevDisplayedProduct.slug)
-        )
+  //     //   // return productsInStock
+  //     //   return filtered
+  //     // });
+  //     // console.log("productsInStock", productsInStock)
+  //   }else if(newAvailability === "outOfStock"){
+  //     // setDisplayedProducts(productsOutOfStock);
+  //     // console.log("displayedProducts", productsOutOfStock)
+  //     // setDisplayedProducts(products)
+  //     setDisplayedProducts(prevDisplayedProducts =>  {
+  //       const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
+  //         productsOutOfStock?.some(product => product.slug === prevDisplayedProduct.slug)
+  //       )
 
-        return filtered
-      }
-      )
-    }else setDisplayedProducts(products)
-  }
+  //       return filtered
+  //     }
+  //     )
+  //   }else setDisplayedProducts(products)
+  // }
 
   function AvailabilityBar(){
     return (
@@ -198,8 +244,8 @@ function ShopAll() {
   }
 
   const handleSizeChange = (event, sizeId) => {
-    setCurrCheckedSizes(prevCheckedSize => prevCheckedSize.map(size => size.id === sizeId
-        ? {...size, isChecked: !size.isChecked} : size
+    setCurrCheckedSizes(prevCheckedSize => 
+      prevCheckedSize.map(size => size.id === sizeId ? {...size, isChecked: !size.isChecked} : size
     ))
   };
 
