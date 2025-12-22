@@ -166,8 +166,44 @@ function ShopAll() {
   }
 
   function PriceBar(){
+    // i may move tis up to the other useMemo
+    const highestPrice = useMemo(() => {
+      // const highest = products.filter(product => 
+      //   product.price
+      // )
+      const productPrices = products.map(product => product.price)
+      // console.log(productPrices)
+      return Math.max(...productPrices)
+
+      // return highest;
+
+    },[products])
     return (
-     <div>Price</div>
+     <div>
+        {/* <p>The highest price is $....</p> */}
+        <p>The highest price is ${highestPrice}</p>
+        {/* <form onSubmit={() => console.log("Submitted price")}> */}
+          <div className='price-filter flex justify-between bg-amber-50 w-1/3'>
+            <div>
+            <span>$</span>
+            <input 
+              type="number" 
+              placeholder='From'
+              className='w-fit border outline-1 focus:ring-0 text-base'
+            />
+          </div>
+          <div>
+            <span>$</span>
+            <input 
+              type="number" 
+              placeholder='To'
+              className='w-fit border outline-1 focus:ring-0 text-base'
+            />
+          </div>
+          </div>
+
+        {/* </form> */}
+     </div>
     );
   }
 
@@ -373,7 +409,7 @@ function ShopAll() {
           currCheckedColor.isChecked && (
                 <div 
                 key={currCheckedColor.id}
-                className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center w-fit'
+                className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
               >
                 <p>Size: {currCheckedColor.id}</p>
                 <button

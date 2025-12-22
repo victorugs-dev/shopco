@@ -171,7 +171,7 @@ function Navbar() {
             </div> */}
 
             {/*hide harm-burger menu on desktop view  */}
-            <div className='hidden md:flex md:gap-2'>
+            <div className='hidden md:flex md:gap-2 md:items-center md:justify-center'>
                 {navLinks?.map((link) => (
                   <div key={link.title}>
                     <NavLink
@@ -189,7 +189,10 @@ function Navbar() {
             {/*show harm-burger menu on mobile view  */}
             <div className='md:hidden'>
               {isNavlinkActive === false ? (
-                <button onClick={handleIsNavlinkActive}>dropdown</button>
+                <button onClick={handleIsNavlinkActive}>
+                  {/* harm burger menu */}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m1 5a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2z"/></svg>
+                </button>
               ) : (
                 <div className='flex w-1/2  justify-between bg-gray-50 p-4  absolute left-0 z-index:1000'>
                   <div className=''>
@@ -210,8 +213,11 @@ function Navbar() {
 
                   <button
                     onClick={handleIsNavlinkActive}
-                    className='bg-green-200 h-fit'
-                  > disable</button>
+                    className='bg-gray-200 h-fit rounded-full'
+                  > 
+                    {/* cancel icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
+                  </button>
                 </div>
               )}
             </div>

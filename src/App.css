@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+/* @layer base {
+   input[types]
+} */
+
+@layer components {
+   .price-filter
+   input[type="number"]::-webkit-inner-spin-button,
+   .price-filter
+   input[type="number"]::-webkit-outer-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+   }
+
+   .price-filter input[type="number"]{
+      -moz-appearance: textfield;
+   }
+}
