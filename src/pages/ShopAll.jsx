@@ -46,6 +46,12 @@ function ShopAll() {
     .filter(currCheckedSize => currCheckedSize.isChecked)
     .map(currCheckedSize => currCheckedSize.id);
 
+    const checkedColorsIds = currCheckedColors
+    .filter(currCheckedColor => currCheckedColor.isChecked)
+    .map(currCheckedColor => currCheckedColor.id);
+
+    console.log("checkedColorsIds", checkedColorsIds);
+
     // the order of the if statements don't matter 
 
     if(checkedSizeIds.length){
@@ -54,6 +60,17 @@ function ShopAll() {
           checkedSizeIds.includes(size)
         )
       );
+    }
+
+    if(checkedColorsIds.length){
+      filteredProducts = filteredProducts.filter(product => {
+
+        const filtered = product.colors?.some(color => 
+        checkedColorsIds.includes(color))
+
+        console.log("filtered", filtered)
+        return filtered;
+      })
     }
 
     if(currCheckedAvailability === 'inStock'){
@@ -67,7 +84,7 @@ function ShopAll() {
     console.log("checkedSizeIds", checkedSizeIds)
 
     return filteredProducts;
-  },[products, currCheckedAvailability, currCheckedSizes])
+  },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors]);
 
   const dropdownButtonRef = useRef(null);
   // console.log("dropdownButtonRef", dropdownButtonRef);
@@ -215,10 +232,9 @@ function ShopAll() {
     // );
 
     return (
-     <div className='flex gap-x-2 mt-4 bg-amber-800 w-fit '>{colorOptions.map((color) => 
+     <div className='flex gap-x-2 items-center justify-center mt-4 bg-gray-300 w-fit p-2 rounded-xl'>{colorOptions.map((color) => 
         <div 
           key={color.id}
-       
         >
           {/* <input
           type="checkbox" 
@@ -231,85 +247,20 @@ function ShopAll() {
 
         >
           {/* <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16"><path fill={color.hex} stroke={color === outfitColor && 'black'} strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg> */}
-          {/* <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16"><path fill={color.hex} stroke={'black'} strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg> */}
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16"><path fill={color.hex}
+
+           stroke={color.id === 'black' ? 'white' : currCheckedColors.some(currCheckedColor => currCheckedColor.id === color.id && currCheckedColor.isChecked) && 'black'}
+           
+           strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg>
 
             
           {/* <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill={color.hex} stroke={'black'} fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10m-5.97-3.03a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0" clip-rule="evenodd"/></svg> */}
 
-     
-
-          {(() => {
-            // const colorPrimary = color.hex; // Background circle color
-            // const checkmarkColor = isSuccess ? "#FFFFFF" : "#FF0000"; // Conditional color
-            // const checkmarkColor = isSuccess ? "#FFFFFF" : "#FF0000"; // Conditional color
-            // const checkmarkColor = currCheckedColors.some(currCheckedColor => {
-            //   const isMatch = currCheckedColor.id === color.id && currCheckedColor.isChecked
-
-            //   console.log("isMatch", isMatch)
-
-            //   return isMatch
-            // // }) ? "#FFFFFF" : color.hex
-            // }) ? {(() => {
-            //     if(color.id === 'white'){
-            //     return "#FF0000"
-            //   }else if(color.id === 'black'){
-            //     return '#FFFFFF'
-            //   }else{
-            //     return '#FFFFFF'
-            //   }
-              
-            // })()} : color.hex
-
-            const checkmarkColor = () => {
-              const isChecked = currCheckedColors.some(currCheckedColor => {
-                  currCheckedColor === color.id && currCheckedColor.isChecked
-
-                  return isChecked 
-                }
-              );
-
-              if(color.id === 'black'){
-                console.log
-                return isChecked && '#FFFFFF'
-
-              }else if( color.id === 'white'){
-                return isChecked && "#FF0000"
-              } else{
-                return "#FF0000"
-              }
-
-              // return markedColor;
-            };
-          
-
-            return (
-              //  <button
-              //  onClick={(e) => handleColorChange(e, color.id)}
-              // >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                {/* Circle Path */}
-                <path 
-                  // fill={colorPrimary} 
-                  fill={color.hex} 
-                  stroke="black" 
-                  d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10" 
-                />
-                
-                {/* Checkmark Path */}
-                <path 
-                  fill={checkmarkColor} 
-                  // fill={'#FF0000'} 
-                  // fill={color.hex} 
-                  d="m16.03 8.97a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0" 
-                />
-              </svg>//</button>
-            )
-          })()}
-
-          
 
 
         {/* <label htmlFor={color.id}>{color.title}</label> */}
+
+    
         </button>
         </div>
       )}
@@ -386,40 +337,61 @@ function ShopAll() {
       <div className='w-full'>
         <div className='flex gap-1'>
           
-        {currCheckedSizes.map(currCheckedSize => 
-          currCheckedSize.isChecked && (
-              <div 
-                key={currCheckedSize.id}
-                className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
+          {currCheckedSizes.map(currCheckedSize => 
+            currCheckedSize.isChecked && (
+                <div 
+                  key={currCheckedSize.id}
+                  className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
+                >
+                  <p>Size: {currCheckedSize.id}</p>
+                  <button
+                    className=' cursor-pointer'
+                    onClick={(e) => handleSizeChange(e, currCheckedSize.id)}
+                  >
+                      {/* cancel icon */}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
+                  </button>
+                </div>
+          ) )}
+
+          {currCheckedAvailability && (
+            <div
+              className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
+            >
+            <p >Availability: {currCheckedAvailability === 'inStock' ? 'In stock' : 'Out of stock'}</p>
+            <button
+                className='cursor-pointer'
+                onClick={(e) => handleAvailabilityChange(e,currCheckedAvailability)}
               >
-                <p>Size: {currCheckedSize.id}</p>
+                {/* cancel icon */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
+              </button>
+            </div>
+          )}
+
+           {currCheckedColors.map(currCheckedColor =>
+          currCheckedColor.isChecked && (
+                <div 
+                key={currCheckedColor.id}
+                className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center w-fit'
+              >
+                <p>Size: {currCheckedColor.id}</p>
                 <button
                   className=' cursor-pointer'
-                  onClick={(e) => handleSizeChange(e, currCheckedSize.id)}
+                  onClick={(e) => handleColorChange(e, currCheckedColor.id)}
                 >
                     {/* cancel icon */}
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
                 </button>
               </div>
-        ) )}
-
-        {currCheckedAvailability && (
-          <div
-            className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
-          >
-           <p >Availability: {currCheckedAvailability === 'inStock' ? 'In stock' : 'Out of stock'}</p>
-          <button
-              className='cursor-pointer'
-              onClick={(e) => handleAvailabilityChange(e,currCheckedAvailability)}
-            >
-              {/* cancel icon */}
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
-            </button>
-          </div>
+          )
+          
         )}
         </div>
 
-        <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0 gap-0 w-fit'>
+       
+
+        <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  w-fit'>
           {displayedProducts.length ? (
             displayedProducts.map(product => (
             <Card
@@ -432,6 +404,7 @@ function ShopAll() {
               rating={product.rating}
               sizes={product.sizes}
               inStock={product.inStock}
+              colors={product.colors}
             />
           ))
           ) : (
