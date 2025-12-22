@@ -14,7 +14,6 @@ function ShopAll() {
   })
   const products = data || []
 
-  // const [displayedProducts,setDisplayedProducts] = useState(products);
   const [activeDropdown, setActiveDropdown] = useState('');
   const [isFilterDropdownActive, setIsDropdownActive] = useState(false);
   const [currCheckedAvailability, setCurrCheckedAvailability] = useState(null);
@@ -53,81 +52,10 @@ function ShopAll() {
       filteredProducts = filteredProducts.filter(products => !products.inStock)
     }
 
-    // const checkedSizeIds = currCheckedSizes
-    // .filter(currCheckedSize => currCheckedSize.isChecked)
-    // .map(currCheckedSize => currCheckedSize.id);
-
-    // if(checkedSizeIds.length){
-    //   filteredProducts = filteredProducts.filter(product => 
-    //     product.sizes?.some(size => 
-    //       checkedSizeIds.includes(size)
-    //     )
-    //   );
-    // }
-
     console.log("checkedSizeIds", checkedSizeIds)
 
     return filteredProducts;
   },[products, currCheckedAvailability, currCheckedSizes])
-
-  // const checkedSizeIds = useMemo(() => {
-  //   return currCheckedSizes
-  //   .filter(currCheckedSize => currCheckedSize.isChecked)
-  //   .map(currCheckedSize => currCheckedSize.id);
-  // },[currCheckedSizes])
-
-  // useEffect(() => {
-  //   if(!products.length) return;
-
-  //   //  return to default data if no size is checked
-  //   // regardless of the status of other filters
-  //   // i may remove this code
-  //   // if(!checkedSizeIds.length){
-  //   //   setDisplayedProducts(products);
-  //   //   return
-  //   // }
-  //   // if(!checkedSizeIds.length && currCheckedSizes.every(currCheckedSize => currCheckedSize.isChecked === false)){
-  //   // if(currCheckedAvailability === null && currCheckedSizes.every(currCheckedSize => currCheckedSize.isChecked === false)){
-  //   //  return to default data if no size and Availability is checked
-  //   //  
-  //   if(currCheckedAvailability === null && currCheckedSizes.every(currCheckedSize => !currCheckedSize.isChecked)){
-  //     // console.log(!currCheckedAvailability)
-  //     setDisplayedProducts(products);
-  //     return
-  //   }
-
-  //   console.log("checkedSizeIds", checkedSizeIds)
-
-  //   const filteredCheckedSizes = products.filter(product => {
-  //     // console.log("products:", product)
-  //     // return product.sizes?.some(productSize => {
-  //     const productSizeSome = product.sizes?.some(productSize => {
-  //       // console.log("productSize:", productSize)
-  //       const includesProductSize =  checkedSizeIds.includes(productSize)
-  //       console.log("includesProductSize", includesProductSize)
-  //       return includesProductSize
-  //       // return checkedSizeIds.includes(productSize)
-  //     } )
-
-  //     console.log("productSizeSome", productSizeSome)
-  //     return productSizeSome
-
-  //   }
-  //   );
-
-  //   console.log("filteredCheckedSizes", filteredCheckedSizes)
-  //   // setDisplayedProducts(filteredCheckedSizes)
-  //   setDisplayedProducts(prevDisplayedProducts => {
-  //     const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
-  //       filteredCheckedSizes.some(filteredCheckedSize => filteredCheckedSize.slug === prevDisplayedProduct.slug)
-  //     )
-
-  //     console.log("filtered", filtered)
-  //     return filtered
-  //   })
-  // },[checkedSizeIds, products]);
-  // const [newDisplayedProducts, setNewDisplayedProducts] = useState([]);  const products = data || []
-
 
   const dropdownButtonRef = useRef(null);
   // console.log("dropdownButtonRef", dropdownButtonRef);
@@ -168,52 +96,12 @@ function ShopAll() {
   const productsInStock = products.filter(product => product.inStock === true);
   const productsOutOfStock = products.filter(product => product.inStock === false);
 
-  // const handleAvailabilityChange = (event, availabilityId) => {
   const handleAvailabilityChange = (event, availabilityId) => {
-    // const newAvailability = currCheckedAvailability === availabilityId ? null : availabilityId;
-    // setCurrCheckedAvailability(newAvailability);
-
     setCurrCheckedAvailability(prev => 
       prev === availabilityId ? null : availabilityId
     );
 
   }
-
-    //  may need the spread operator to get previous displayed products and add this new one to it???
-  //   if(newAvailability === "inStock"){
-  //     // setDisplayedProducts(productsInStock);
-  //     // setDisplayedProducts(products)
-
-  //     // if(currCheckedAvailability !== null && currCheckedAvailability === "inStock")
-
-  //     // setDisplayedProducts(prevDisplayedProducts => {
-
-  //     //   const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
-  //     //     productsInStock?.some(product => product.slug === prevDisplayedProduct.slug)
-  //     //   )
-
-  //     //   console.log("filtered", filtered)
-  //     //   console.log("prevDisplayedProducts", prevDisplayedProducts)
-  //     //   console.log("productsInStock", productsInStock)
-
-  //     //   // return productsInStock
-  //     //   return filtered
-  //     // });
-  //     // console.log("productsInStock", productsInStock)
-  //   }else if(newAvailability === "outOfStock"){
-  //     // setDisplayedProducts(productsOutOfStock);
-  //     // console.log("displayedProducts", productsOutOfStock)
-  //     // setDisplayedProducts(products)
-  //     setDisplayedProducts(prevDisplayedProducts =>  {
-  //       const filtered = prevDisplayedProducts.filter(prevDisplayedProduct => 
-  //         productsOutOfStock?.some(product => product.slug === prevDisplayedProduct.slug)
-  //       )
-
-  //       return filtered
-  //     }
-  //     )
-  //   }else setDisplayedProducts(products)
-  // }
 
   function AvailabilityBar(){
     return (
@@ -365,19 +253,6 @@ function ShopAll() {
         </div>
         
       </div>
-      {/* <div className='grid grid-cols-4 space-x-2 m-4'
-      >{displayedProducts.map((d,i) => (
-        <div key={d.title}>
-          <img className='w-24 h-24 md:w-full md:h-full' src={d.images} alt={d.title} />
-          <p className='md:text-2xl'>{d.title}</p>
-          <p className='md:text-2xl'>{d.rating}</p>
-          <p>{d.percentageDiscount}</p>
-          <div className='flex gap-1'>{d.sizes.map(size => 
-            <p key={size}>{size}</p>
-          )}</div>
-
-        </div>
-      ))}</div> */}
 
     {/* product Card  */}
       <div className='w-full'>
@@ -391,7 +266,8 @@ function ShopAll() {
               >
                 <p>Size: {currCheckedSize.id}</p>
                 <button
-                  className=''
+                  className=' cursor-pointer'
+                  onClick={(e) => handleSizeChange(e, currCheckedSize.id)}
                 >
                     {/* cancel icon */}
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
@@ -405,7 +281,8 @@ function ShopAll() {
           >
            <p >Availability: {currCheckedAvailability === 'inStock' ? 'In stock' : 'Out of stock'}</p>
           <button
-              className=''
+              className='cursor-pointer'
+              onClick={(e) => handleAvailabilityChange(e,currCheckedAvailability)}
             >
               {/* cancel icon */}
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
