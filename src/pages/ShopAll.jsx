@@ -26,6 +26,18 @@ function ShopAll() {
     {id:"xx-large", isChecked: false},
     {id:"xxx-large", isChecked: false},
   ]);
+  const [currCheckedColors, setCurrCheckedColors] = useState([
+    {id: "green", isChecked: false},
+    {id: "red", isChecked: false},
+    {id: "yellow", isChecked: false},
+    {id: "orange", isChecked: false},
+    {id: "light-blue", isChecked: false},
+    {id: "dark-blue", isChecked: false},
+    {id: "purple", isChecked: false},
+    {id: "pink", isChecked: false},
+    {id: "white", isChecked: false},
+    {id: "black", isChecked: false},
+  ]);
 
   const displayedProducts = useMemo(() => {
     let filteredProducts = products;
@@ -82,6 +94,19 @@ function ShopAll() {
     {id:"xxx-large", title:"XXX-Large"},
   ];
 
+  const colorOptions = [
+    {id: "green", title: "Green", hex: "#10B981"},
+    {id: "red", title: "Red", hex: "#EF4444"},
+    {id: "yellow", title: "Yellow", hex: "#F59E0B"},
+    {id: "orange", title: "Orange", hex: "#F97316",},
+    {id: "light-blue", title: "Light Blue", hex: "#38BDF8",},
+    {id: "dark-blue", title: "Dark Blue", hex: "#1D4ED8",},
+    {id: "purple", title: "Purple", hex: "#8B5CF6",},
+    {id: "pink", title: "Pink", hex: "#EC4899",},
+    {id: "white", title: "White",  hex: "#FFFFFF"},
+    {id: "black", title: "Black", hex: "#000000",},
+  ];
+
   // the dropDown will lose focus if we click something aside from the current dropdown
   // useRef to capture the item that was clicked
   // event listener for click for anything not equal to the  current dropdown
@@ -125,9 +150,7 @@ function ShopAll() {
 
   function PriceBar(){
     return (
-      <div>PriceBar
-
-      </div>
+     <div>Price</div>
     );
   }
 
@@ -152,19 +175,144 @@ function ShopAll() {
               })
             }
           />
-          <label htmlFor={size.id}>{size.title}
-            {/* ({size.id === "inStock" ? productsInStock.length : productsOutOfStock.length}) */}
-          </label>
+          <label htmlFor={size.id}>{size.title}</label>
         </div>
       )}
-
       </div>
     );
   }
 
-  function ColourBar(){
+  const handleColorChange = (event, colorId) => {
+    // const newColor = 
+      console.log("colorId", colorId)
+
+      setCurrCheckedColors(prevCheckedColor => 
+      prevCheckedColor.map(color => color.id === colorId ? {...color, isChecked: !color.isChecked} : color)
+    )
+  }
+
+  function ColorBar(){
+    // const colorPrimary = color.hex; // Background circle color
+    // const color.hex = color.hex; // Background circle color
+    // const checkmarkColor = isSuccess ? "#FFFFFF" : "#FF0000"; // Conditional color
+
+    // return (
+    //   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+    //     {/* Circle Path */}
+    //     <path 
+          // fill={colorPrimary} 
+          // fill={color.hex} 
+    //       stroke="black" 
+    //       d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10" 
+    //     />
+        
+    //     {/* Checkmark Path */}
+    //     <path 
+    //       fill={checkmarkColor} 
+    //       d="m16.03 8.97a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0" 
+    //     />
+    //   </svg>
+    // );
+
     return (
-      <div>ColourBar
+     <div className='flex gap-x-2 mt-4 bg-amber-800 w-fit '>{colorOptions.map((color) => 
+        <div 
+          key={color.id}
+       
+        >
+          {/* <input
+          type="checkbox" 
+          name=""
+          id="" 
+        /> */}
+        <button 
+          className='cursor-pointer '
+         onClick={(e) => handleColorChange(e, color.id)}
+
+        >
+          {/* <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16"><path fill={color.hex} stroke={color === outfitColor && 'black'} strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg> */}
+          {/* <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16"><path fill={color.hex} stroke={'black'} strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg> */}
+
+            
+          {/* <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill={color.hex} stroke={'black'} fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10m-5.97-3.03a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0" clip-rule="evenodd"/></svg> */}
+
+     
+
+          {(() => {
+            // const colorPrimary = color.hex; // Background circle color
+            // const checkmarkColor = isSuccess ? "#FFFFFF" : "#FF0000"; // Conditional color
+            // const checkmarkColor = isSuccess ? "#FFFFFF" : "#FF0000"; // Conditional color
+            // const checkmarkColor = currCheckedColors.some(currCheckedColor => {
+            //   const isMatch = currCheckedColor.id === color.id && currCheckedColor.isChecked
+
+            //   console.log("isMatch", isMatch)
+
+            //   return isMatch
+            // // }) ? "#FFFFFF" : color.hex
+            // }) ? {(() => {
+            //     if(color.id === 'white'){
+            //     return "#FF0000"
+            //   }else if(color.id === 'black'){
+            //     return '#FFFFFF'
+            //   }else{
+            //     return '#FFFFFF'
+            //   }
+              
+            // })()} : color.hex
+
+            const checkmarkColor = () => {
+              const isChecked = currCheckedColors.some(currCheckedColor => {
+                  currCheckedColor === color.id && currCheckedColor.isChecked
+
+                  return isChecked 
+                }
+              );
+
+              if(color.id === 'black'){
+                console.log
+                return isChecked && '#FFFFFF'
+
+              }else if( color.id === 'white'){
+                return isChecked && "#FF0000"
+              } else{
+                return "#FF0000"
+              }
+
+              // return markedColor;
+            };
+          
+
+            return (
+              //  <button
+              //  onClick={(e) => handleColorChange(e, color.id)}
+              // >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                {/* Circle Path */}
+                <path 
+                  // fill={colorPrimary} 
+                  fill={color.hex} 
+                  stroke="black" 
+                  d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10" 
+                />
+                
+                {/* Checkmark Path */}
+                <path 
+                  fill={checkmarkColor} 
+                  // fill={'#FF0000'} 
+                  // fill={color.hex} 
+                  d="m16.03 8.97a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0" 
+                />
+              </svg>//</button>
+            )
+          })()}
+
+          
+
+
+        {/* <label htmlFor={color.id}>{color.title}</label> */}
+        </button>
+        </div>
+      )}
 
       </div>
     );
@@ -227,33 +375,13 @@ function ShopAll() {
                 <SizeBar />
               )}
               {activeDropdown === "Colour" && (
-                <ColourBar />
+                <ColorBar />
               )}
 
               </div>
             </div>
-          
-          {/* <div> */}
-            {/* <label htmlFor="availability">Filter:</label>
-            <select name="availability" id="availability">
-              <option value={'none'} disabled selected> Availability </option>
-            </select>
-
-            <select name="price" id="price">Price
-              <option value={'none'} disabled selected>Price</option>
-            </select>
-            <select name="size" id="size">
-              <option value={'none'} disabled selected>Size</option>
-            </select>
-            <select name="colour" id="colour">
-              <option value={'none'} disabled selected>Colour</option>
-            </select> */}
-
-          {/* </div> */}
-        </div>
-        
+        </div>      
       </div>
-
     {/* product Card  */}
       <div className='w-full'>
         <div className='flex gap-1'>
