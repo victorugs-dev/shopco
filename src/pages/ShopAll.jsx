@@ -176,8 +176,9 @@ function ShopAll() {
          console.log("priceRanges", priceRanges)
       },[priceRanges])
       
+      // const handlePriceRangesChange = (event,priceRangeId) => {
       const handlePriceRangesChange = (event,priceRangeId) => {
-
+         console.log("priceRangeId", priceRangeId)
          // if(priceRangeId.priceRangeId === "form"){
             // setPriceRanges(prevPriceRanges => {
             // //  const mapped =  prevPriceRanges.map(priceRange => priceRange.id === priceRangeId)
@@ -206,12 +207,51 @@ function ShopAll() {
          //    )
          console.log("event.target.value", event.target.value)
 
-         setPriceRanges(prevPriceRanges =>
-            prevPriceRanges.map(prevPriceRange =>
-               prevPriceRange.id === priceRangeId && {...prevPriceRange, value: event.target.value}// : prevPriceRange 
-            )
-         )
+         // setPriceRanges(prevPriceRanges => {
+         //    // const mappedPriceRangeId = prevPriceRanges.map(prevPriceRange => prevPriceRange.id)
+         //    const mappedPriceRangeId = prevPriceRanges.map(prevPriceRange => {
+               
+         //       if(prevPriceRange.id === priceRangeId){
+         //          console.log("prevPriceRange", prevPriceRange)
+         //          return {...prevPriceRange, value: event.target.value}
+         //       }
+         //    })
+
+         //    console.log("mappedPriceRangeId", mappedPriceRangeId)
+         //    return mappedPriceRangeId
+         //    // const mappedPriceRange = prevPriceRanges.map(prevPriceRange => prevPriceRange)
+         //    // console.log("mappedPriceRangeId", mappedPriceRangeId)
+         //    // if(mappedPriceRangeId === priceRangeId){
+
+         //    // }
+         // }
+            
+         //    // prevPriceRanges.map(prevPriceRange =>
+         //    //    prevPriceRange.id === priceRangeId && {...prevPriceRange, value: event.target.value}// : prevPriceRange 
+         //    // )
+         // )
          // priceRanges.map(priceRange =>)
+
+         // const mappedPriceRange = priceRanges.map(price => {
+         //    let newValue = '';
+         //    // console.log("price", price)
+         //    // console.log("price", price.id === priceRangeId)
+         //    if(price.id === priceRangeId){
+         //       console.log("price", price)
+         //       price.value = event.target.value
+         //       console.log("price", price)
+
+         //    }
+         // })
+         // console.log("mappedPriceRange", mappedPriceRange)
+
+         setPriceRanges(prevPriceRanges => 
+            prevPriceRanges.map(prevPriceRange => {
+               if(prevPriceRange.id === priceRangeId){
+                  return {...prevPriceRange, value: event.target.value}
+               }else return prevPriceRange
+            })
+         )
 
       }
          // console.log("priceRangeId", priceRangeId)
@@ -219,17 +259,17 @@ function ShopAll() {
 
     // i may move tis up to the other useMemo
       const highestPrice = useMemo(() => {
-      // const highest = products.filter(product => 
-      //   product.price
-      // )
-      const productPrices = products.map(product => product.price)
-      // console.log(productPrices)
-      // why the Math.max must use the spread operator on arrays
-      return Math.max(...productPrices)
+         // const highest = products.filter(product => 
+         //   product.price
+         // )
+         const productPrices = products.map(product => product.price)
+         // console.log(productPrices)
+         // why the Math.max must use the spread operator on arrays
+         return Math.max(...productPrices)
 
-      // return highest;
+         // return highest;
 
-    },[products]);
+      },[products]);
 
     return (
      <div className='space-y-2'>
@@ -244,7 +284,8 @@ function ShopAll() {
                      placeholder={priceRange.title}
                      className='w-fit border outline-1 focus:ring-0 text-base'
                      value={priceRange.value}
-                     onChange={(e) => handlePriceRangesChange(e, priceRange.value)}
+                     // onChange={(e) => handlePriceRangesChange(e, priceRange.value)}
+                     onChange={(e) => handlePriceRangesChange(e, priceRange.id)}
                   />
                </div>
             )}
