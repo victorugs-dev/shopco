@@ -2,6 +2,10 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query'
 import { fetchProducts } from '../mock/product.js';
 import Card from '../components/ui/Card.jsx';
+import PriceBar from '../components/ui/FilterBars/PriceBar.jsx';
+import ColorBar from '../components/ui/FilterBars/ColorBar.jsx';
+import SizeBar from '../components/ui/FilterBars/SizeBar.jsx';
+import AvailabilityBar from '../components/ui/FilterBars/AvailabilityBar.jsx';
 
 // filter icon
 // sort dropdown: by New Arrivals, color, size, date released
@@ -101,44 +105,11 @@ function ShopAll() {
     { id: "colour", title: "Colour"},
   ];
 
-  const availabilityOptions = [
-    { id: "inStock", title: "In Stock"},
-    { id: "outOfStock", title: "Out of Stock" }
-  ];
-
-  const sizeOptions = [
-    {id:"x-small", title:"X-Small"},
-    {id:"small", title:"Small"},
-    {id:"medium", title:"Medium"},
-    {id:"large", title:"Large"},
-    {id:"x-large", title:"X-Large"},
-    {id:"xx-large", title:"XX-Large"},
-    {id:"xxx-large", title:"XXX-Large"},
-  ];
-
-  const colorOptions = [
-    {id: "green", title: "Green", hex: "#10B981"},
-    {id: "red", title: "Red", hex: "#EF4444"},
-    {id: "yellow", title: "Yellow", hex: "#F59E0B"},
-    {id: "orange", title: "Orange", hex: "#F97316",},
-    {id: "light-blue", title: "Light Blue", hex: "#38BDF8",},
-    {id: "dark-blue", title: "Dark Blue", hex: "#1D4ED8",},
-    {id: "purple", title: "Purple", hex: "#8B5CF6",},
-    {id: "pink", title: "Pink", hex: "#EC4899",},
-    {id: "white", title: "White",  hex: "#FFFFFF"},
-    {id: "black", title: "Black", hex: "#000000",},
-  ];
-
-  // the dropDown will lose focus if we click something aside from the current dropdown
-  // useRef to capture the item that was clicked
-  // event listener for click for anything not equal to the  current dropdown
-
   const handleFilterDropdown = (event,currFilter) => {
     setIsDropdownActive(!isFilterDropdownActive);
     setActiveDropdown(currFilter.title)
     console.log(currFilter.title);
   };
-
 
   const productsInStock = products.filter(product => product.inStock === true);
   const productsOutOfStock = products.filter(product => product.inStock === false);
@@ -150,258 +121,19 @@ function ShopAll() {
 
   }
 
-  function AvailabilityBar(){
-    return (
-      <>
-        {availabilityOptions.map((availability) => 
-          <div key={availability.id}>
-            <input
-              type='checkbox'
-              id={availability.id}
-              checked={availability.id === currCheckedAvailability}
-              onChange={(e) => handleAvailabilityChange(e, availability.id)}
-            />
-            <label htmlFor={availability.id}>{availability.title} 
-              ({ availability.id === "inStock" ? productsInStock.length : productsOutOfStock.length})
-            </label>
-          </div>
-        )}
-      </>
-    );
-  }
-
-  function PriceBar(){
-
-      useEffect(() => {
-         console.log("priceRanges", priceRanges)
-      },[priceRanges])
-      
-      // const handlePriceRangesChange = (event,priceRangeId) => {
-      const handlePriceRangesChange = (event,priceRangeId) => {
-         console.log("priceRangeId", priceRangeId)
-         // if(priceRangeId.priceRangeId === "form"){
-            // setPriceRanges(prevPriceRanges => {
-            // //  const mapped =  prevPriceRanges.map(priceRange => priceRange.id === priceRangeId)
-            //    // const priceRangeIds =  prevPriceRanges.map(priceRange => priceRange.id);
-            //    // const priceRangeValues = prevPriceRanges.map(priceRange => priceRange.value);
-            //    const mapped=  prevPriceRanges.map(prevPriceRange => 
-            //       prevPriceRange.id === priceRangeId ? {...prevPriceRange, value: event.target.value} : prevPriceRange
-            //    )
-            // // console.log("mapped",mapped)
-            // //  console.log("priceRangeIds", priceRangeIds)
-            // //  console.log("priceRangeValues", priceRangeValues)
-
-            // //  return priceRangeIds
-            // //  return event.target.value
-            // //  return [prevPriceRanges, {value: event.target.value}]
-            // return mapped
-
-            // //  if (from <) && (to >).........
-            // })
-         // }
-         // if(priceRangeId === 'from'){
-         //    setPriceRanges(prevPriceRanges => {
-         //       const mapped = prevPriceRanges.map(prevPriceRange => prevPriceRange === priceRangeId)
-         //      return mapped
-         //    }
-         //    )
-         console.log("event.target.value", event.target.value)
-
-         // setPriceRanges(prevPriceRanges => {
-         //    // const mappedPriceRangeId = prevPriceRanges.map(prevPriceRange => prevPriceRange.id)
-         //    const mappedPriceRangeId = prevPriceRanges.map(prevPriceRange => {
-               
-         //       if(prevPriceRange.id === priceRangeId){
-         //          console.log("prevPriceRange", prevPriceRange)
-         //          return {...prevPriceRange, value: event.target.value}
-         //       }
-         //    })
-
-         //    console.log("mappedPriceRangeId", mappedPriceRangeId)
-         //    return mappedPriceRangeId
-         //    // const mappedPriceRange = prevPriceRanges.map(prevPriceRange => prevPriceRange)
-         //    // console.log("mappedPriceRangeId", mappedPriceRangeId)
-         //    // if(mappedPriceRangeId === priceRangeId){
-
-         //    // }
-         // }
-            
-         //    // prevPriceRanges.map(prevPriceRange =>
-         //    //    prevPriceRange.id === priceRangeId && {...prevPriceRange, value: event.target.value}// : prevPriceRange 
-         //    // )
-         // )
-         // priceRanges.map(priceRange =>)
-
-         // const mappedPriceRange = priceRanges.map(price => {
-         //    let newValue = '';
-         //    // console.log("price", price)
-         //    // console.log("price", price.id === priceRangeId)
-         //    if(price.id === priceRangeId){
-         //       console.log("price", price)
-         //       price.value = event.target.value
-         //       console.log("price", price)
-
-         //    }
-         // })
-         // console.log("mappedPriceRange", mappedPriceRange)
-
-         setPriceRanges(prevPriceRanges => 
-            prevPriceRanges.map(prevPriceRange => {
-               if(prevPriceRange.id === priceRangeId){
-                  return {...prevPriceRange, value: event.target.value}
-               }else return prevPriceRange
-            })
-         )
-
-      }
-         // console.log("priceRangeId", priceRangeId)
-      // }
-
-    // i may move tis up to the other useMemo
-      const highestPrice = useMemo(() => {
-         // const highest = products.filter(product => 
-         //   product.price
-         // )
-         const productPrices = products.map(product => product.price)
-         // console.log(productPrices)
-         // why the Math.max must use the spread operator on arrays
-         return Math.max(...productPrices)
-
-         // return highest;
-
-      },[products]);
-
-    return (
-     <div className='space-y-2'>
-         <p>The highest price is ${highestPrice}</p>
-         
-         <div className='price-filter flex gap-2  w-fit '> 
-            {priceRanges.map(priceRange =>
-               <div key={priceRange.id} className='flex'>
-                  <span>$</span>
-                  <input 
-                     type="number" 
-                     placeholder={priceRange.title}
-                     className='w-fit border outline-1 focus:ring-0 text-base'
-                     value={priceRange.value}
-                     // onChange={(e) => handlePriceRangesChange(e, priceRange.value)}
-                     onChange={(e) => handlePriceRangesChange(e, priceRange.id)}
-                  />
-               </div>
-            )}
-         </div>
-      </div>
-    );
-  }
-
   const handleSizeChange = (event, sizeId) => {
     setCurrCheckedSizes(prevCheckedSize => 
       prevCheckedSize.map(size => size.id === sizeId ? {...size, isChecked: !size.isChecked} : size
     ))
   };
 
-  function SizeBar(){
-    return (
-      <div>{sizeOptions.map((size) => 
-        <div key={size.id}>
-          <input
-            type='checkbox'
-            name={size.id}
-            id={size.id}
-            onChange={(e) => handleSizeChange(e, size.id)}
-            checked={
-              currCheckedSizes?.some(currCheckedSize => {
-                return currCheckedSize.id === size.id && currCheckedSize.isChecked
-              })
-            }
-          />
-          <label htmlFor={size.id}>{size.title}</label>
-        </div>
-      )}
-      </div>
-    );
-  }
-
-  const handleColorChange = (event, colorId) => {
-    // const newColor = 
-      console.log("colorId", colorId)
-
-      setCurrCheckedColors(prevCheckedColor => 
-      prevCheckedColor.map(color => color.id === colorId ? {...color, isChecked: !color.isChecked} : color)
-    )
-  }
-
-  function ColorBar(){
-    // const colorPrimary = color.hex; // Background circle color
-    // const color.hex = color.hex; // Background circle color
-    // const checkmarkColor = isSuccess ? "#FFFFFF" : "#FF0000"; // Conditional color
-
-    // return (
-    //   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-    //     {/* Circle Path */}
-    //     <path 
-          // fill={colorPrimary} 
-          // fill={color.hex} 
-    //       stroke="black" 
-    //       d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10" 
-    //     />
-        
-    //     {/* Checkmark Path */}
-    //     <path 
-    //       fill={checkmarkColor} 
-    //       d="m16.03 8.97a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0" 
-    //     />
-    //   </svg>
-    // );
-
-    return (
-     <div className='flex gap-x-2 items-center justify-center mt-4 bg-gray-300 w-fit p-2 rounded-xl'>{colorOptions.map((color) => 
-        <div 
-          key={color.id}
-        >
-          {/* <input
-          type="checkbox" 
-          name=""
-          id="" 
-        /> */}
-        <button 
-          className='cursor-pointer '
-         onClick={(e) => handleColorChange(e, color.id)}
-
-        >
-          {/* <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16"><path fill={color.hex} stroke={color === outfitColor && 'black'} strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg> */}
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16"><path fill={color.hex}
-
-           stroke={color.id === 'black' ? 'white' : currCheckedColors.some(currCheckedColor => currCheckedColor.id === color.id && currCheckedColor.isChecked) && 'black'}
-           
-           strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg>
-
-            
-          {/* <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill={color.hex} stroke={'black'} fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10m-5.97-3.03a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0" clip-rule="evenodd"/></svg> */}
-
-
-
-        {/* <label htmlFor={color.id}>{color.title}</label> */}
-
-    
-        </button>
-        </div>
-      )}
-
-      </div>
-    );
-  }
-
   if (isLoading) return <p>Loading products...</p>
   if (error) return <p>Failed to load products</p>
   
   return (
     <div>
-      {/* cancel icon */}
-      {/* <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> */}
       <h1 className='m-4 text-3xl'>Products</h1>
       <div className='m-4'>
-        
         <div >
             <div className=''>
               <div className='flex bg-green-300'>
@@ -411,9 +143,7 @@ function ShopAll() {
                   key={filter.id} 
                   className='flex'
                 >
-                  {/* <div> */}
-                    <p>{filter.title}</p>
-                  {/* </div> */}
+                  <p>{filter.title}</p>
 
                   {(isFilterDropdownActive === false || activeDropdown !== filter.title) && (
 
@@ -436,31 +166,40 @@ function ShopAll() {
                 </div>
               ))}
               </div>
-
               <div>
-              {activeDropdown === "Availability" && (
-                <AvailabilityBar />
-              )}
-              
-              {activeDropdown === "Price" && (
-                <PriceBar />
-              )}
-              {activeDropdown === "Size" && (
-                <SizeBar />
-              )}
-              {activeDropdown === "Colour" && (
-                <ColorBar />
-              )}
-
+                  {activeDropdown === "Availability" && (
+                     <AvailabilityBar
+                        currCheckedAvailability={currCheckedAvailability}
+                        setCurrCheckedAvailability={setCurrCheckedAvailability}
+                        // availabilityOptions={availabilityOptions}
+                        products={products}
+                     />
+                  )}
+                  {activeDropdown === "Price" && (
+                     <PriceBar
+                        priceRanges={priceRanges}
+                        setPriceRanges={setPriceRanges}
+                        products={products}
+                     />
+                  )}
+                  {activeDropdown === "Size" && (
+                     <SizeBar
+                        currCheckedSizes={currCheckedSizes}
+                        setCurrCheckedSizes={setCurrCheckedSizes}
+                     />
+                  )}
+                  {activeDropdown === "Colour" && (
+                     <ColorBar
+                        currCheckedColors={currCheckedColors}
+                        setCurrCheckedColors={setCurrCheckedColors}
+                     />
+                  )}
               </div>
             </div>
         </div>      
       </div>
-    {/* product Card  */}
       <div className='w-full'>
-        <div className='flex gap-1'>
-          
-          {currCheckedSizes.map(currCheckedSize => 
+        <div className='flex gap-1'>{currCheckedSizes.map(currCheckedSize => 
             currCheckedSize.isChecked && (
                 <div 
                   key={currCheckedSize.id}
@@ -508,11 +247,7 @@ function ShopAll() {
                 </button>
               </div>
           )
-          
-        )}
-        </div>
-
-       
+        )}</div>
 
         <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  w-fit'>
           {displayedProducts.length ? (
