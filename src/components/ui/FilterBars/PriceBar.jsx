@@ -1,7 +1,14 @@
 import { useMemo, useEffect, useState } from "react"
 
-function PriceBar({ priceRanges, setPriceRanges, products }){
+function PriceBar({ products, sendDataToParent, setFilteredPrices }){
    const [activePriceRange, setActivePriceRange] = useState(null);
+
+   const [priceRanges, setPriceRanges] = useState([
+    {id: "from", title:"From", value:""},
+    {id: "to", title: "To", value:""}
+   //  {id: "from", title:"From", value: 0},
+   //  {id: "to", title: "To", value: highestPrice}
+  ]);
 
    // i may move this up to the other useMemo
    const highestPrice = useMemo(() => {
@@ -75,9 +82,9 @@ function PriceBar({ priceRanges, setPriceRanges, products }){
          product.price >= from && (product.price <= to )
          // return product
       )
-
       console.log("priceFilter", priceFilter)
-
+      // sendDataToParent(priceFilter)
+      setFilteredPrices(priceFilter)
 
 
       // const mappedPriceRange = priceRanges.map(priceRange => 

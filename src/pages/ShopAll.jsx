@@ -43,19 +43,22 @@ function ShopAll() {
     {id: "black", isChecked: false},
   ]);
 
+  const [filteredPrices, setFilteredPrices] = useState([]);
+
    // const highestPrice = useMemo(() => {
    //    const productPrices = products.map(product => product.price)
    //    return Math.max(...productPrices)
    // },[products]);
 
-  const [priceRanges, setPriceRanges] = useState([
-    {id: "from", title:"From", value:""},
-    {id: "to", title: "To", value:""}
-   //  {id: "from", title:"From", value: 0},
-   //  {id: "to", title: "To", value: highestPrice}
-  ]);
+//   const [priceRanges, setPriceRanges] = useState([
+//     {id: "from", title:"From", value:""},
+//     {id: "to", title: "To", value:""}
+//    //  {id: "from", title:"From", value: 0},
+//    //  {id: "to", title: "To", value: highestPrice}
+//   ]);
 
-  const displayedProducts = useMemo(() => {
+//   const displayedProducts = useMemo(() => {
+  let displayedProducts = useMemo(() => {
     let filteredProducts = products;
 
     const checkedSizeIds = currCheckedSizes
@@ -67,6 +70,10 @@ function ShopAll() {
     .map(currCheckedColor => currCheckedColor.id);
 
     console.log("checkedColorsIds", checkedColorsIds);
+
+   //  console.log("filteredPrices", filteredPrices)
+
+   //  const filteredPrices =
 
     // the order of the if statements don't matter 
 
@@ -89,6 +96,10 @@ function ShopAll() {
       })
     }
 
+    if(filteredPrices.length){
+      return filteredPrices
+    }
+
     if(currCheckedAvailability === 'inStock'){
       filteredProducts = filteredProducts.filter(products => products.inStock)
     }
@@ -98,9 +109,11 @@ function ShopAll() {
     }
 
     console.log("checkedSizeIds", checkedSizeIds)
+   
+   //  if(filtered)
 
     return filteredProducts;
-  },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors]);
+  },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors, filteredPrices]);
 
   const dropdownButtonRef = useRef(null);
   // console.log("dropdownButtonRef", dropdownButtonRef);
@@ -133,6 +146,13 @@ function ShopAll() {
       prevCheckedSize.map(size => size.id === sizeId ? {...size, isChecked: !size.isChecked} : size
     ))
   };
+
+  //  result of  priceFilter from PriceBar
+  const handleDataFromChild = (data) => {
+      // displayedProducts = data
+      console.log("data from child component:", data)
+      setFilteredPrices(data);
+  }
 
   if (isLoading) return <p>Loading products...</p>
   if (error) return <p>Failed to load products</p>
@@ -184,9 +204,11 @@ function ShopAll() {
                   )}
                   {activeDropdown === "Price" && (
                      <PriceBar
-                        priceRanges={priceRanges}
-                        setPriceRanges={setPriceRanges}
+                        // priceRanges={priceRanges}
+                        // setPriceRanges={setPriceRanges}
                         products={products}
+                        // sendDataToParent={handleDataFromChild}
+                        setFilteredPrices={setFilteredPrices}
                      />
                   )}
                   {activeDropdown === "Size" && (
