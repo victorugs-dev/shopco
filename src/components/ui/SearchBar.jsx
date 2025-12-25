@@ -18,6 +18,7 @@ export default function SearchBar({ text }) {
     setInput(value);
     setSearchQuery(value);
     
+    console.log("value", value)
     // Open overlay if there's input, close if empty
     // i think we could have chosen to use this SearchContext since the isSearching is also passed there?? 
     if (value.trim() === '') {
@@ -25,6 +26,8 @@ export default function SearchBar({ text }) {
     } else {
       setIsSearching(true);
     }
+   //  setIsSearching(value.trim === '' ? false : true);
+   
     //  alternative to this ??
     // if (value.trim() === '') {
     //   setIsSearching(false);
@@ -230,7 +233,7 @@ useEffect(() => {
           // value={input}
           onChange={handleChange}
           className="bg-transparent outline-none"
-          onBlur={() => console.log('blur')}
+          onBlur={() => console.log('blur : searchBar')}
 
         />
         <button type="submit">

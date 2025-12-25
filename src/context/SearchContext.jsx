@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { data } from "../../data";
 
+console.log("data",data)
 const SearchContext = createContext();
 
 export function SearchProvider({ children }) {
@@ -76,8 +77,8 @@ export function SearchProvider({ children }) {
       setQuerySuggestions([]);
       setSearchResults([]);
     }
-  // }, [searchQuery]);
-  }, []);
+  }, [searchQuery]);
+//   }, []);
 
   useEffect(() => {
     console.log("mounted")

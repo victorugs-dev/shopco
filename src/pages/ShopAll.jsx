@@ -43,9 +43,16 @@ function ShopAll() {
     {id: "black", isChecked: false},
   ]);
 
+   // const highestPrice = useMemo(() => {
+   //    const productPrices = products.map(product => product.price)
+   //    return Math.max(...productPrices)
+   // },[products]);
+
   const [priceRanges, setPriceRanges] = useState([
     {id: "from", title:"From", value:""},
     {id: "to", title: "To", value:""}
+   //  {id: "from", title:"From", value: 0},
+   //  {id: "to", title: "To", value: highestPrice}
   ]);
 
   const displayedProducts = useMemo(() => {
