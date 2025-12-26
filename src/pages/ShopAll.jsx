@@ -129,18 +129,12 @@ function ShopAll() {
       //    return {...prevCheckedAvailability, isChecked: false}
       // }))
       setCurrCheckedAvailability(null)
-      // currCheckedColors.map(currCheckedColor => currCheckedColor.isChecked)
   }
 
   const productsInStock = products.filter(product => product.inStock === true);
   const productsOutOfStock = products.filter(product => product.inStock === false);
 
-  const handleAvailabilityChange = (event, availabilityId) => {
-    setCurrCheckedAvailability(prev => 
-      prev === availabilityId ? null : availabilityId
-    );
-
-  }
+  const handleAvailabilityChange = (availabilityId) =>  setCurrCheckedAvailability(prev =>  prev === availabilityId ? null : availabilityId);
 
   const handleSizeChange = (event, sizeId) => {
     setCurrCheckedSizes(prevCheckedSize => 
@@ -177,7 +171,6 @@ function ShopAll() {
                   <p>{filter.title}</p>
 
                   {(isFilterDropdownActive === false || activeDropdown !== filter.title) && (
-
                     <button
                       onClick={(e) => handleFilterDropdown(e, filter)}
                       ref={dropdownButtonRef}
@@ -231,8 +224,8 @@ function ShopAll() {
             </div>
         </div>      
       </div>
-      <div className='w-full'>
-        <div className='flex gap-1'>{currCheckedSizes.map(currCheckedSize => 
+      <div className='w-full '>
+        <div className='flex gap-1 '>{currCheckedSizes.map(currCheckedSize => 
             (currCheckedSize.isChecked  && !isRemoveAllFiltersClicked)&& (
                 <div 
                   key={currCheckedSize.id}
@@ -256,7 +249,7 @@ function ShopAll() {
             <p >Availability: {currCheckedAvailability === 'inStock' ? 'In stock' : 'Out of stock'}</p>
             <button
                 className='cursor-pointer'
-                onClick={(e) => handleAvailabilityChange(e,currCheckedAvailability)}
+                onClick={() => handleAvailabilityChange(currCheckedAvailability)}
               >
                 {/* cancel icon */}
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
@@ -266,7 +259,7 @@ function ShopAll() {
 
            {currCheckedColors.map(currCheckedColor =>
           (currCheckedColor.isChecked && !isRemoveAllFiltersClicked)&& (
-                <div 
+               <div 
                 key={currCheckedColor.id}
                 className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
               >
@@ -278,9 +271,19 @@ function ShopAll() {
                     {/* cancel icon */}
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
                 </button>
-              </div>
-          )
-        )}</div>
+              </div> 
+               ))}
+
+               {(currCheckedAvailability || currCheckedSizes.some(s => s.isChecked) || currCheckedColors.some(c => c.isChecked)) && (
+                  <div>
+                     <button 
+                     onClick={handleRemoveAllFilters}
+                     className='block underline cursor-pointer mx-1'
+                  >remove all</button>
+                  </div>
+               )}
+            </div>
+
 
         {/* <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  w-fit'> */}
         <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  '>
