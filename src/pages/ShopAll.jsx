@@ -42,78 +42,63 @@ function ShopAll() {
     {id: "white", isChecked: false},
     {id: "black", isChecked: false},
   ]);
-
   const [filteredPrices, setFilteredPrices] = useState([]);
+  const [isRemoveAllFiltersClicked, setIsRemoveAllFiltersClicked] = useState(false);
 
-   // const highestPrice = useMemo(() => {
-   //    const productPrices = products.map(product => product.price)
-   //    return Math.max(...productPrices)
-   // },[products]);
+  const displayedProducts = useMemo(() => {
+      let filteredProducts = products;
+      
 
-//   const [priceRanges, setPriceRanges] = useState([
-//     {id: "from", title:"From", value:""},
-//     {id: "to", title: "To", value:""}
-//    //  {id: "from", title:"From", value: 0},
-//    //  {id: "to", title: "To", value: highestPrice}
-//   ]);
+      const checkedSizeIds = currCheckedSizes
+      .filter(currCheckedSize => currCheckedSize.isChecked)
+      .map(currCheckedSize => currCheckedSize.id);
 
-//   const displayedProducts = useMemo(() => {
-  let displayedProducts = useMemo(() => {
-    let filteredProducts = products;
+      const checkedColorsIds = currCheckedColors
+      .filter(currCheckedColor => currCheckedColor.isChecked)
+      .map(currCheckedColor => currCheckedColor.id);
 
-    const checkedSizeIds = currCheckedSizes
-    .filter(currCheckedSize => currCheckedSize.isChecked)
-    .map(currCheckedSize => currCheckedSize.id);
+      console.log("checkedColorsIds", checkedColorsIds);
 
-    const checkedColorsIds = currCheckedColors
-    .filter(currCheckedColor => currCheckedColor.isChecked)
-    .map(currCheckedColor => currCheckedColor.id);
+      // if(isRemoveAllFiltersClicked === true) return products
 
-    console.log("checkedColorsIds", checkedColorsIds);
+      // the order of the if statements don't matter 
 
-   //  console.log("filteredPrices", filteredPrices)
+      if(checkedSizeIds.length){
+         filteredProducts = filteredProducts.filter(product => 
+         product.sizes?.some(size => 
+            checkedSizeIds.includes(size)
+         ));
+      }
 
-   //  const filteredPrices =
+      if(checkedColorsIds.length){
+         filteredProducts = filteredProducts.filter(product => {
+            const filtered = product.colors?.some(color => 
+            checkedColorsIds.includes(color))
+            console.log("filtered", filtered)
+            return filtered;
+         })
+      }
 
-    // the order of the if statements don't matter 
+      if(filteredPrices.length) return filteredPrices
 
-    if(checkedSizeIds.length){
-      filteredProducts = filteredProducts.filter(product => 
-        product.sizes?.some(size => 
-          checkedSizeIds.includes(size)
-        )
-      );
-    }
+      if(currCheckedAvailability === 'inStock'){
+         filteredProducts = filteredProducts.filter(products => products.inStock)
+      }
 
-    if(checkedColorsIds.length){
-      filteredProducts = filteredProducts.filter(product => {
+      if(currCheckedAvailability === 'outOfStock'){
+         filteredProducts = filteredProducts.filter(products => !products.inStock)
+      }
 
-        const filtered = product.colors?.some(color => 
-        checkedColorsIds.includes(color))
+      console.log("checkedSizeIds", checkedSizeIds)
 
-        console.log("filtered", filtered)
-        return filtered;
-      })
-    }
+   //  if(isRemoveAllFiltersClicked === true){
+   //    filteredProducts = products
+   //  } 
 
-    if(filteredPrices.length){
-      return filteredPrices
-    }
 
-    if(currCheckedAvailability === 'inStock'){
-      filteredProducts = filteredProducts.filter(products => products.inStock)
-    }
-
-    if(currCheckedAvailability === 'outOfStock'){
-      filteredProducts = filteredProducts.filter(products => !products.inStock)
-    }
-
-    console.log("checkedSizeIds", checkedSizeIds)
-   
-   //  if(filtered)
-
-    return filteredProducts;
-  },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors, filteredPrices]);
+      // return filteredProducts;
+      return isRemoveAllFiltersClicked ? products : filteredProducts
+  },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors, filteredPrices, isRemoveAllFiltersClicked]);
 
   const dropdownButtonRef = useRef(null);
   // console.log("dropdownButtonRef", dropdownButtonRef);
@@ -128,8 +113,24 @@ function ShopAll() {
   const handleFilterDropdown = (event,currFilter) => {
     setIsDropdownActive(!isFilterDropdownActive);
     setActiveDropdown(currFilter.title)
-    console.log(currFilter.title);
   };
+
+    const handleRemoveAllFilters = () => {
+     setIsDropdownActive(false);
+      setActiveDropdown('');
+      setIsRemoveAllFiltersClicked(true)
+      setCurrCheckedColors(prevCheckedColors => prevCheckedColors.map(prevCheckedColor => {
+         return {...prevCheckedColor, isChecked: false}
+      }))
+      setCurrCheckedSizes(prevCheckedSizes => prevCheckedSizes.map(prevCheckedSize => {
+         return {...prevCheckedSize, isChecked: false}
+      }))
+      // setCurrCheckedAvailability(prevCheckedAvailability => prevCheckedAvailability.map(prevCheckedAvailability => {
+      //    return {...prevCheckedAvailability, isChecked: false}
+      // }))
+      setCurrCheckedAvailability(null)
+      // currCheckedColors.map(currCheckedColor => currCheckedColor.isChecked)
+  }
 
   const productsInStock = products.filter(product => product.inStock === true);
   const productsOutOfStock = products.filter(product => product.inStock === false);
@@ -153,6 +154,9 @@ function ShopAll() {
       console.log("data from child component:", data)
       setFilteredPrices(data);
   }
+
+   // set the dropDropdowns inactive before the user sees result of removed filters
+
 
   if (isLoading) return <p>Loading products...</p>
   if (error) return <p>Failed to load products</p>
@@ -229,7 +233,7 @@ function ShopAll() {
       </div>
       <div className='w-full'>
         <div className='flex gap-1'>{currCheckedSizes.map(currCheckedSize => 
-            currCheckedSize.isChecked && (
+            (currCheckedSize.isChecked  && !isRemoveAllFiltersClicked)&& (
                 <div 
                   key={currCheckedSize.id}
                   className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
@@ -245,7 +249,7 @@ function ShopAll() {
                 </div>
           ) )}
 
-          {currCheckedAvailability && (
+          {(currCheckedAvailability && !isRemoveAllFiltersClicked) && (
             <div
               className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
             >
@@ -261,7 +265,7 @@ function ShopAll() {
           )}
 
            {currCheckedColors.map(currCheckedColor =>
-          currCheckedColor.isChecked && (
+          (currCheckedColor.isChecked && !isRemoveAllFiltersClicked)&& (
                 <div 
                 key={currCheckedColor.id}
                 className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
@@ -278,7 +282,8 @@ function ShopAll() {
           )
         )}</div>
 
-        <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  w-fit'>
+        {/* <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  w-fit'> */}
+        <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  '>
           {displayedProducts.length ? (
             displayedProducts.map(product => (
             <Card
@@ -286,16 +291,26 @@ function ShopAll() {
               title={product.title}
               discount={product.discount}
               images={product.images[0]}
-              price={product.price}
               slug={product.slug} 
-              rating={product.rating}
+            //   rating={product.rating}
               sizes={product.sizes}
               inStock={product.inStock}
               colors={product.colors}
+              price={product.price}
             />
           ))
           ) : (
-            <p>Nothing matches that description</p>
+            // <p>Nothing matches that description</p>
+            <div className='flex md:flex-col justify-center items-center bg-blue-300 w-full'>
+               <p>No products found </p>
+              <div>
+                  <span>Use fewer filters or </span>
+                  <button 
+                     onClick={handleRemoveAllFilters}
+                     className='underline cursor-pointer'
+                  >remove all</button>
+              </div>
+            </div>
           )}
         </div>
         <hr />

@@ -38,6 +38,8 @@ function Card({title, percentageDiscount, images, price, slug, rating, sizes, in
 
           <p>{inStock ? 'In Stock' : 'Out of Stock'}</p>
 
+          <p>${price}</p>
+
           <CartButton />
         </div>
       </Link>
