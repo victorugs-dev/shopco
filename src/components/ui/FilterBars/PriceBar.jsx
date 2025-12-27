@@ -1,20 +1,20 @@
 import { useMemo, useEffect, useState } from "react"
 
-function PriceBar({ products, sendDataToParent, setFilteredPrices }){
+function PriceBar({ products, sendDataToParent, setFilteredPrices, priceRanges, setPriceRanges, highestPrice }){
    const [activePriceRange, setActivePriceRange] = useState(null);
 
-   const [priceRanges, setPriceRanges] = useState([
-    {id: "from", title:"From", value:""},
-    {id: "to", title: "To", value:""}
-   //  {id: "from", title:"From", value: 0},
-   //  {id: "to", title: "To", value: highestPrice}
-  ]);
+//    const [priceRanges, setPriceRanges] = useState([
+//     {id: "from", title:"From", value:""},
+//     {id: "to", title: "To", value:""}
+//    //  {id: "from", title:"From", value: 0},
+//    //  {id: "to", title: "To", value: highestPrice}
+//   ]);
 
    // i may move this up to the other useMemo
-   const highestPrice = useMemo(() => {
-      const productPrices = products.map(product => product.price)
-      return Math.max(...productPrices)
-   },[products]);
+   // const highestPrice = useMemo(() => {
+   //    const productPrices = products.map(product => product.price)
+   //    return Math.max(...productPrices)
+   // },[products]);
 
    let newPriceRangeId = "";
 
@@ -40,19 +40,21 @@ function PriceBar({ products, sendDataToParent, setFilteredPrices }){
       let to = highestPrice;
 
       // console.log("activePriceRange",activePriceRange)
+      console.log("priceRanges", priceRanges)
+      // for(let i = 0; i < priceRanges.length; i++){
+      //    if(priceRanges[i].id === "from"){
+      //       // console.log(priceRanges[i])
+      //       // console.log(priceRanges[i].value)
+      //       from = Number(priceRanges[i].value)
+      //    }
+      //    if(priceRanges[i].id === "to"){
+      //       // console.log(priceRanges[i])
+      //       to = Number(priceRanges[i].value) || highestPrice
 
-      for(let i = 0; i < priceRanges.length; i++){
-         if(priceRanges[i].id === "from"){
-            // console.log(priceRanges[i])
-            // console.log(priceRanges[i].value)
-            from = Number(priceRanges[i].value)
-         }
-         if(priceRanges[i].id === "to"){
-            // console.log(priceRanges[i])
-            to = Number(priceRanges[i].value) || highestPrice
+      //       // console.log("activePriceRange",activePriceRange)
+      //    }
 
-         }
-      }
+      // }
          // console.log("from",from)
          // console.log("to",to)
          // console.log(highestPrice)
@@ -63,7 +65,7 @@ function PriceBar({ products, sendDataToParent, setFilteredPrices }){
       )
       // console.log("priceFilter", priceFilter)
       setFilteredPrices(priceFilter)
-
+      // console.log("priceFilter", priceFilter)
    },[priceRanges, activePriceRange])
       
       // THE 'From" HAS VALUE OF 0 BY DEFAULT IF LEFT BLANK

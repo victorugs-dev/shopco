@@ -44,11 +44,20 @@ function ShopAll() {
   ]);
   const [filteredPrices, setFilteredPrices] = useState([]);
   const [isRemoveAllFiltersClicked, setIsRemoveAllFiltersClicked] = useState(false);
+   const [priceRanges, setPriceRanges] = useState([
+    {id: "from", title:"From", value:""},
+    {id: "to", title: "To", value:""}
+  ]);
+
+   const highestPrice = useMemo(() => {
+      const productPrices = products.map(product => product.price)
+      return Math.max(...productPrices)
+   },[products]);
+
 
   const displayedProducts = useMemo(() => {
       let filteredProducts = products;
       
-
       const checkedSizeIds = currCheckedSizes
       .filter(currCheckedSize => currCheckedSize.isChecked)
       .map(currCheckedSize => currCheckedSize.id);
@@ -91,12 +100,6 @@ function ShopAll() {
 
       console.log("checkedSizeIds", checkedSizeIds)
 
-   //  if(isRemoveAllFiltersClicked === true){
-   //    filteredProducts = products
-   //  } 
-
-
-      // return filteredProducts;
       return isRemoveAllFiltersClicked ? products : filteredProducts
   },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors, filteredPrices, isRemoveAllFiltersClicked]);
 
@@ -125,9 +128,7 @@ function ShopAll() {
       setCurrCheckedSizes(prevCheckedSizes => prevCheckedSizes.map(prevCheckedSize => {
          return {...prevCheckedSize, isChecked: false}
       }))
-      // setCurrCheckedAvailability(prevCheckedAvailability => prevCheckedAvailability.map(prevCheckedAvailability => {
-      //    return {...prevCheckedAvailability, isChecked: false}
-      // }))
+
       setCurrCheckedAvailability(null)
   }
 
@@ -149,6 +150,13 @@ function ShopAll() {
       setFilteredPrices(data);
   }
 
+  const handleRemovePriceFilter = () => {
+      // setPriceRanges(prevPriceRanges)
+      setPriceRanges([
+         {id: "from", title:"From", value:""},
+         {id: "to", title: "To", value:""}
+      ])
+  }
    // set the dropDropdowns inactive before the user sees result of removed filters
 
 
@@ -201,11 +209,13 @@ function ShopAll() {
                   )}
                   {activeDropdown === "Price" && (
                      <PriceBar
-                        // priceRanges={priceRanges}
-                        // setPriceRanges={setPriceRanges}
+                        priceRanges={priceRanges}
+                        setPriceRanges={setPriceRanges}
                         products={products}
                         // sendDataToParent={handleDataFromChild}
                         setFilteredPrices={setFilteredPrices}
+                        highestPrice={highestPrice}
+
                      />
                   )}
                   {activeDropdown === "Size" && (
@@ -258,8 +268,8 @@ function ShopAll() {
           )}
 
            {currCheckedColors.map(currCheckedColor =>
-          (currCheckedColor.isChecked && !isRemoveAllFiltersClicked)&& (
-               <div 
+            (currCheckedColor.isChecked && !isRemoveAllFiltersClicked)&& (
+            <div 
                 key={currCheckedColor.id}
                 className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center'
               >
@@ -273,13 +283,43 @@ function ShopAll() {
                 </button>
               </div> 
                ))}
+                  
+               {(priceRanges.some(priceRange => priceRange.value !== "")) && (
+                  <div className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center' >
+                        {priceRanges.map(priceRange => 
+                              <div key={priceRange.id} className='px-0.5'>
+                                    {/* {(priceRange.id === 'from') && <p>${priceRange.value || 0}</p>}
+                                    {(priceRange.id === 'to') && (
+                                       <>
+                                          <span>-</span>
+                                          <span>${priceRange.value || highestPrice}</span>
+                                       </>
+                                    )} */}
+                                         {(priceRange.id === 'to') ? (
+                                       <div className='space-x-1'>
+                                          <span>-</span>
+                                          <span>${priceRange.value || highestPrice}</span>
+                                       </div>
+                                    ) : <p>${priceRange.value || 0}</p>}
+                              </div>
+                        )}
+
+                     <button
+                     className=' cursor-pointer'
+                        onClick={() => handleRemovePriceFilter()}
+                     >
+                        {/* cancel icon */}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
+                     </button>
+                  </div>
+               )}
 
                {(currCheckedAvailability || currCheckedSizes.some(s => s.isChecked) || currCheckedColors.some(c => c.isChecked)) && (
                   <div>
                      <button 
-                     onClick={handleRemoveAllFilters}
-                     className='block underline cursor-pointer mx-1'
-                  >remove all</button>
+                        onClick={handleRemoveAllFilters}
+                        className='block underline cursor-pointer mx-1'
+                     >remove all</button>
                   </div>
                )}
             </div>
