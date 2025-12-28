@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { CartContext } from '../../context/CartContext';
 import CartButton from './CartButton';
 
-function Card({title, percentageDiscount, images, price, slug, rating, sizes, inStock, colors}) {
+function Card({title, percentageDiscount, images, price, slug, rating, sizes, inStock, colors, createdAt}) {
   // console.log("sizes", sizes)
   const discountedPrice = 0;
 
@@ -28,19 +28,20 @@ function Card({title, percentageDiscount, images, price, slug, rating, sizes, in
           )}</div>
 
           
-          <div className='flex gap-1'>{colors?.map(color => 
+          {/* <div className='flex gap-1'>{colors?.map(color => 
             <p key={color}>{color}</p>
-          )}</div>
+          )}</div> */}
 
           <p className='md:text-2xl'>{rating}</p>
 
-          <p>{percentageDiscount}</p>
+          {/* <p>{percentageDiscount}</p> */}
 
-          <p>{inStock ? 'In Stock' : 'Out of Stock'}</p>
+          {/* <p>{inStock ? 'In Stock' : 'Out of Stock'}</p> */}
 
           <p>${price}</p>
+          <p>{createdAt}</p>
 
-          <CartButton />
+          <CartButton className=''/>
         </div>
       </Link>
       {/* <button

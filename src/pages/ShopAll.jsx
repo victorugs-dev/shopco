@@ -48,6 +48,12 @@ function ShopAll() {
     {id: "from", title:"From", value:""},
     {id: "to", title: "To", value:""}
   ]);
+  const [currCheckedSortBy, setCurrCheckedSortBy] = useState("Alphabetically, A-Z");
+  const [isSortByClicked, setIsSortByClicked] = useState(false);
+  const [currClickedSortBy, setCurrClickedSortBy] = useState(null);
+//   const [currClickedSortBy, setCurrCheckedSortBy] = useState(null);
+
+  const [isFilterAndSortClicked, setIsFilterAndSortClicked] = useState(false)
 
    const highestPrice = useMemo(() => {
       const productPrices = products.map(product => product.price)
@@ -98,10 +104,28 @@ function ShopAll() {
          filteredProducts = filteredProducts.filter(products => !products.inStock)
       }
 
+      if(currCheckedSortBy === "Alphabetically, A-Z"){
+         console.log("currCheckedSortBy",currCheckedSortBy)
+         console.log("filteredProducts.sort((a,b) => a.title.localeCompare(b.name)).reverse()", filteredProducts.sort((a,b) => a.title.localeCompare(b.name)).reverse())
+         // filteredProducts = filteredProducts.sort((a,b) => a.title.localeCompare(b.name))
+         // return [...filteredProducts].sort((a,b) => a.title.localeCompare(b.title))
+         filteredProducts = [...filteredProducts].sort((a,b) => a.title.localeCompare(b.title))
+      }else if(currCheckedSortBy === "Alphabetically, Z-A"){
+         filteredProducts =[...filteredProducts].sort((a,b) => b.title.localeCompare(a.title))
+      }else if(currCheckedSortBy === "Price, low to high"){
+         filteredProducts = [...filteredProducts].sort((a,b) => a.price - b.price)
+      }else if(currCheckedSortBy === "Price, high to low"){
+         filteredProducts = [...filteredProducts].sort((a,b) => b.price - a.price)
+      }else if(currCheckedSortBy === "Date, old to new"){
+         filteredProducts = [...filteredProducts].sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt))
+      }else if(currCheckedSortBy === "Date, new to old"){
+         filteredProducts = [...filteredProducts].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+      }
+  
       console.log("checkedSizeIds", checkedSizeIds)
 
       return isRemoveAllFiltersClicked ? products : filteredProducts
-  },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors, filteredPrices, isRemoveAllFiltersClicked]);
+  },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors, filteredPrices, isRemoveAllFiltersClicked, currCheckedSortBy]);
 
   const dropdownButtonRef = useRef(null);
   // console.log("dropdownButtonRef", dropdownButtonRef);
@@ -112,6 +136,16 @@ function ShopAll() {
     { id: "size", title: "Size"},
     { id: "colour", title: "Colour"},
   ];
+  const sortBys = [
+      {id: "feature", title: "Feature"},
+      {id: "best-selling", title: "Best selling" },
+      {id: "alphabetically-a-z" , title:"Alphabetically, A-Z" },
+      {id: "alphabetically-z-a", title: "Alphabetically, Z-A"},
+      {id: "price-low-to-high", title: "Price, low to high" },
+      {id: "price-high-to-low", title: "Price, high to low"},
+      {id: "date-old-to-new", title: "Date, old to new"},
+      {id: "date-new-to-old", title: "Date, new to old"},
+  ]
 
   const handleFilterDropdown = (event,currFilter) => {
     setIsDropdownActive(!isFilterDropdownActive);
@@ -130,6 +164,10 @@ function ShopAll() {
       }))
 
       setCurrCheckedAvailability(null)
+      setPriceRanges([
+         {id: "from", title:"From", value:""},
+         {id: "to", title: "To", value:""}
+      ])
   }
 
   const productsInStock = products.filter(product => product.inStock === true);
@@ -157,6 +195,16 @@ function ShopAll() {
          {id: "to", title: "To", value:""}
       ])
   }
+
+  const handleSortByCLick = (sortBy) =>{
+      // setCurrClickedSortBy(sortById)
+      setCurrCheckedSortBy(sortBy.title)
+  }
+
+   //  this is only for mobile screen 
+  const handleFilterAndSortClick = () => {
+   setIsFilterAndSortClicked(!isFilterAndSortClicked)
+  }
    // set the dropDropdowns inactive before the user sees result of removed filters
 
 
@@ -164,75 +212,73 @@ function ShopAll() {
   if (error) return <p>Failed to load products</p>
   
   return (
-    <div>
+   <div className='w-full'>
       <h1 className='m-4 text-3xl'>Products</h1>
-      <div className='m-4'>
-        <div >
-            <div className=''>
-              <div className='flex bg-green-300'>
-              {filters.map((filter) => (
-                <div
-                  id={filter.id} 
-                  key={filter.id} 
-                  className='flex'
-                >
-                  <p>{filter.title}</p>
 
-                  {(isFilterDropdownActive === false || activeDropdown !== filter.title) && (
-                    <button
-                      onClick={(e) => handleFilterDropdown(e, filter)}
-                      ref={dropdownButtonRef}
-                      className='cursor-pointer'
-                    >{/* down arrow icon*/}
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M17.71 11.29a1 1 0 0 0-1.42 0L13 14.59V7a1 1 0 0 0-2 0v7.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l5 5a1 1 0 0 0 .33.21a.94.94 0 0 0 .76 0a1 1 0 0 0 .33-.21l5-5a1 1 0 0 0 0-1.42" /></svg>
-                    </button>
-                  )}
-                  {(isFilterDropdownActive === true && activeDropdown === filter.title) && (
-                    <button
-                      onClick={(e) => handleFilterDropdown(e, filter)}
-                      className='cursor-pointer'
-                    >{/* up arrow icon */}
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="m12.354 5.646l5 5a.5.5 0 0 1-.708.708L12.5 7.207V18a.5.5 0 0 1-1 0V7.207l-4.146 4.147a.5.5 0 0 1-.708-.708l5-5a.5.5 0 0 1 .708 0" /></svg>
-                    </button>
-                  )}
-                </div>
-              ))}
-              </div>
-              <div>
-                  {activeDropdown === "Availability" && (
-                     <AvailabilityBar
-                        currCheckedAvailability={currCheckedAvailability}
-                        setCurrCheckedAvailability={setCurrCheckedAvailability}
-                        // availabilityOptions={availabilityOptions}
-                        products={products}
-                     />
-                  )}
-                  {activeDropdown === "Price" && (
-                     <PriceBar
-                        priceRanges={priceRanges}
-                        setPriceRanges={setPriceRanges}
-                        products={products}
-                        // sendDataToParent={handleDataFromChild}
-                        setFilteredPrices={setFilteredPrices}
-                        highestPrice={highestPrice}
+      {/* mobile device screens */}
+      <div className='md:hidden m-4 flex justify-between '>
+         <div className='flex gap-x-2   '>
+            <button onClick={handleFilterAndSortClick} className='cursor-pointer'>B</button>
+            <p>Filter  and Sort</p>
+         </div>
+         <div>
+            {displayedProducts.length} products
+         </div>
 
-                     />
-                  )}
-                  {activeDropdown === "Size" && (
-                     <SizeBar
-                        currCheckedSizes={currCheckedSizes}
-                        setCurrCheckedSizes={setCurrCheckedSizes}
-                     />
-                  )}
-                  {activeDropdown === "Colour" && (
-                     <ColorBar
-                        currCheckedColors={currCheckedColors}
-                        setCurrCheckedColors={setCurrCheckedColors}
-                     />
-                  )}
-              </div>
+      </div>
+
+      {/* medium device screens */}
+      <div className='hidden md:flex justify-between items-center bg-gray-300'>
+         <div className='m-4 flex bg-red-700 w-fit'>
+            <div className='bg-amber-200'>
+                  <div className='bg-green-700'>
+                  <div className='flex  gap-1'>
+                     <p>Filter: </p>
+                     {filters.map((filter) => (
+                     <div
+                        id={filter.id} 
+                        key={filter.id} 
+                        className='flex'
+                     >
+                        <p>{filter.title}</p>
+
+                        {(isFilterDropdownActive === false || activeDropdown !== filter.title) && (
+                        <button
+                           onClick={(e) => handleFilterDropdown(e, filter)}
+                           ref={dropdownButtonRef}
+                           className='cursor-pointer'
+                        >{/* down arrow icon*/}
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M17.71 11.29a1 1 0 0 0-1.42 0L13 14.59V7a1 1 0 0 0-2 0v7.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l5 5a1 1 0 0 0 .33.21a.94.94 0 0 0 .76 0a1 1 0 0 0 .33-.21l5-5a1 1 0 0 0 0-1.42" /></svg>
+                        </button>
+                        )}
+                        {(isFilterDropdownActive === true && activeDropdown === filter.title) && (
+                        <button
+                           onClick={(e) => handleFilterDropdown(e, filter)}
+                           className='cursor-pointer'
+                        >{/* up arrow icon */}
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="m12.354 5.646l5 5a.5.5 0 0 1-.708.708L12.5 7.207V18a.5.5 0 0 1-1 0V7.207l-4.146 4.147a.5.5 0 0 1-.708-.708l5-5a.5.5 0 0 1 .708 0" /></svg>
+                        </button>
+                        )}
+                     </div>
+                  ))}
+                  </div>
+                  </div>
+            </div>      
+      </div>
+
+      <div>
+         {/* <div className=' flex relative gap-x-3 items-center w-100 bg-green-300 '> */}
+         <div className=' flex relative gap-x-3 items-center min-w-100 bg-green-300 '>
+            <p>Sort by: </p>
+            {/* <p className=' border-2 border-gray-500 w-38 p-1 '>{currCheckedSortBy}</p> */}
+            <div className=' flex justify-between border-2 border-gray-500 min-w-43 py-1 px-2 '>
+               <p>{currCheckedSortBy}</p>
+               <button className='underline cursor-pointer' onClick={() => setIsSortByClicked(!isSortByClicked)}>B</button>
             </div>
-        </div>      
+
+            <p>{displayedProducts.length} products</p>
+        </div>
+      </div>
       </div>
       <div className='w-full '>
         <div className='flex gap-1 '>{currCheckedSizes.map(currCheckedSize => 
@@ -314,7 +360,7 @@ function ShopAll() {
                   </div>
                )}
 
-               {(currCheckedAvailability || currCheckedSizes.some(s => s.isChecked) || currCheckedColors.some(c => c.isChecked)) && (
+               {(currCheckedAvailability || currCheckedSizes.some(s => s.isChecked) || currCheckedColors.some(c => c.isChecked) || priceRanges.some(priceRange => priceRange.value !== "")) && (
                   <div>
                      <button 
                         onClick={handleRemoveAllFilters}
@@ -322,28 +368,32 @@ function ShopAll() {
                      >remove all</button>
                   </div>
                )}
-            </div>
+         </div>
 
 
         {/* <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  w-fit'> */}
-        <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  '>
+        <div className='grid relative align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  '>
           {displayedProducts.length ? (
             displayedProducts.map(product => (
             <Card
               key={product.id}
               title={product.title}
-              discount={product.discount}
+            //   discount={product.discount}
               images={product.images[0]}
               slug={product.slug} 
             //   rating={product.rating}
               sizes={product.sizes}
-              inStock={product.inStock}
-              colors={product.colors}
+            //   inStock={product.inStock}
+            //   colors={product.colors}
               price={product.price}
+              createdAt={new Date(product.createdAt).toLocaleDateString("en-GB", {
+               day: "2-digit",
+               month: "long",
+               year: "numeric"
+              })}
             />
           ))
           ) : (
-            // <p>Nothing matches that description</p>
             <div className='flex md:flex-col justify-center items-center bg-blue-300 w-full'>
                <p>No products found </p>
               <div>
@@ -355,7 +405,54 @@ function ShopAll() {
               </div>
             </div>
           )}
-        </div>
+
+            {(activeDropdown !== "") && (
+               <div className='absolute bg-white border p-5'>
+                  {activeDropdown === "Availability" && (
+                     <AvailabilityBar
+                        currCheckedAvailability={currCheckedAvailability}
+                        setCurrCheckedAvailability={setCurrCheckedAvailability}
+                        // availabilityOptions={availabilityOptions}
+                        products={products}
+                     />
+                  )}
+                  {activeDropdown === "Price" && (
+                     <PriceBar
+                        priceRanges={priceRanges}
+                        setPriceRanges={setPriceRanges}
+                        products={products}
+                        // sendDataToParent={handleDataFromChild}
+                        setFilteredPrices={setFilteredPrices}
+                        highestPrice={highestPrice}
+
+                     />
+                  )}
+                  {activeDropdown === "Size" && (
+                     <SizeBar
+                        currCheckedSizes={currCheckedSizes}
+                        setCurrCheckedSizes={setCurrCheckedSizes}
+                     />
+                  )}
+                  {activeDropdown === "Colour" && (
+                     <ColorBar
+                        currCheckedColors={currCheckedColors}
+                        setCurrCheckedColors={setCurrCheckedColors}
+                     />
+                  )}
+               </div>
+            )}
+
+            { isSortByClicked && (
+               // <div className='absolute  flex flex-col items-start top-9 left-15  bottom-2 bg-red-400 w-full'>
+               <div className='absolute  flex flex-col  right-40 border top-0  bg-red-400'>
+                  {isSortByClicked && sortBys.map(sortBy => 
+                     <button key={sortBy.title} onClick={() => handleSortByCLick(sortBy)} className='flex items-start     bg-white hover:bg-blue-400 hover:text-white'>
+                     {sortBy.title}
+                     </button> 
+                  )}
+               </div>
+            )}
+         </div>
         <hr />
       </div>
 
