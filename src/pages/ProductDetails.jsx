@@ -7,7 +7,6 @@ import { useTheme } from '../context/ThemeContext';
 // import Button from '../components/ui/Button'
 
 import { useCart } from '../context/CartContext'
-console.log("useCart: ", useCart)
 
 
 function ProductDetails() {
@@ -41,8 +40,8 @@ function ProductDetails() {
     const handleColorPick = useCallback((color,event) => {
         if(!isCurrProductAddedToCart){
             setOutfitColor(color.toLowerCase());
-            console.log(color);
-            console.log("user wants to change the color of outfit selected")
+            // console.log(color);
+            // console.log("user wants to change the color of outfit selected")
         }
     }, [isCurrProductAddedToCart]);
 
@@ -92,11 +91,11 @@ function ProductDetails() {
 
     const handleAddToCart = (event) => {
         if (!productTotal > 0) return;
-        console.log(productDetails);
+      //   console.log(productDetails);
         setCurrProduct(productDetails);
         setCartTotal((prevCartTotal) => prevCartTotal + productTotal);
         addToCart(productDetails, productTotal, outfitSize, outfitColor, currProduct)
-        console.log("Added to cart");
+      //   console.log("Added to cart");
     };
 
     return (

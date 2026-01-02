@@ -35,12 +35,12 @@ function PriceBar({ products, sendDataToParent, setFilteredPrices, priceRanges, 
    // let to = highestPrice;
 
    useEffect(() => {
-      console.log("priceRanges", priceRanges)
+      // console.log("priceRanges", priceRanges)
       let from = 0;
       let to = highestPrice;
 
       // console.log("activePriceRange",activePriceRange)
-      console.log("priceRanges", priceRanges)
+      // console.log("priceRanges", priceRanges)
       // for(let i = 0; i < priceRanges.length; i++){
       //    if(priceRanges[i].id === "from"){
       //       // console.log(priceRanges[i])

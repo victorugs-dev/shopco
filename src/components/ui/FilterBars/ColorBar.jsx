@@ -14,6 +14,7 @@ function ColorBar({ currCheckedColors, setCurrCheckedColors }){
   ];
 
    const handleColorChange = (event, colorId) => {
+      // event.stopPropagation()
       console.log("colorId", colorId)
 
       setCurrCheckedColors(prevCheckedColor => 

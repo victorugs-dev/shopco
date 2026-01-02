@@ -15,17 +15,19 @@ function Card({title, percentageDiscount, images, price, slug, rating, sizes, in
       {/* <Link to={`${slug}`}> */}
       {/* <Link to={`products/${slug}`}> */}
         <Link to={`/products/${slug}`}>
-        <div className='w-fit'>
-          <img className='w-24 h-24 md:w-full md:h-full' src={images} alt={title} />
+        {/* <div className='w-fit'> */}
+        <div className='w-full grid place-items-start'>
+          {/* <img className='w-24 h-24 md:w-full md:h-full' src={images} alt={title} /> */}
+          <img className='w-full h-full' src={images} alt={title} />
 
           <p className='md:text-2xl'>{title}</p>
 
-          <div
+          {/* <div
             // className='flex gap-1'
             className='grid grid-cols-4'
           >{sizes?.map(size => 
             <p key={size}>{size}</p>
-          )}</div>
+          )}</div> */}
 
           
           {/* <div className='flex gap-1'>{colors?.map(color => 
@@ -39,9 +41,9 @@ function Card({title, percentageDiscount, images, price, slug, rating, sizes, in
           {/* <p>{inStock ? 'In Stock' : 'Out of Stock'}</p> */}
 
           <p>${price}</p>
-          <p>{createdAt}</p>
+          {/* <p>{createdAt}</p> */}
 
-          <CartButton className=''/>
+          {/* <CartButton className=''/> */}
         </div>
       </Link>
       {/* <button

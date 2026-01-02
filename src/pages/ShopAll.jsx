@@ -18,8 +18,9 @@ function ShopAll() {
   })
   const products = data || []
 
-  const [activeDropdown, setActiveDropdown] = useState('');
-  const [isFilterDropdownActive, setIsDropdownActive] = useState(false);
+//   const [activeDropdown, setActiveDropdown] = useState('');
+  const [activeDropdown, setActiveDropdown] = useState(null);
+//   const [isFilterDropdownActive, setIsDropdownActive] = useState(false);
   const [currCheckedAvailability, setCurrCheckedAvailability] = useState(null);
   const [currCheckedSizes, setCurrCheckedSizes] = useState([
     {id:"x-small", isChecked: false},
@@ -53,7 +54,10 @@ function ShopAll() {
   const [currClickedSortBy, setCurrClickedSortBy] = useState(null);
 //   const [currClickedSortBy, setCurrCheckedSortBy] = useState(null);
 
-  const [isFilterAndSortClicked, setIsFilterAndSortClicked] = useState(false)
+  const [isFilterAndSortClicked, setIsFilterAndSortClicked] = useState(false);
+//   const [element, setElement] = useState("");
+
+ 
 
    const highestPrice = useMemo(() => {
       const productPrices = products.map(product => product.price)
@@ -72,7 +76,7 @@ function ShopAll() {
       .filter(currCheckedColor => currCheckedColor.isChecked)
       .map(currCheckedColor => currCheckedColor.id);
 
-      console.log("checkedColorsIds", checkedColorsIds);
+      // console.log("checkedColorsIds", checkedColorsIds);
 
       // if(isRemoveAllFiltersClicked === true) return products
 
@@ -89,7 +93,7 @@ function ShopAll() {
          filteredProducts = filteredProducts.filter(product => {
             const filtered = product.colors?.some(color => 
             checkedColorsIds.includes(color))
-            console.log("filtered", filtered)
+            // console.log("filtered", filtered)
             return filtered;
          })
       }
@@ -105,8 +109,8 @@ function ShopAll() {
       }
 
       if(currCheckedSortBy === "Alphabetically, A-Z"){
-         console.log("currCheckedSortBy",currCheckedSortBy)
-         console.log("filteredProducts.sort((a,b) => a.title.localeCompare(b.name)).reverse()", filteredProducts.sort((a,b) => a.title.localeCompare(b.name)).reverse())
+         // console.log("currCheckedSortBy",currCheckedSortBy)
+         // console.log("filteredProducts.sort((a,b) => a.title.localeCompare(b.name)).reverse()", filteredProducts.sort((a,b) => a.title.localeCompare(b.name)).reverse())
          // filteredProducts = filteredProducts.sort((a,b) => a.title.localeCompare(b.name))
          // return [...filteredProducts].sort((a,b) => a.title.localeCompare(b.title))
          filteredProducts = [...filteredProducts].sort((a,b) => a.title.localeCompare(b.title))
@@ -122,13 +126,17 @@ function ShopAll() {
          filteredProducts = [...filteredProducts].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
       }
   
-      console.log("checkedSizeIds", checkedSizeIds)
+      // console.log("checkedSizeIds", checkedSizeIds)
 
       return isRemoveAllFiltersClicked ? products : filteredProducts
   },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors, filteredPrices, isRemoveAllFiltersClicked, currCheckedSortBy]);
 
-  const dropdownButtonRef = useRef(null);
-  // console.log("dropdownButtonRef", dropdownButtonRef);
+//   const dropdownButtonRef = useRef(null);
+//   console.log("dropdownButtonRef", dropdownButtonRef);
+//   console.log("dropdownButtonRef.current?.parentElement.id: ", dropdownButtonRef.current?.parentElement.id);
+//   const dropdownButtonRefs = useRef([]);
+//   console.log(dropdownButtonRefs.current[2]?.getBoundingClientRect())
+
 
   const filters = [
     { id: "availability", title: "Availability"},
@@ -147,14 +155,88 @@ function ShopAll() {
       {id: "date-new-to-old", title: "Date, new to old"},
   ]
 
+//   const filterDropdownRefs = useRef({})
+//   let element = ""
+   // const element = filterDropdownRefs.current[currFilter.id]   
+
+   const dropdownRef = useRef(null)
+   
+   // if user clicks what is not the same as the current 
+   const handleNonActiveFilterDropdown = (event) => {
+      // event.stopPropagation()
+   //   const element = filterDropdownRefs.current[activeDropdown.id]   
+   //   console.log("element", element)
+      console.log("handleNonActiveFilterDropdown(event)", event.target.parentElement); //gives me a button, sometimes it gives me an svg ?????
+      // console.log(event.target.hasAttribute())
+      console.log(event.target.id)
+      // console.log("event.target", event.target)
+      // console.log("event.target", event.target.parentElement)
+      console.log("activeDropdown", activeDropdown)
+      // console.log(event.target === activeDropdown)
+      // console.log(element)
+      // console.log(event.target?.parentElement?.id === element.id)
+      // console.log(event.target?.parentElement?.id)
+      // console.log(event.target?.parentElement)
+      // setActiveDropdown("")
+      // setIsDropdownActive(false)
+      // if e.target?.parentElement?.id !== currFilter.id
+  }
+
+   useEffect(() => {
+      // listen only if a DropDown is active
+      // if(!isFilterDropdownActive) return;
+      if(!activeDropdown) return;
+
+      const handleOutsideClick  = (event) => {
+         const clickedFilterButton = event.target.closest("[data-filter]")
+         const clickedInsideDropdown = dropdownRef.current?.contains(event.target)
+
+         if(clickedFilterButton){
+            // switch dropdown
+            setActiveDropdown(clickedFilterButton.dataset.filter)
+            return
+         }
+
+         if(!clickedInsideDropdown){
+            //close dropdown
+            setActiveDropdown(null)
+         }
+      };
+
+     
+
+      document.addEventListener('click', handleOutsideClick);
+      // document.addEventListener('click', handleFilterDropdown);
+
+      return () => document.removeEventListener('click', handleOutsideClick)
+      // return () => document.removeEventListener('click', handleFilterDropdown)
+  },[activeDropdown])
+
+
+   //   only one filter can be down at a time
+   // 
   const handleFilterDropdown = (event,currFilter) => {
-    setIsDropdownActive(!isFilterDropdownActive);
-    setActiveDropdown(currFilter.title)
+
+      // const element = filterDropdownRefs.current[currFilter.id]
+      // element = filterDropdownRefs.current[currFilter.id]
+      // setElement(filterDropdownRefs.current[currFilter.id])
+      // console.log("element id: ", element.id)
+      // console.log(first)
+      // event.stopPropagation()
+      console.log("currFilter",currFilter)
+      console.log("event",event)
+      //  setIsDropdownActive(!isFilterDropdownActive);
+      // setIsDropdownActive(true);
+      // setActiveDropdown(currFilter.title)
+      setActiveDropdown(prev => 
+         prev  === currFilter.id ? null : currFilter.id
+      )
   };
 
     const handleRemoveAllFilters = () => {
-     setIsDropdownActive(false);
-      setActiveDropdown('');
+   //   setIsDropdownActive(false);
+      // setActiveDropdown('');
+      setActiveDropdown(null);
       setIsRemoveAllFiltersClicked(true)
       setCurrCheckedColors(prevCheckedColors => prevCheckedColors.map(prevCheckedColor => {
          return {...prevCheckedColor, isChecked: false}
@@ -184,7 +266,7 @@ function ShopAll() {
   //  result of  priceFilter from PriceBar
   const handleDataFromChild = (data) => {
       // displayedProducts = data
-      console.log("data from child component:", data)
+      // console.log("data from child component:", data)
       setFilteredPrices(data);
   }
 
@@ -218,7 +300,9 @@ function ShopAll() {
       {/* mobile device screens */}
       <div className='md:hidden m-4 flex justify-between '>
          <div className='flex gap-x-2   '>
-            <button onClick={handleFilterAndSortClick} className='cursor-pointer'>B</button>
+            <button onClick={handleFilterAndSortClick} className='cursor-pointer'>
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="currentColor" d="M6 1a3 3 0 0 0-2.83 2H0v2h3.17a3.001 3.001 0 0 0 5.66 0H16V3H8.83A3 3 0 0 0 6 1M5 4a1 1 0 1 1 2 0a1 1 0 0 1-2 0m5 5a3 3 0 0 0-2.83 2H0v2h7.17a3.001 3.001 0 0 0 5.66 0H16v-2h-3.17A3 3 0 0 0 10 9m-1 3a1 1 0 1 1 2 0a1 1 0 0 1-2 0"/></svg>
+            </button>
             <p>Filter  and Sort</p>
          </div>
          <div>
@@ -228,32 +312,51 @@ function ShopAll() {
       </div>
 
       {/* medium device screens */}
-      <div className='hidden md:flex justify-between items-center bg-gray-300'>
-         <div className='m-4 flex bg-red-700 w-fit'>
-            <div className='bg-amber-200'>
-                  <div className='bg-green-700'>
+      <div className='hidden md:flex justify-between items-center '>
+         <div className='m-4 flex w-fit'>
+            <div className=''>
+               <div className=' '>
                   <div className='flex  gap-1'>
                      <p>Filter: </p>
-                     {filters.map((filter) => (
+                     {filters.map((filter, index) => (
                      <div
                         id={filter.id} 
                         key={filter.id} 
+                        // ref={element => {
+                        //       if(element) filterDropdownRefs.current[filter.id] = element;
+                        //    }}
+                        // ref={el => {
+                        //       if(el) filterDropdownRefs.current[filter.id] = el;
+                        //    }}
+                        // ref={dropdownRef}
                         className='flex'
                      >
                         <p>{filter.title}</p>
 
-                        {(isFilterDropdownActive === false || activeDropdown !== filter.title) && (
+                        {/* {(isFilterDropdownActive === false || activeDropdown !== filter.title) && ( */}
+                        {/* {activeDropdown !== filter.title && ( */}
+                        {activeDropdown !== filter.id && (
                         <button
+                           // id={filter.id}
+                           data-filter={filter.id}
                            onClick={(e) => handleFilterDropdown(e, filter)}
-                           ref={dropdownButtonRef}
+                           // ref={dropdownButtonRef}
+                           // ref={element => (dropdownButtonRefs.current[index] = element)}
+                           // ref={element => {
+                           //    if(element) dropdownButtonRefs.current[filter.id] = element
+                           // }}
+                           // ref={element => (dropdownButtonRefs.current[index] = element)}
                            className='cursor-pointer'
                         >{/* down arrow icon*/}
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M17.71 11.29a1 1 0 0 0-1.42 0L13 14.59V7a1 1 0 0 0-2 0v7.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l5 5a1 1 0 0 0 .33.21a.94.94 0 0 0 .76 0a1 1 0 0 0 .33-.21l5-5a1 1 0 0 0 0-1.42" /></svg>
                         </button>
                         )}
-                        {(isFilterDropdownActive === true && activeDropdown === filter.title) && (
+                        {/* {(isFilterDropdownActive === true && activeDropdown === filter.title) && ( */}
+                        {/* {activeDropdown === filter.title && ( */}
+                        {activeDropdown === filter.id && (
                         <button
                            onClick={(e) => handleFilterDropdown(e, filter)}
+                           data-filter={filter.id}
                            className='cursor-pointer'
                         >{/* up arrow icon */}
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="m12.354 5.646l5 5a.5.5 0 0 1-.708.708L12.5 7.207V18a.5.5 0 0 1-1 0V7.207l-4.146 4.147a.5.5 0 0 1-.708-.708l5-5a.5.5 0 0 1 .708 0" /></svg>
@@ -262,18 +365,24 @@ function ShopAll() {
                      </div>
                   ))}
                   </div>
-                  </div>
+               </div>
             </div>      
       </div>
 
       <div>
-         {/* <div className=' flex relative gap-x-3 items-center w-100 bg-green-300 '> */}
-         <div className=' flex relative gap-x-3 items-center min-w-100 bg-green-300 '>
+         <div className=' flex relative gap-x-3 items-center min-w-100  '>
             <p>Sort by: </p>
-            {/* <p className=' border-2 border-gray-500 w-38 p-1 '>{currCheckedSortBy}</p> */}
-            <div className=' flex justify-between border-2 border-gray-500 min-w-43 py-1 px-2 '>
+            <div className={` flex justify-between  ${isSortByClicked && "border-2  border-gray-500"} min-w-43 py-1 px-2 `}>
                <p>{currCheckedSortBy}</p>
-               <button className='underline cursor-pointer' onClick={() => setIsSortByClicked(!isSortByClicked)}>B</button>
+               <button className='underline cursor-pointer' onClick={() => setIsSortByClicked(!isSortByClicked)}>
+                  {isSortByClicked ? (
+                     //  up arrow icon 
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="m12.354 5.646l5 5a.5.5 0 0 1-.708.708L12.5 7.207V18a.5.5 0 0 1-1 0V7.207l-4.146 4.147a.5.5 0 0 1-.708-.708l5-5a.5.5 0 0 1 .708 0" /></svg> 
+                     )  : (
+                     // down arrow icon
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M17.71 11.29a1 1 0 0 0-1.42 0L13 14.59V7a1 1 0 0 0-2 0v7.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l5 5a1 1 0 0 0 .33.21a.94.94 0 0 0 .76 0a1 1 0 0 0 .33-.21l5-5a1 1 0 0 0 0-1.42" /></svg>
+                  )}
+               </button>
             </div>
 
             <p>{displayedProducts.length} products</p>
@@ -334,19 +443,12 @@ function ShopAll() {
                   <div className='flex  mx-1 outline px-2 py-1 rounded-2xl  items-center' >
                         {priceRanges.map(priceRange => 
                               <div key={priceRange.id} className='px-0.5'>
-                                    {/* {(priceRange.id === 'from') && <p>${priceRange.value || 0}</p>}
-                                    {(priceRange.id === 'to') && (
-                                       <>
-                                          <span>-</span>
-                                          <span>${priceRange.value || highestPrice}</span>
-                                       </>
-                                    )} */}
-                                         {(priceRange.id === 'to') ? (
-                                       <div className='space-x-1'>
-                                          <span>-</span>
-                                          <span>${priceRange.value || highestPrice}</span>
-                                       </div>
-                                    ) : <p>${priceRange.value || 0}</p>}
+                                    {(priceRange.id === 'to') ? (
+                                    <div className='space-x-1'>
+                                       <span>-</span>
+                                       <span>${priceRange.value || highestPrice}</span>
+                                    </div>
+                                 ) : <p>${priceRange.value || 0}</p>}
                               </div>
                         )}
 
@@ -372,7 +474,7 @@ function ShopAll() {
 
 
         {/* <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  w-fit'> */}
-        <div className='grid relative align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  '>
+        <div className='grid relative align-center grid-cols-2 md:grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  '>
           {displayedProducts.length ? (
             displayedProducts.map(product => (
             <Card
@@ -406,9 +508,14 @@ function ShopAll() {
             </div>
           )}
 
-            {(activeDropdown !== "") && (
-               <div className='absolute bg-white border p-5'>
-                  {activeDropdown === "Availability" && (
+            {/* {(activeDropdown !== "") && ( */}
+            {(activeDropdown) && (
+               <div
+                  ref={dropdownRef}
+                  className='absolute bg-white border p-5'
+               >
+                  {/* {activeDropdown === "Availability" && ( */}
+                  {activeDropdown === "availability" && (
                      <AvailabilityBar
                         currCheckedAvailability={currCheckedAvailability}
                         setCurrCheckedAvailability={setCurrCheckedAvailability}
@@ -416,7 +523,8 @@ function ShopAll() {
                         products={products}
                      />
                   )}
-                  {activeDropdown === "Price" && (
+                  {/* // {activeDropdown === "Price" && ( */}
+                  {activeDropdown === "price" && (
                      <PriceBar
                         priceRanges={priceRanges}
                         setPriceRanges={setPriceRanges}
@@ -427,13 +535,15 @@ function ShopAll() {
 
                      />
                   )}
-                  {activeDropdown === "Size" && (
+                  {/* {activeDropdown === "Size" && ( */}
+                  {activeDropdown === "size" && (
                      <SizeBar
                         currCheckedSizes={currCheckedSizes}
                         setCurrCheckedSizes={setCurrCheckedSizes}
                      />
                   )}
-                  {activeDropdown === "Colour" && (
+                  {/* {activeDropdown === "Colour" && ( */}
+                  {activeDropdown === "colour" && (
                      <ColorBar
                         currCheckedColors={currCheckedColors}
                         setCurrCheckedColors={setCurrCheckedColors}

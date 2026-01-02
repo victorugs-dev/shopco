@@ -20,9 +20,9 @@ export function CartProvider({ children }){
         // const saved = localStorage.getItem("cart");
         try{
             const saved = localStorage.getItem("cart");
-            console.log("saved:", saved)
+            // console.log("saved:", saved)
             const parsed = saved ? JSON.parse(saved) : [];
-            console.log("parsed: ", parsed)
+            // console.log("parsed: ", parsed)
             return Array.isArray(parsed) ? parsed : [];
             
         }catch(error){
@@ -58,22 +58,22 @@ export function CartProvider({ children }){
             if(!Array.isArray(prevCart)) return [cartItem];
             return [...prevCart, cartItem];
         });
-        console.log("cart", cart);
+        //console.log("cart", cart);
     };
 
     const clearCart = () => {
-        if(!cart.length) return console.log("cart is already empty");
+        if(!cart.length) return //console.log("cart is already empty");
         setCart([]);
         setCartTotal(0);
     };
 
     const removeFromCart = (product) => {
-        console.log(product)
+        //console.log(product)
         setCart((prevCart) => {
             const filtered = prevCart.filter((c) =>
                 product.productDetails.slug !== c.productDetails.slug
             )
-            console.log("filter: ", filtered);
+            //console.log("filter: ", filtered);
             return filtered;
         })
 
@@ -90,7 +90,7 @@ export function CartProvider({ children }){
     useEffect(() => {
         if(Array.isArray(cart)){
             localStorage.setItem("cart", JSON.stringify(cart));
-        }else  console.log("cart is not an array");        
+        }//else  //console.log("cart is not an array");        
 
     }, [cart]);
     // }, [cart,cartTotal]);

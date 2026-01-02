@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { data } from "../../data";
 
-console.log("data",data)
+// console.log("data",data)
 const SearchContext = createContext();
 
 export function SearchProvider({ children }) {
@@ -80,10 +80,6 @@ export function SearchProvider({ children }) {
   }, [searchQuery]);
 //   }, []);
 
-  useEffect(() => {
-    console.log("mounted")
-  },[])
-  
   // called in the child components 
   // save search to recent searches when user selects something and Keep last 5 searches
   
