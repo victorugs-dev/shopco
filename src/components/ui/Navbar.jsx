@@ -10,38 +10,7 @@ function Navbar() {
   const [userSearch, setUserSearch] = useState('');
   const [theme, toggleTheme] = useTheme();
   // const [isDropdownActive,setIsDropdownActive] = useState(false);
-  const [isNavlinkActive, setIsNavlinkActive] = useState(false);
-  // const [isNavlinkActive, setIsNavlinkActive] = useState(true);
-
- 
-  // const list = [
-  //   {
-  //     title: "Shop",
-  //     url: "/",
-  //     isDropdown: true,
-  //   },
-  //   {
-  //     title: "On-Sale",
-  //     url: "/on-sale",
-  //     isDropdown: false,
-  //   },
-  //   {
-  //     title: "New Arrivals",
-  //     url: "/new-arrivals",
-  //     isDropdown: false,
-  //   },
-  //   {
-  //     title: "Brands",
-  //     url: "/brands",
-  //     isDropdown: false,
-  //   },
-  //   {
-  //     title: " ",
-  //     url: " ",
-  //     isDropdown: false
-  //   }
-
-  // ];
+  const [isNavLinkActive, setIsNavLinkActive] = useState(false);
 
   const navLinks = [
     {
@@ -118,22 +87,17 @@ function Navbar() {
     
   }
 
-  const handleIsNavlinkActive = () => {
-    setIsNavlinkActive(!isNavlinkActive);
+  const handleIsNavLinkActive = () => {
+    setIsNavLinkActive(!isNavLinkActive);
   };
 
   return (
     <nav className='relative w-full bg-amber-800 '>
       <div>
-         <div className='flex justify-between item-center bg-black text-white text-xl p-4'>
-            <p className='md:text-3xl'>Sign up and get 20% off to your first order.
-               <Link to={'sign-up'} className='underline cursor-pointer' >Sign Up Now</Link>
-            </p>
-            {/* cancel icon */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="#fff" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg>
-         </div>
+    
          <div className='flex relative justify-between items-center w-full '>
-               <div className='md:flex space-y-3 md:space-y-0 p-4 md:justify-between  w-full'>
+               {/* <div className='md:flex space-y-3 md:space-y-0 p-4 md:justify-between  w-full'> */}
+               <div className='md:flex space-y-3 md:space-y-0  md:justify-between  w-full'>
                   <h3 className='text-2xl md:text-3xl font-bold'>
                      <Link to={"/"}>SHOP.CO</Link>
                   </h3>
@@ -154,11 +118,12 @@ function Navbar() {
                      }
                   </div>
 
-                  <div className='flex items-center gap-x-5'>
+                  {/* <div className='flex items-center gap-x-5'> */}
+                  <div className='flex items-center '>
                      {/*show harm-burger menu on mobile view  */}
                      <div className='md:hidden w-fit'>
-                        {isNavlinkActive === false ? (
-                        <button onClick={handleIsNavlinkActive}>
+                        {isNavLinkActive === false ? (
+                        <button onClick={handleIsNavLinkActive}>
                            {/* harm burger menu */}
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m1 5a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2z"/></svg>
                         </button>
@@ -175,7 +140,7 @@ function Navbar() {
                            </div>
 
                            <button
-                              onClick={handleIsNavlinkActive}
+                              onClick={handleIsNavLinkActive}
                               className='bg-gray-200 h-fit rounded-full'
                            > 
                            {/* cancel icon */}
@@ -186,8 +151,16 @@ function Navbar() {
                      </div>
 
                      <div className='flex gap-x-5 '>
-
+                        {/* left the button so the layout won't scatter */}
+                        {isNavLinkActive && (
+                              <button>
+                              {/* harm burger menu */}
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m1 5a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2z"/></svg>
+                           </button>
+                        )}
+                        
                         <button onClick={toggleTheme} className='cursor-pointer'>
+                           {/* theme icon */}
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill={`${theme === 'light' ? '#000' : '#fff'}`} d="M12 21q-3.775 0-6.387-2.613T3 12q0-3.45 2.25-5.988T11 3.05q.325-.05.575.088t.4.362t.163.525t-.188.575q-.425.65-.638 1.375T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q.775 0 1.538-.225t1.362-.625q.275-.175.563-.162t.512.137q.25.125.388.375t.087.6q-.35 3.45-2.937 5.725T12 21" /></svg>
                         </button>
 

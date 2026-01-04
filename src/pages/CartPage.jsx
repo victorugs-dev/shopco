@@ -1,3 +1,4 @@
+import Footer from '../components/ui/Footer';
 import { useCart } from '../context/CartContext'
 import { Link } from 'react-router';
 
@@ -128,7 +129,7 @@ function CartPage() {
                </div> ))}  
             </div> 
         
-            <div className='rounded-3xl border px-3 py-4 md:p-7 space-y-3'>
+            <div className='rounded-3xl border px-3 py-4 md:p-7 space-y-3 md:h-fit'>
                <h1 className='text-2xl'>Order Summary</h1>
                <div className='flex justify-between'>
                   <p>Subtotal</p>
@@ -171,7 +172,6 @@ function CartPage() {
          </>
         )}
       </div>
-
     </div>
   )
 }

@@ -10,21 +10,21 @@ import { useCart } from '../context/CartContext'
 
 
 function ProductDetails() {
-    const [theme,setTheme] = useTheme();
-    let params = useParams();
-    let productDetails = data.find(item => item.slug === params.slug);
-    const { colors, sizes } = productDetails;
-    const {isAddedToCart, setIsAddedToCart, cart, setCart, cartTotal, setCartTotal,addToCart} = useCart();
-    const [productTotal, setProductTotal] = useState(1); 
-    const [outfitSize,setOutfitSize] = useState('large');
-    const [outfitColor,setOutfitColor] = useState('');
-    const [currProduct, setCurrProduct] = useState(null);
+   const [theme,setTheme] = useTheme();
+   let params = useParams();
+   let productDetails = data.find(item => item.slug === params.slug);
+   const { colors, sizes } = productDetails;
+   const {isAddedToCart, setIsAddedToCart, cart, setCart, cartTotal, setCartTotal,addToCart} = useCart();
+   const [productTotal, setProductTotal] = useState(1); 
+   const [outfitSize,setOutfitSize] = useState('large');
+   const [outfitColor,setOutfitColor] = useState('');
+   const [currProduct, setCurrProduct] = useState(null);
 
-    let isCurrProductAddedToCart = false;
-    for (let i = 0; i < cart.length; i++) {
-        if(cart[i].productDetails.slug === productDetails.slug){
-            isCurrProductAddedToCart = cart[i].productAddedToCart;
-        }
+   let isCurrProductAddedToCart = false;
+   for (let i = 0; i < cart.length; i++) {
+      if(cart[i].productDetails.slug === productDetails.slug){
+         isCurrProductAddedToCart = cart[i].productAddedToCart;
+      }
     }
 
     // NO CHANGES CAN BE MADE AFTER ADDING TO CART
@@ -44,22 +44,17 @@ function ProductDetails() {
     },[]);
 
     const handleColorPick = useCallback((color,event) => {
-        if(!isCurrProductAddedToCart){
-            setOutfitColor(color.toLowerCase());
-            // console.log(color);
-            // console.log("user wants to change the color of outfit selected")
-        }
+      if(!isCurrProductAddedToCart) setOutfitColor(color.toLowerCase());
     }, [isCurrProductAddedToCart]);
 
     function OutfitColorButtons(){
         return (
             <div className='flex gap-x-2'>{colors?.map((color) => (
-                    <button key={color} onClick={(e) => handleColorPick(color,e)}
-                        className='flex justify-between cursor-pointer'
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16"><path fill={color} stroke={color === outfitColor && 'black'} strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg>
-                    </button>
-            ))}
+               <button key={color} onClick={(e) => handleColorPick(color,e)}
+                  className='flex justify-between cursor-pointer'
+               >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16"><path fill={color} stroke={color === outfitColor && 'black'} strokeWidth='2' fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd" /></svg>
+               </button>))}
             </div>
         )
     }
@@ -69,7 +64,6 @@ function ProductDetails() {
         if(isCurrProductAddedToCart) return;
         setProductTotal((prev) => prev + 1)
     };
-
 
     const handleDecreaseTotal = () => {
         if(productTotal > 1 && !isCurrProductAddedToCart){
@@ -94,21 +88,17 @@ function ProductDetails() {
         );
     }
 
-
     const handleAddToCart = (event) => {
-        if (!productTotal > 0) return;
-      //   console.log(productDetails);
-        setCurrProduct(productDetails);
-        setCartTotal((prevCartTotal) => prevCartTotal + productTotal);
-        addToCart(productDetails, productTotal, outfitSize, outfitColor, currProduct, discountAmount, newPrice)
-      //   console.log("Added to cart");
+      if (!productTotal > 0) return;
+      setCurrProduct(productDetails);
+      setCartTotal((prevCartTotal) => prevCartTotal + productTotal);
+      addToCart(productDetails, productTotal, outfitSize, outfitColor, currProduct, discountAmount, newPrice)
     };
 
     return (
 
         <div className='md:grid grid-cols-[2fr_3fr] m-4 md:gap-x-5 w-full'>
-         
-            <div className='flex flex-col md:flex-row-reverse space-y-1  md:space-y-0 md:gap-x-5 '>
+            {/* <div className='flex flex-col md:flex-row-reverse space-y-1  md:space-y-0 md:gap-x-5 '>
                 <div className=''>
                     <img className='' src={productDetails.images[0]} alt={productDetails.title} />
                 </div>
@@ -117,9 +107,9 @@ function ProductDetails() {
                     <img className='w-30' src={productDetails.images[0]} alt={productDetails.title} />
                     <img className='w-30' src={productDetails.images[0]} alt={productDetails.title} />
                 </div>
-            </div> 
+            </div>  */}
 
-          <div className=''>
+          {/* <div className=''>
                 <div className='border-b pb-3 h-fit space-y-1'>
                     <h3 className='text-bold text-3xl'>{productDetails.title}</h3>
                     <div className='flex items-center gap   -x-1'>
@@ -131,14 +121,14 @@ function ProductDetails() {
                             ${newPrice}
                         </p>
                         {productDetails.percentageDiscount && (
-                            <>
-                                <p className='text-2xl '>
-                                    <del>${productDetails.price}</del>
-                                </p>
-                                <p className='text-2xl bg-red-100 text-red-400 rounded-full px-6 py-3'>
-                                    -{productDetails.percentageDiscount}%
-                                </p>
-                            </>    
+                           <>
+                              <p className='text-2xl '>
+                                 <del>${productDetails.price}</del>
+                              </p>
+                              <p className='text-2xl bg-red-100 text-red-400 rounded-full px-6 py-3'>
+                                 -{productDetails.percentageDiscount}%
+                              </p>
+                           </>    
                         )}
                     </div>  
                     <div >
@@ -148,11 +138,6 @@ function ProductDetails() {
 
                 <div className='border-b pb-3 space-y-3'>
                     <p className='text-2xl '>Select Colors</p>
-                    {/* <div className='flex gap-x-1'>
-                        <button onClick={handleColorPick} className='bg-green-400 text-green-400 rounded-full'>circle</button>
-                        <button onClick={handleColorPick} className='bg-blue-400 text-blue-400 rounded-full'>circle</button>
-                        <button onClick={handleColorPick} className='bg-yellow-400 text-yellow-400 rounded-full'>circle</button>
-                    </div> */}
                     <OutfitColorButtons />
                 </div>
 
@@ -183,10 +168,8 @@ function ProductDetails() {
                             className={`rounded-3xl p-2 w-1/2 text-white bg-gray-300`}
                         >Add To Cart</button>
                     )}
-
-                    {/* {isCurrProductAddedToCart === true &&   <p>this item has been added already</p>} */}
                 </div>
-          </div>
+          </div> */}
         </div>
     );
 
