@@ -36,7 +36,7 @@ function Card({title, percentageDiscount, images, price, slug, rating, sizes, in
 
           <p className='md:text-2xl'>{rating}</p>
 
-          {/* <p>{percentageDiscount}</p> */}
+          <p>{percentageDiscount}</p>
 
           {/* <p>{inStock ? 'In Stock' : 'Out of Stock'}</p> */}
 

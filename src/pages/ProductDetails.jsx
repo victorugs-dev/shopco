@@ -32,6 +32,12 @@ function ProductDetails() {
 
     const discountAmount = productDetails.price * (productDetails.percentageDiscount / 100);
     const newPrice = productDetails.price - discountAmount;
+    console.log("newPrice", newPrice)
+
+    console.log("discountAmount", discountAmount)
+    console.log("newPrice", newPrice)
+
+    console.log("productDetails.percentageDiscount", productDetails.percentageDiscount)
 
     useEffect(() => {
         colors.length && setOutfitColor(colors[Math.floor(Math.random() * colors.length)]);
@@ -94,7 +100,7 @@ function ProductDetails() {
       //   console.log(productDetails);
         setCurrProduct(productDetails);
         setCartTotal((prevCartTotal) => prevCartTotal + productTotal);
-        addToCart(productDetails, productTotal, outfitSize, outfitColor, currProduct)
+        addToCart(productDetails, productTotal, outfitSize, outfitColor, currProduct, discountAmount, newPrice)
       //   console.log("Added to cart");
     };
 

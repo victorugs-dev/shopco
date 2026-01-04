@@ -43,7 +43,7 @@ export function CartProvider({ children }){
     */
     // value = {{ cart, addToCart }} ... now every child can read the cart and add call addToCart
     
-    const addToCart = (newProductDetails, newProductTotal, newProductSize, newProductColor, newCurrProduct) => {
+    const addToCart = (newProductDetails, newProductTotal, newProductSize, newProductColor, newCurrProduct, discountAmount, productPrice) => {
 
         const cartItem = {
             productDetails: newProductDetails,
@@ -51,7 +51,9 @@ export function CartProvider({ children }){
             productAddedToCart: true,
             productSize: newProductSize,
             productColor: newProductColor,
-            currProduct: newCurrProduct
+            currProduct: newCurrProduct,
+            productDiscountAmount: discountAmount,
+            updatedProductPrice: productPrice
         };
         
         setCart((prevCart) => {

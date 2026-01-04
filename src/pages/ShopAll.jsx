@@ -76,10 +76,6 @@ function ShopAll() {
       .filter(currCheckedColor => currCheckedColor.isChecked)
       .map(currCheckedColor => currCheckedColor.id);
 
-      // console.log("checkedColorsIds", checkedColorsIds);
-
-      // if(isRemoveAllFiltersClicked === true) return products
-
       // the order of the if statements don't matter 
 
       if(checkedSizeIds.length){
@@ -93,7 +89,6 @@ function ShopAll() {
          filteredProducts = filteredProducts.filter(product => {
             const filtered = product.colors?.some(color => 
             checkedColorsIds.includes(color))
-            // console.log("filtered", filtered)
             return filtered;
          })
       }
@@ -109,10 +104,6 @@ function ShopAll() {
       }
 
       if(currCheckedSortBy === "Alphabetically, A-Z"){
-         // console.log("currCheckedSortBy",currCheckedSortBy)
-         // console.log("filteredProducts.sort((a,b) => a.title.localeCompare(b.name)).reverse()", filteredProducts.sort((a,b) => a.title.localeCompare(b.name)).reverse())
-         // filteredProducts = filteredProducts.sort((a,b) => a.title.localeCompare(b.name))
-         // return [...filteredProducts].sort((a,b) => a.title.localeCompare(b.title))
          filteredProducts = [...filteredProducts].sort((a,b) => a.title.localeCompare(b.title))
       }else if(currCheckedSortBy === "Alphabetically, Z-A"){
          filteredProducts =[...filteredProducts].sort((a,b) => b.title.localeCompare(a.title))
@@ -181,7 +172,6 @@ function ShopAll() {
       // setIsDropdownActive(false)
       // if e.target?.parentElement?.id !== currFilter.id
   }
-
    useEffect(() => {
       // listen only if a DropDown is active
       // if(!isFilterDropdownActive) return;
@@ -192,22 +182,16 @@ function ShopAll() {
          const clickedInsideDropdown = dropdownRef.current?.contains(event.target)
 
          if(clickedFilterButton){
-            // switch dropdown
-            setActiveDropdown(clickedFilterButton.dataset.filter)
+            setActiveDropdown(clickedFilterButton.dataset.filter) // switch dropdown
             return
          }
-
+        
          if(!clickedInsideDropdown){
-            //close dropdown
-            setActiveDropdown(null)
+            setActiveDropdown(null)  //close dropdown
          }
       };
-
-     
-
       document.addEventListener('click', handleOutsideClick);
       // document.addEventListener('click', handleFilterDropdown);
-
       return () => document.removeEventListener('click', handleOutsideClick)
       // return () => document.removeEventListener('click', handleFilterDropdown)
   },[activeDropdown])

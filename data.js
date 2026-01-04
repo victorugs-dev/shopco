@@ -54,7 +54,7 @@ export const data = [
     category: "tees",
     slug: "sleeve-stripped-t-shirt",
     category: "shirt",
-    price: 130,
+    price: 160,
     percentageDiscount: 30,
     description: "This is a Sleeve Stripped T-shirt",
     colors: ["green", "red", "blue"],
