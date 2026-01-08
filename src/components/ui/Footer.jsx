@@ -9,8 +9,8 @@ function Footer() {
     }
 
   return (
-     <div className={`flex flex-col gap-x-4 gap-y-2 md:flex-row md:justify-between p-4 m-4 rounded-3xl ${theme === 'light' ? 'bg-black' : 'bg-gray-800'}`}>
-            <div className={`text-white p-4 w-full grid items-center text-3xl rounded-4xl
+     <div className={`flex flex-col gap-x-4 gap-y-2 md:flex-row md:justify-between px-6 py-8 m-4 rounded-3xl ${theme === 'light' ? 'bg-black' : 'bg-gray-800'}`}>
+            <div className={`text-white  w-full grid items-center text-3xl rounded-4xl
                ${theme === 'light' ? 'text-white' : 'text-black'}`}>
                STAY UP TO DATE ABOUT OUR LATEST OFFERS
             </div>

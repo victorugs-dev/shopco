@@ -1,0 +1,39 @@
+import React from 'react'
+
+function MobileSizeBar({sizeOptions, currCheckedSizes,setCurrCheckedSizes, setActiveMobileFilter}) {
+
+   const handleSizeChange = (event, sizeId) => {
+    setCurrCheckedSizes(prevCheckedSize => 
+      prevCheckedSize.map(size => size.id === sizeId ? {...size, isChecked: !size.isChecked} : size
+    ))
+  };
+
+
+  return (
+    <div>
+      <div>
+         <button onClick={() => setActiveMobileFilter(null)}>B</button>
+         <p>Size</p>
+      </div>
+
+      <div>{sizeOptions.map((size) => 
+         <div key={size.id}>
+            <input
+            type='checkbox'
+            name={size.id}
+            id={size.id}
+            onChange={(e) => handleSizeChange(e, size.id)}
+            checked={
+               currCheckedSizes?.some(currCheckedSize => {
+                  return currCheckedSize.id === size.id && currCheckedSize.isChecked
+               })
+            }
+            />
+            <label htmlFor={size.id}>{size.title}</label>
+         </div>
+      )}</div>
+   </div>
+  )
+}
+
+export default MobileSizeBar

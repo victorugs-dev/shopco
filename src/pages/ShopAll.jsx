@@ -6,6 +6,7 @@ import PriceBar from '../components/ui/FilterBars/PriceBar.jsx';
 import ColorBar from '../components/ui/FilterBars/ColorBar.jsx';
 import SizeBar from '../components/ui/FilterBars/SizeBar.jsx';
 import AvailabilityBar from '../components/ui/FilterBars/AvailabilityBar.jsx';
+import MobileFilterSort from '../components/ui/MobileFilterSort/MobileFilterSort.jsx';
 
 // filter icon
 // sort dropdown: by New Arrivals, color, size, date released
@@ -49,6 +50,30 @@ function ShopAll() {
     {id: "from", title:"From", value:""},
     {id: "to", title: "To", value:""}
   ]);
+    const sizeOptions = [
+    {id:"x-small", title:"X-Small"},
+    {id:"small", title:"Small"},
+    {id:"medium", title:"Medium"},
+    {id:"large", title:"Large"},
+    {id:"x-large", title:"X-Large"},
+    {id:"xx-large", title:"XX-Large"},
+    {id:"xxx-large", title:"XXX-Large"},
+  ];
+
+  const colorOptions = [
+    {id: "green", title: "Green", hex: "#10B981"},
+    {id: "red", title: "Red", hex: "#EF4444"},
+    {id: "yellow", title: "Yellow", hex: "#F59E0B"},
+    {id: "orange", title: "Orange", hex: "#F97316",},
+    {id: "light-blue", title: "Light Blue", hex: "#38BDF8",},
+    {id: "dark-blue", title: "Dark Blue", hex: "#1D4ED8",},
+    {id: "purple", title: "Purple", hex: "#8B5CF6",},
+    {id: "pink", title: "Pink", hex: "#EC4899",},
+    {id: "white", title: "White",  hex: "#FFFFFF"},
+    {id: "black", title: "Black", hex: "#000000",},
+  ];
+
+
   const [currCheckedSortBy, setCurrCheckedSortBy] = useState("Alphabetically, A-Z");
   const [isSortByClicked, setIsSortByClicked] = useState(false);
   const [currClickedSortBy, setCurrClickedSortBy] = useState(null);
@@ -133,7 +158,7 @@ function ShopAll() {
     { id: "availability", title: "Availability"},
     { id: "price", title: "Price"},
     { id: "size", title: "Size"},
-    { id: "colour", title: "Colour"},
+    { id: "color", title: "color"},
   ];
   const sortBys = [
       {id: "feature", title: "Feature"},
@@ -145,6 +170,12 @@ function ShopAll() {
       {id: "date-old-to-new", title: "Date, old to new"},
       {id: "date-new-to-old", title: "Date, new to old"},
   ]
+
+   const availabilityOptions = [
+      { id: "inStock", title: "In Stock"},
+      { id: "outOfStock", title: "Out of Stock" }
+   ];
+
 
 //   const filterDropdownRefs = useRef({})
 //   let element = ""
@@ -196,6 +227,9 @@ function ShopAll() {
       // return () => document.removeEventListener('click', handleFilterDropdown)
   },[activeDropdown])
 
+     const productsInStock = products.filter(product => product.inStock === true);
+   const productsOutOfStock = products.filter(product => product.inStock === false);
+
 
    //   only one filter can be down at a time
    // 
@@ -236,8 +270,8 @@ function ShopAll() {
       ])
   }
 
-  const productsInStock = products.filter(product => product.inStock === true);
-  const productsOutOfStock = products.filter(product => product.inStock === false);
+//   const productsInStock = products.filter(product => product.inStock === true);
+//   const productsOutOfStock = products.filter(product => product.inStock === false);
 
   const handleAvailabilityChange = (availabilityId) =>  setCurrCheckedAvailability(prev =>  prev === availabilityId ? null : availabilityId);
 
@@ -269,6 +303,8 @@ function ShopAll() {
 
    //  this is only for mobile screen 
   const handleFilterAndSortClick = () => {
+   console.log("handleFilterAndSortClick")
+   console.log("isFilterAndSortClicked", isFilterAndSortClicked)
    setIsFilterAndSortClicked(!isFilterAndSortClicked)
   }
    // set the dropDropdowns inactive before the user sees result of removed filters
@@ -278,22 +314,51 @@ function ShopAll() {
   if (error) return <p>Failed to load products</p>
   
   return (
-   <div className='w-full'>
+   <div className={`w-full relative ${isFilterAndSortClicked && 'bg-gray-400'}`}>
       <h1 className='m-4 text-3xl'>Products</h1>
 
       {/* mobile device screens */}
       <div className='md:hidden m-4 flex justify-between '>
-         <div className='flex gap-x-2   '>
+         {/* change the bg color of the this to blue when for 0.5 seconds when the handleFilterAndSortClick is fired*/}
+         <div className='flex gap-x-2'>
+
             <button onClick={handleFilterAndSortClick} className='cursor-pointer'>
                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="currentColor" d="M6 1a3 3 0 0 0-2.83 2H0v2h3.17a3.001 3.001 0 0 0 5.66 0H16V3H8.83A3 3 0 0 0 6 1M5 4a1 1 0 1 1 2 0a1 1 0 0 1-2 0m5 5a3 3 0 0 0-2.83 2H0v2h7.17a3.001 3.001 0 0 0 5.66 0H16v-2h-3.17A3 3 0 0 0 10 9m-1 3a1 1 0 1 1 2 0a1 1 0 0 1-2 0"/></svg>
             </button>
-            <p>Filter  and Sort</p>
+            <p>Filter and Sort</p>
          </div>
          <div>
             {displayedProducts.length} products
          </div>
 
       </div>
+      {/* Filter And Sort sidebar for mobile devices */}
+      <MobileFilterSort 
+         displayedProducts={displayedProducts}
+         filters={filters}
+         isFilterAndSortClicked={isFilterAndSortClicked}
+         handleFilterAndSortClick={handleFilterAndSortClick}
+         availabilityOptions={availabilityOptions}
+         currCheckedAvailability={currCheckedAvailability}
+         setCurrCheckedAvailability={setCurrCheckedAvailability}
+         productsInStock={productsInStock}
+         productsOutOfStock={productsOutOfStock}
+
+         priceRanges={priceRanges}
+         setPriceRanges={setPriceRanges}
+         highestPrice={highestPrice}
+         setFilteredPrices={setFilteredPrices}
+         products={products}
+         sizeOptions={sizeOptions}
+         currCheckedSizes={currCheckedSizes}
+         setCurrCheckedSizes={setCurrCheckedSizes}
+
+         colorOptions={colorOptions}
+         currCheckedColors={currCheckedColors}
+         setCurrCheckedColors={setCurrCheckedColors}
+
+         handleRemoveAllFilters={handleRemoveAllFilters}
+      />
 
       {/* medium device screens */}
       <div className='hidden md:flex justify-between items-center '>
@@ -501,10 +566,14 @@ function ShopAll() {
                   {/* {activeDropdown === "Availability" && ( */}
                   {activeDropdown === "availability" && (
                      <AvailabilityBar
+                        availabilityOptions = {availabilityOptions}
                         currCheckedAvailability={currCheckedAvailability}
                         setCurrCheckedAvailability={setCurrCheckedAvailability}
                         // availabilityOptions={availabilityOptions}
                         products={products}
+                        productsInStock={productsInStock}
+                        productsOutOfStock={productsOutOfStock}
+
                      />
                   )}
                   {/* // {activeDropdown === "Price" && ( */}
@@ -524,13 +593,15 @@ function ShopAll() {
                      <SizeBar
                         currCheckedSizes={currCheckedSizes}
                         setCurrCheckedSizes={setCurrCheckedSizes}
+                        sizeOptions={sizeOptions}
                      />
                   )}
-                  {/* {activeDropdown === "Colour" && ( */}
-                  {activeDropdown === "colour" && (
+                  {/* {activeDropdown === "color" && ( */}
+                  {activeDropdown === "color" && (
                      <ColorBar
                         currCheckedColors={currCheckedColors}
                         setCurrCheckedColors={setCurrCheckedColors}
+                        colorOptions={colorOptions}
                      />
                   )}
                </div>

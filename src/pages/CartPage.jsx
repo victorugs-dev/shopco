@@ -85,22 +85,21 @@ function CartPage() {
   //   rating: 4.5,
 
   return (
-   <div className=' m-4 space-y-3'>
-      <div className='flex justify-between items-center'>
+   <div className='space-y-3 md:px-7 w-full'>
+      {/* <div className='flex justify-between items-center'>
         <h1 className='text-3xl'>YOUR CART</h1>
 
         <button 
           onClick={handleClearCart}
           className='bg-red-600 p-2 cursor-pointer rounded-2xl text-md border-2'
         >Clear Cart</button>
-      </div>
+      </div> */}
 
-      <div className='grid grid-rows md:grid-cols-[2fr_1fr]  gap-y-3 md:space-x-10 w-full'>
-        {/* <div className='grid grid-cols-3 bg-amber-300'> */}
+      <div className='grid grid-rows md:grid-cols-[2fr_1fr] place-items-center py-3 space-y-3 px-3   gap-y-3 md:space-x-10 w-full'>
         {!cart.length ? ( <EmptyCart /> 
         ):(
          <>
-            <div className=' border h-fit  rounded-3xl'>{cart?.map((c) => (
+            <div className=' border h-fit  rounded-3xl w-full'>{cart?.map((c) => (
                <div key={c.productDetails.slug} className=''> 
                   <div className='flex justify-between w-full'>
                      <div className='flex gap-x-1.5 w-full px-3 py-6 '>
@@ -112,7 +111,7 @@ function CartPage() {
                                     onClick={(e) => handleRemoveFromCart(c)}
                                     className='cursor-pointer'
                                  >
-                                     {/* delete icon */}
+                                    {/* delete icon  */}
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="red" d="M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h4a1 1 0 1 1 0 2h-1.069l-.867 12.142A2 2 0 0 1 17.069 22H6.93a2 2 0 0 1-1.995-1.858L4.07 8H3a1 1 0 0 1 0-2h4zm2 2h6V4H9zM6.074 8l.857 12H17.07l.857-12zM10 10a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1"/></svg>
                                  </button>
                               </div>
@@ -129,7 +128,7 @@ function CartPage() {
                </div> ))}  
             </div> 
         
-            <div className='rounded-3xl border px-3 py-4 md:p-7 space-y-3 md:h-fit'>
+            <div className='rounded-3xl border px-3 py-4 md:p-7  w-full  space-y-3 md:h-fit'>
                <h1 className='text-2xl'>Order Summary</h1>
                <div className='flex justify-between'>
                   <p>Subtotal</p>
@@ -148,18 +147,19 @@ function CartPage() {
                   <p>Total</p>
                   <p>${total}</p>
                </div>
-               <form action="" className='flex justify-between'>
-                  <div className='flex items-center justify-center px-4 md:px-5 gap-x-3 bg-gray-300 rounded-3xl '>
+               <form action="" className='flex justify-between gap-x-1'>
+                  <div className='flex  items-center justify-center  md:px-5 gap-x-1 md:gap-x-3 pl-3 w-full bg-gray-300  rounded-3xl '>
                      {/* label tag icon */}
                      
-                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="gray" stroke='black' d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59s1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"/></svg>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="gray" stroke='black' d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59s1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"/></svg>
 
                      <input 
                         type="text" 
                         placeholder='Add promo code'
+                        className=' w-30'
                      />
                   </div>
-                  <button type="submit" className='bg-black text-white px-10 py-2 rounded-4xl'>Apply</button>
+                  <button type="submit" className='bg-black text-white px-8 py-2 rounded-4xl'>Apply</button>
                </form>
 
                <Link to={'/checkout-page'} className='flex justify-center py-3 rounded-3xl gap-2 bg-black text-white'>

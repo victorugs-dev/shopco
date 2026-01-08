@@ -35,38 +35,35 @@ function PriceBar({ products, sendDataToParent, setFilteredPrices, priceRanges, 
    // let to = highestPrice;
 
    useEffect(() => {
-      // console.log("priceRanges", priceRanges)
       let from = 0;
       let to = highestPrice;
 
       // console.log("activePriceRange",activePriceRange)
-      // console.log("priceRanges", priceRanges)
-      // for(let i = 0; i < priceRanges.length; i++){
-      //    if(priceRanges[i].id === "from"){
-      //       // console.log(priceRanges[i])
-      //       // console.log(priceRanges[i].value)
-      //       from = Number(priceRanges[i].value)
-      //    }
-      //    if(priceRanges[i].id === "to"){
-      //       // console.log(priceRanges[i])
-      //       to = Number(priceRanges[i].value) || highestPrice
+      console.log("priceRanges", priceRanges)
+      for(let i = 0; i < priceRanges.length; i++){
+         if(priceRanges[i].id === "from"){
+            console.log('from',priceRanges[i])
+            // console.log(priceRanges[i].value)
+            from = Number(priceRanges[i].value)
+         }
+         if(priceRanges[i].id === "to"){
+            console.log('to',priceRanges[i])
+            // console.log(typeof priceRanges[i].value)
+            to = Number(priceRanges[i].value) || highestPrice
 
-      //       // console.log("activePriceRange",activePriceRange)
-      //    }
+            // console.log("activePriceRange",activePriceRange)
+         }
 
-      // }
-         // console.log("from",from)
-         // console.log("to",to)
-         // console.log(highestPrice)
+      }
+      // console.log("from",from)
+      // console.log("to",to)
+      // console.log(highestPrice)
 
-      const priceFilter = products.filter(product => 
-         product.price >= from && (product.price <= to )
-         // return product
-      )
+      const priceFilter = products.filter(product => product.price >= from && product.price <= to);
+      console.log("priceFilter", priceFilter);
+      setFilteredPrices(priceFilter);
       // console.log("priceFilter", priceFilter)
-      setFilteredPrices(priceFilter)
-      // console.log("priceFilter", priceFilter)
-   },[priceRanges, activePriceRange])
+   },[priceRanges, activePriceRange]);
       
       // THE 'From" HAS VALUE OF 0 BY DEFAULT IF LEFT BLANK
       //  THE "TO" JAS VALUE OF  highestPrice IN  PRODUCTS DATA BY DEFAULT IF LEFT BLANK
@@ -74,6 +71,9 @@ function PriceBar({ products, sendDataToParent, setFilteredPrices, priceRanges, 
       const handlePriceRangesChange = (event,priceRangeId) => {
          // console.log("priceRangeId", priceRangeId)
          newPriceRangeId = priceRangeId;
+         console.log('newPriceRangeId', newPriceRangeId)
+         console.log('priceRangeId', priceRangeId)
+         
          // console.log("event.target.value", event.target.value)
 
          setActivePriceRange(priceRanges.filter(priceRange => {

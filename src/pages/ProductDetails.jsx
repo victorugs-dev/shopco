@@ -20,6 +20,7 @@ function ProductDetails() {
    const [outfitColor,setOutfitColor] = useState('');
    const [currProduct, setCurrProduct] = useState(null);
 
+
    let isCurrProductAddedToCart = false;
    for (let i = 0; i < cart.length; i++) {
       if(cart[i].productDetails.slug === productDetails.slug){
@@ -32,12 +33,6 @@ function ProductDetails() {
 
     const discountAmount = productDetails.price * (productDetails.percentageDiscount / 100);
     const newPrice = productDetails.price - discountAmount;
-    console.log("newPrice", newPrice)
-
-    console.log("discountAmount", discountAmount)
-    console.log("newPrice", newPrice)
-
-    console.log("productDetails.percentageDiscount", productDetails.percentageDiscount)
 
     useEffect(() => {
         colors.length && setOutfitColor(colors[Math.floor(Math.random() * colors.length)]);
@@ -95,10 +90,11 @@ function ProductDetails() {
       addToCart(productDetails, productTotal, outfitSize, outfitColor, currProduct, discountAmount, newPrice)
     };
 
+
     return (
 
         <div className='md:grid grid-cols-[2fr_3fr] m-4 md:gap-x-5 w-full'>
-            {/* <div className='flex flex-col md:flex-row-reverse space-y-1  md:space-y-0 md:gap-x-5 '>
+            <div className='flex flex-col md:flex-row-reverse space-y-1  md:space-y-0 md:gap-x-5 '>
                 <div className=''>
                     <img className='' src={productDetails.images[0]} alt={productDetails.title} />
                 </div>
@@ -107,9 +103,9 @@ function ProductDetails() {
                     <img className='w-30' src={productDetails.images[0]} alt={productDetails.title} />
                     <img className='w-30' src={productDetails.images[0]} alt={productDetails.title} />
                 </div>
-            </div>  */}
+            </div> 
 
-          {/* <div className=''>
+          <div className=''>
                 <div className='border-b pb-3 h-fit space-y-1'>
                     <h3 className='text-bold text-3xl'>{productDetails.title}</h3>
                     <div className='flex items-center gap   -x-1'>
@@ -169,7 +165,7 @@ function ProductDetails() {
                         >Add To Cart</button>
                     )}
                 </div>
-          </div> */}
+          </div>
         </div>
     );
 

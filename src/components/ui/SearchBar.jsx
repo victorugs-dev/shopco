@@ -224,19 +224,19 @@ useEffect(() => {
 
 
   return (
-    <form onSubmit={handleSubmit} className=''>
-      <div className='flex items-center indent-2 bg-gray-200 p-2 rounded-full w-fit'>
+    <form onSubmit={handleSubmit} className=" w-full">
+      <div className='flex items-center  p-2 rounded-full '>
         <input
           ref={inputRef}
           type="text"
           placeholder={text}
           // value={input}
           onChange={handleChange}
-          className="bg-transparent outline-none"
+          className="bg-white w-full outline-none indent-5 py-3 rounded-l-full"
           onBlur={() => console.log('blur : searchBar')}
 
         />
-        <button type="submit">
+        <button type="submit" className="bg-gray-400 border px-2 py-3 rounded-r-sm">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <g fill="none" stroke="#000" strokeWidth="1">
               <circle cx="11" cy="11" r="5.5"/>

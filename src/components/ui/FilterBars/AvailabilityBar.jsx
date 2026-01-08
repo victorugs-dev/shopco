@@ -1,11 +1,5 @@
-export default function AvailabilityBar({currCheckedAvailability, setCurrCheckedAvailability, products}){
-   const productsInStock = products.filter(product => product.inStock === true);
-   const productsOutOfStock = products.filter(product => product.inStock === false);
+export default function AvailabilityBar({currCheckedAvailability, setCurrCheckedAvailability, products, availabilityOptions, productsInStock, productsOutOfStock}){
 
-   const availabilityOptions = [
-      { id: "inStock", title: "In Stock"},
-      { id: "outOfStock", title: "Out of Stock" }
-   ];
 
    const handleAvailabilityChange = (event, availabilityId) => {
       setCurrCheckedAvailability(prev => 

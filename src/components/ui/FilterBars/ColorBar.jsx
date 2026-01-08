@@ -1,18 +1,6 @@
-function ColorBar({ currCheckedColors, setCurrCheckedColors }){
+function ColorBar({ currCheckedColors, setCurrCheckedColors, colorOptions }){
 
-   const colorOptions = [
-    {id: "green", title: "Green", hex: "#10B981"},
-    {id: "red", title: "Red", hex: "#EF4444"},
-    {id: "yellow", title: "Yellow", hex: "#F59E0B"},
-    {id: "orange", title: "Orange", hex: "#F97316",},
-    {id: "light-blue", title: "Light Blue", hex: "#38BDF8",},
-    {id: "dark-blue", title: "Dark Blue", hex: "#1D4ED8",},
-    {id: "purple", title: "Purple", hex: "#8B5CF6",},
-    {id: "pink", title: "Pink", hex: "#EC4899",},
-    {id: "white", title: "White",  hex: "#FFFFFF"},
-    {id: "black", title: "Black", hex: "#000000",},
-  ];
-
+   
    const handleColorChange = (event, colorId) => {
       // event.stopPropagation()
       console.log("colorId", colorId)

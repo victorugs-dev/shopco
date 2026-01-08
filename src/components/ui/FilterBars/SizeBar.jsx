@@ -1,14 +1,5 @@
 export default function SizeBar({ currCheckedSizes, setCurrCheckedSizes }){
-   const sizeOptions = [
-    {id:"x-small", title:"X-Small"},
-    {id:"small", title:"Small"},
-    {id:"medium", title:"Medium"},
-    {id:"large", title:"Large"},
-    {id:"x-large", title:"X-Large"},
-    {id:"xx-large", title:"XX-Large"},
-    {id:"xxx-large", title:"XXX-Large"},
-  ];
-
+ 
    const handleSizeChange = (event, sizeId) => {
     setCurrCheckedSizes(prevCheckedSize => 
       prevCheckedSize.map(size => size.id === sizeId ? {...size, isChecked: !size.isChecked} : size
