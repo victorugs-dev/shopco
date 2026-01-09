@@ -1,4 +1,4 @@
-export default function SizeBar({ currCheckedSizes, setCurrCheckedSizes }){
+export default function SizeBar({ currCheckedSizes, setCurrCheckedSizes, sizeOptions }){
  
    const handleSizeChange = (event, sizeId) => {
     setCurrCheckedSizes(prevCheckedSize => 

@@ -358,9 +358,16 @@ function ShopAll() {
          setCurrCheckedColors={setCurrCheckedColors}
 
          handleRemoveAllFilters={handleRemoveAllFilters}
+
+         setIsSortByClicked={setIsSortByClicked}
+         isSortByClicked={isSortByClicked}
+         currCheckedSortBy={currCheckedSortBy}
+         sortBys={sortBys}
+         handleSortByCLick={handleSortByCLick}
       />
 
       {/* medium device screens */}
+      {/* probably move this to a separate folder later in ui/Desktop */}
       <div className='hidden md:flex justify-between items-center '>
          <div className='m-4 flex w-fit'>
             <div className=''>
@@ -418,7 +425,7 @@ function ShopAll() {
             </div>      
       </div>
 
-      <div>
+      {/* <div> */}
          <div className=' flex relative gap-x-3 items-center min-w-100  '>
             <p>Sort by: </p>
             <div className={` flex justify-between  ${isSortByClicked && "border-2  border-gray-500"} min-w-43 py-1 px-2 `}>
@@ -436,7 +443,7 @@ function ShopAll() {
 
             <p>{displayedProducts.length} products</p>
         </div>
-      </div>
+      {/* </div> */}
       </div>
       <div className='w-full '>
         <div className='flex gap-1 '>{currCheckedSizes.map(currCheckedSize => 
@@ -609,7 +616,7 @@ function ShopAll() {
 
             { isSortByClicked && (
                // <div className='absolute  flex flex-col items-start top-9 left-15  bottom-2 bg-red-400 w-full'>
-               <div className='absolute  flex flex-col  right-40 border top-0  bg-red-400'>
+               <div className='hidden absolute  md:flex flex-col  right-40 border top-0  bg-red-400'>
                   {isSortByClicked && sortBys.map(sortBy => 
                      <button key={sortBy.title} onClick={() => handleSortByCLick(sortBy)} className='flex items-start     bg-white hover:bg-blue-400 hover:text-white'>
                      {sortBy.title}
