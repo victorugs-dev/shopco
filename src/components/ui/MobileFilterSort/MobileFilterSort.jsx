@@ -66,7 +66,8 @@ function MobileFilterSort({displayedProducts,filters, isFilterAndSortClicked, ha
 
                </>
             )}
-            <button onClick={() => handleRemoveAllFilters()} className='underline absolute bottom-2 '>Remove all</button>
+            {/* <button onClick={() => handleRemoveAllFilters()} className='underline absolute bottom-2 '>Remove all</button> */}
+            <button onClick={handleRemoveAllFilters} className='underline absolute bottom-2 '>Remove all</button>
 
            
          <>

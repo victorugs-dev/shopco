@@ -16,8 +16,9 @@ function MobilePriceBar({priceRanges, setPriceRanges, highestPrice, products, se
          }
 
          const priceFilter = products.filter(product => product.price >= from && product.price <= to);
+         console.log('priceFilter', priceFilter)
 
-         setFilteredPrices(priceFilter)
+         // setFilteredPrices(priceFilter)
       },[priceRanges, activePriceRange])
          
          // THE 'From" HAS VALUE OF 0 BY DEFAULT IF LEFT BLANK

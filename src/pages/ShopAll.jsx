@@ -45,6 +45,12 @@ function ShopAll() {
     {id: "black", isChecked: false},
   ]);
   const [filteredPrices, setFilteredPrices] = useState([]);
+
+//   useEffect(() => {
+//     console.log('filteredPrices', filteredPrices);
+
+//   }, [filteredPrices])
+
   const [isRemoveAllFiltersClicked, setIsRemoveAllFiltersClicked] = useState(false);
    const [priceRanges, setPriceRanges] = useState([
     {id: "from", title:"From", value:""},
@@ -118,7 +124,40 @@ function ShopAll() {
          })
       }
 
-      if(filteredPrices.length) return filteredPrices
+      // if(filteredPrices.length) return filteredPrices
+      // if(filteredPrices.length) filteredProducts = filteredPrices;
+      // we want to return only items that have been filtered by other dropdowns
+      //  use the Ids to check
+      // if()
+      console.log('filteredPrices',filteredPrices)
+      
+      // I MIGHT HAVE TO USE A useState TO CHECK IF ANY CHANGE WAS MADE TO THE filteredPrices
+      //  OTHERWISE THE DEFAULT WOULD ALWAYS TAKE PRECEDENCE
+      // if(filteredPrices.length) {
+      if(Array.isArray(filteredPrices) && filteredPrices.length) {
+         filteredProducts =  filteredProducts.filter(filteredProduct => filteredPrices.some(filteredPrice => filteredPrice.slug === filteredProduct.slug))
+         // filteredProducts?.map(filteredProduct => {
+
+         //    return filteredPrices.some(filteredPrice => {
+
+         //       return 
+         //    })
+         // })
+         console.log('filteredPrices', filteredPrices);
+         // console.log('filteredProducts', filteredProducts)
+
+      //   filteredProducts = filteredProducts.filter(filteredProduct => {
+      // //   filteredProducts = [...filteredProducts].filter(filteredProduct => {
+
+      //       return filteredPrices.some(filteredPrice => {
+      //          filteredPrice.slug === filteredProduct.slug
+      //       } )
+      //    })
+      // }else if(!filteredPrices.length) filteredProducts = filteredPrices
+      // }else if(filteredPrices.length === 0) filteredProducts = filteredPrices
+      }
+      // if(filteredPrices === null) filteredProducts = [];
+      filteredPrices ?? (filteredProducts = []);
 
       if(currCheckedAvailability === 'inStock'){
          filteredProducts = filteredProducts.filter(products => products.inStock)
@@ -127,7 +166,12 @@ function ShopAll() {
       if(currCheckedAvailability === 'outOfStock'){
          filteredProducts = filteredProducts.filter(products => !products.inStock)
       }
+      
+      //*****  THIS IS PROBABLY NOT GOOD 
+      // CHECKING ON STRINGS WITH SPACES
+      //  USE  KEBAB CASING INSTEAD
 
+      // ChANGE THIS TO SWITCH STATEMENT??
       if(currCheckedSortBy === "Alphabetically, A-Z"){
          filteredProducts = [...filteredProducts].sort((a,b) => a.title.localeCompare(b.title))
       }else if(currCheckedSortBy === "Alphabetically, Z-A"){
@@ -147,11 +191,6 @@ function ShopAll() {
       return isRemoveAllFiltersClicked ? products : filteredProducts
   },[products, currCheckedAvailability, currCheckedSizes, currCheckedColors, filteredPrices, isRemoveAllFiltersClicked, currCheckedSortBy]);
 
-//   const dropdownButtonRef = useRef(null);
-//   console.log("dropdownButtonRef", dropdownButtonRef);
-//   console.log("dropdownButtonRef.current?.parentElement.id: ", dropdownButtonRef.current?.parentElement.id);
-//   const dropdownButtonRefs = useRef([]);
-//   console.log(dropdownButtonRefs.current[2]?.getBoundingClientRect())
 
 
   const filters = [
@@ -213,6 +252,7 @@ function ShopAll() {
          const clickedInsideDropdown = dropdownRef.current?.contains(event.target)
 
          if(clickedFilterButton){
+            setIsRemoveAllFiltersClicked(false);
             setActiveDropdown(clickedFilterButton.dataset.filter) // switch dropdown
             return
          }
@@ -246,11 +286,11 @@ function ShopAll() {
       //  setIsDropdownActive(!isFilterDropdownActive);
       // setIsDropdownActive(true);
       // setActiveDropdown(currFilter.title)
-      setActiveDropdown(prev => 
-         prev  === currFilter.id ? null : currFilter.id
-      )
+      setActiveDropdown(prev => prev  === currFilter.id ? null : currFilter.id)
   };
 
+   // setIsRemoveAllFiltersClicked =>  THIS NEEDS TO BE SET TO FALSE
+   // PROBABLY WHY handleRemoveAllFilters causes problems
     const handleRemoveAllFilters = () => {
    //   setIsDropdownActive(false);
       // setActiveDropdown('');
@@ -268,18 +308,42 @@ function ShopAll() {
          {id: "from", title:"From", value:""},
          {id: "to", title: "To", value:""}
       ])
-  }
+      setFilteredPrices([]);
+      // setIsRemoveAllFiltersClicked(true)
+
+  };
 
 //   const productsInStock = products.filter(product => product.inStock === true);
 //   const productsOutOfStock = products.filter(product => product.inStock === false);
 
   const handleAvailabilityChange = (availabilityId) =>  setCurrCheckedAvailability(prev =>  prev === availabilityId ? null : availabilityId);
 
-  const handleSizeChange = (event, sizeId) => {
+  const handleSizeChange = (_, sizeId) => {
     setCurrCheckedSizes(prevCheckedSize => 
       prevCheckedSize.map(size => size.id === sizeId ? {...size, isChecked: !size.isChecked} : size
     ))
   };
+
+  const handleRemoveColorFilter = (event, colorId) => {
+   // console.log("colorId", colorId)
+//    setCurrCheckedColors([
+//     {id: "green", isChecked: false},
+//     {id: "red", isChecked: false},
+//     {id: "yellow", isChecked: false},
+//     {id: "orange", isChecked: false},
+//     {id: "light-blue", isChecked: false},
+//     {id: "dark-blue", isChecked: false},
+//     {id: "purple", isChecked: false},
+//     {id: "pink", isChecked: false},
+//     {id: "white", isChecked: false},
+//     {id: "black", isChecked: false},
+//   ]);
+
+  setCurrCheckedColors(prevCheckedColors => prevCheckedColors.map( prevCheckedColor => {
+   // return {prevCheckedColor, isChecked:false}
+   return {...prevCheckedColor, isChecked:false}
+  }))
+  }
 
   //  result of  priceFilter from PriceBar
   const handleDataFromChild = (data) => {
@@ -290,10 +354,14 @@ function ShopAll() {
 
   const handleRemovePriceFilter = () => {
       // setPriceRanges(prevPriceRanges)
-      setPriceRanges([
-         {id: "from", title:"From", value:""},
-         {id: "to", title: "To", value:""}
-      ])
+      // setPriceRanges([
+      //    {id: "from", title:"From", value:""},
+      //    {id: "to", title: "To", value:""}
+      // ])
+      setPriceRanges(prevPriceRanges => prevPriceRanges.map(priceRange => {
+         // return {priceRange, value:""}
+         return {...priceRange, value:""}
+      }))
   }
 
   const handleSortByCLick = (sortBy) =>{
@@ -308,6 +376,23 @@ function ShopAll() {
    setIsFilterAndSortClicked(!isFilterAndSortClicked)
   }
    // set the dropDropdowns inactive before the user sees result of removed filters
+
+   function NoProductFound(){
+      return(
+         <div className='flex md:flex-col justify-center items-center bg-blue-300 w-full h-100'>
+            <p>No products found </p>
+            <div>
+               <span>Use fewer filters or </span>
+               <button 
+                  onClick={handleRemoveAllFilters}
+                  className='underline cursor-pointer'
+               >remove all</button>
+            </div>
+         </div>
+      )
+   }
+   
+   console.log('displayedProducts', displayedProducts)
 
 
   if (isLoading) return <p>Loading products...</p>
@@ -333,7 +418,7 @@ function ShopAll() {
 
       </div>
       {/* Filter And Sort sidebar for mobile devices */}
-      <MobileFilterSort 
+      {/* <MobileFilterSort 
          displayedProducts={displayedProducts}
          filters={filters}
          isFilterAndSortClicked={isFilterAndSortClicked}
@@ -364,7 +449,7 @@ function ShopAll() {
          currCheckedSortBy={currCheckedSortBy}
          sortBys={sortBys}
          handleSortByCLick={handleSortByCLick}
-      />
+      /> */}
 
       {/* medium device screens */}
       {/* probably move this to a separate folder later in ui/Desktop */}
@@ -487,7 +572,8 @@ function ShopAll() {
                 <p>Size: {currCheckedColor.id}</p>
                 <button
                   className=' cursor-pointer'
-                  onClick={(e) => handleColorChange(e, currCheckedColor.id)}
+                  // onClick={(e) => handleColorChange(e, currCheckedColor.id)}
+                  onClick={(e) => handleRemoveColorFilter(e, currCheckedColor.id)}
                 >
                     {/* cancel icon */}
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
@@ -510,7 +596,8 @@ function ShopAll() {
 
                      <button
                      className=' cursor-pointer'
-                        onClick={() => handleRemovePriceFilter()}
+                        // onClick={() => handleRemovePriceFilter()}
+                        onClick={handleRemovePriceFilter}
                      >
                         {/* cancel icon */}
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#000" d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12z" /></svg> 
@@ -522,6 +609,7 @@ function ShopAll() {
                   <div>
                      <button 
                         onClick={handleRemoveAllFilters}
+                        // onClick={() => handleRemoveAllFilters}
                         className='block underline cursor-pointer mx-1'
                      >remove all</button>
                   </div>
@@ -531,7 +619,8 @@ function ShopAll() {
 
         {/* <div className='grid align-center grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  w-fit'> */}
         <div className='grid relative align-center grid-cols-2 md:grid-cols-4 gap-4 md:m-0 p-2 md:p-0  md:m-4 space-x-2 md:space-x-0  '>
-          {displayedProducts.length ? (
+         {/* {(displayedProducts.length && filteredPrices) ? ( */}
+         {(displayedProducts.length) ? (
             displayedProducts.map(product => (
             <Card
               key={product.id}
@@ -552,19 +641,10 @@ function ShopAll() {
             />
           ))
           ) : (
-            <div className='flex md:flex-col justify-center items-center bg-blue-300 w-full'>
-               <p>No products found </p>
-              <div>
-                  <span>Use fewer filters or </span>
-                  <button 
-                     onClick={handleRemoveAllFilters}
-                     className='underline cursor-pointer'
-                  >remove all</button>
-              </div>
-            </div>
-          )}
+            <NoProductFound />
+         )}
 
-            {/* {(activeDropdown !== "") && ( */}
+         {/* {(activeDropdown !== "") && ( */}
             {(activeDropdown) && (
                <div
                   ref={dropdownRef}
@@ -591,6 +671,7 @@ function ShopAll() {
                         products={products}
                         // sendDataToParent={handleDataFromChild}
                         setFilteredPrices={setFilteredPrices}
+                        filteredPrices={filteredPrices}
                         highestPrice={highestPrice}
 
                      />

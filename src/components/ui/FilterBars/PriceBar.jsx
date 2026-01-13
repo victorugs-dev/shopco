@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useState } from "react"
 
-function PriceBar({ products, sendDataToParent, setFilteredPrices, priceRanges, setPriceRanges, highestPrice }){
+function PriceBar({ products, sendDataToParent, setFilteredPrices, filteredPrices, priceRanges, setPriceRanges, highestPrice }){
    const [activePriceRange, setActivePriceRange] = useState(null);
 
 //    const [priceRanges, setPriceRanges] = useState([
@@ -38,31 +38,39 @@ function PriceBar({ products, sendDataToParent, setFilteredPrices, priceRanges, 
       let from = 0;
       let to = highestPrice;
 
-      // console.log("activePriceRange",activePriceRange)
-      console.log("priceRanges", priceRanges)
       for(let i = 0; i < priceRanges.length; i++){
          if(priceRanges[i].id === "from"){
-            console.log('from',priceRanges[i])
+            // console.log('from',priceRanges[i])
             // console.log(priceRanges[i].value)
-            from = Number(priceRanges[i].value)
+            from = Number(priceRanges[i].value) 
+            console.log("from", from)
          }
          if(priceRanges[i].id === "to"){
-            console.log('to',priceRanges[i])
+            // console.log('to',priceRanges[i])
             // console.log(typeof priceRanges[i].value)
             to = Number(priceRanges[i].value) || highestPrice
+            console.log('to', to)
 
             // console.log("activePriceRange",activePriceRange)
          }
 
       }
-      // console.log("from",from)
-      // console.log("to",to)
       // console.log(highestPrice)
-
+      console.log('priceRanges', priceRanges)
+      const isPriceRangeBeyondLimit = priceRanges.some(priceRange => {
+         // if(priceRange.id === 'from' && priceRange.value < 0)
+        return (priceRange.id === 'to' && Number(priceRange.value) > highestPrice) 
+         || (priceRange.id === 'from'  && Number(priceRange.value) < 0);
+      })
+      console.log('highestPrice', highestPrice)
+      console.log('isPriceRangeBeyondLimit', isPriceRangeBeyondLimit)
+      // setFilteredPrices(isPriceRangeBeyondLimit ? null : priceFilter)      
+      
       const priceFilter = products.filter(product => product.price >= from && product.price <= to);
-      console.log("priceFilter", priceFilter);
-      setFilteredPrices(priceFilter);
-      // console.log("priceFilter", priceFilter)
+      console.log("priceFilter", priceFilter);  //this is working
+      setFilteredPrices(isPriceRangeBeyondLimit ? null : priceFilter)
+      // setFilteredPrices(isPriceRangeBeyondLimit ? [] : priceFilter)
+      // setFilteredPrices(priceFilter);
    },[priceRanges, activePriceRange]);
       
       // THE 'From" HAS VALUE OF 0 BY DEFAULT IF LEFT BLANK
